@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.2" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mButtonAddSeller"
+        android:id="@+id/buttonAddSeller"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.2"
+        android:textSize="20sp"
+        android:onClick="clickForAddSeller"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mButtonNext"
+        android:id="@+id/buttonNextActivity"
+        android:layout_weight="0.25"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40sp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:textSize="20sp"
+        android:id="@+id/buttonExchangeRates"
+        android:text="@string/mButtonExchangeRates" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonAbout"
+        android:textSize="20sp"
+        android:layout_weight="0.2"
+        android:text="@string/mButtonAbout" />
+</LinearLayout>

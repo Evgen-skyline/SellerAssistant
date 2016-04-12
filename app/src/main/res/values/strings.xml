@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Seller Assistant</string>
+    <string name="mButtonAddSeller">Добавить нового продавца</string>
+    <string name="mButtonNext">Дальше -></string>
+    <string name="mButtonExchangeRates">Курс валют от НБУ</string>
+    <string name="mButtonAbout">О программе</string>
+    <string name="mButtonSaveName">Сохранить</string>
+    <string name="mHintForEditText_addSeller">Введите имя</string>
+</resources>
