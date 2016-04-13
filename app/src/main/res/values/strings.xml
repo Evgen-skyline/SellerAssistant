@@ -6,4 +6,8 @@
     <string name="mButtonAbout">О программе</string>
     <string name="mButtonSaveName">Сохранить</string>
     <string name="mHintForEditText_addSeller">Введите имя</string>
+    <string name="mButtonZpForMonth">Отопразить з/п за текущий месяц</string>
+    <string name="mButtonZpForCertainMonth">Отобразить з/п за определённый месяц</string>
+    <string name="mButtonDayResults">Ввод итогов дня</string>
+    <string name="mButtonDayEdit">Редактировать определённый день</string>
 </resources>

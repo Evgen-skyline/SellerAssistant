@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewOnSellerMenu"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:text="DEBUG"
+        android:layout_weight="0.2"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonDayResults"
+        android:textSize="20sp"
+        android:text="@string/mButtonDayResults"
+        android:layout_weight="0.2"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonZpForMonth"
+        android:textSize="20sp"
+        android:text="@string/mButtonZpForMonth"
+        android:layout_weight="0.2"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonZpForCertainMonth"
+        android:textSize="20sp"
+        android:text="@string/mButtonZpForCertainMonth"
+        android:layout_weight="0.2"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonDayEdit"
+        android:textSize="20sp"
+        android:text="@string/mButtonDayEdit"
+        android:layout_weight="0.2"/>
+</LinearLayout>
