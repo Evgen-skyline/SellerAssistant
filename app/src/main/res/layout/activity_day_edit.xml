@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerInDayEdit"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0.8">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextDateInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextCardInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextSTPInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextPhoneInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextFlashInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextAccesoriesInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextFotoInDayEdit"
+                android:layout_weight="0.125"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextTerminalInDayEdit"
+                android:layout_weight="0.125"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewDateInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewCardInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewSTPInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewPhoneInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewFlashInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewAccesoriesInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewFotoInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewTerminalInDayEdit"
+                android:text="DEBUG"
+                android:layout_weight="0.125"
+                android:gravity="bottom" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSummInDayEdit"
+        android:textSize="20sp"
+        android:layout_weight="0.1"
+        android:text="DEBUG"
+        android:gravity="center_vertical|center_horizontal" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonSaveInDayEdit"
+        android:textSize="20sp"
+        android:text="@string/mButtonSaveInDayEdit"
+        android:layout_weight="0.1"/>
+</LinearLayout>

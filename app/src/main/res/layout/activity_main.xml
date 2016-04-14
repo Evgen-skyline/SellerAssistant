@@ -43,7 +43,8 @@
         android:id="@+id/buttonAbout"
         android:textSize="20sp"
         android:layout_weight="0.16"
-        android:text="@string/mButtonAbout" />
+        android:text="@string/mButtonAbout"
+        android:onClick="clickAboutProg"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -104,6 +106,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.menuSettings:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menuExit:
+                finishAffinity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public String reverseName(String srcName){
         String result = "";
         String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
@@ -125,5 +150,9 @@ public class MainActivity extends AppCompatActivity {
             result = nname.toString();
         }
         return result;
+    }
+
+    public void clickAboutProg(View view) {
+
     }
 }

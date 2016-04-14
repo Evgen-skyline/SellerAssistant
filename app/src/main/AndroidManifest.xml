@@ -20,7 +20,14 @@
         <activity
             android:name=".AddSeller"
             android:screenOrientation="portrait" />
-        <activity android:name=".SellerMenu"></activity>
+        <activity
+            android:name=".SellerMenu"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DayEdit"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SettingsActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

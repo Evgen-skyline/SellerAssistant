@@ -15,10 +15,11 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonDayResults"
+        android:id="@+id/buttonAddDayResults"
         android:textSize="20sp"
         android:text="@string/mButtonDayResults"
-        android:layout_weight="0.2"/>
+        android:layout_weight="0.2"
+        android:onClick="clickAddDayResult"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,33 +1,20 @@
 package evgenskyline.sellerassistant;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class SellerMenu extends AppCompatActivity {
-
-    private TextView mTextViewSeller;
-    private String seller;
-    //private Button mButtonAddDayResult;
+public class DayEdit extends AppCompatActivity {
+    private TextView mTVsum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seller_menu);
-        mTextViewSeller = (TextView)findViewById(R.id.textViewOnSellerMenu);
-        seller = getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER);
-        mTextViewSeller.setText(seller);
-    }
-
-    public void clickAddDayResult(View view) {
-        Intent intent = new Intent(this, DayEdit.class);
-        intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
-        startActivity(intent);
+        setContentView(R.layout.activity_day_edit);
+        mTVsum = (TextView)findViewById(R.id.textViewSummInDayEdit);
+        mTVsum.setText(getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER));
     }
 
     @Override

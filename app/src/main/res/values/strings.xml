@@ -10,4 +10,10 @@
     <string name="mButtonZpForCertainMonth">Отобразить з/п за определённый месяц</string>
     <string name="mButtonDayResults">Ввод итогов дня</string>
     <string name="mButtonDayEdit">Редактировать определённый день</string>
+    <string name="mButtonSaveInDayEdit">Сохранить</string>
+    <string name="mMenuExit">Выход</string>
+    <string name="mMenuSettings">Настройки</string>
+    <string name="mTextViewInSettings">Текущие %</string>
+    <string name="mTextViewInSettings2">Новые %</string>
+    <string name="mButtonSaveInSettings">Сохранить</string>
 </resources>
