@@ -44,7 +44,7 @@ public class SellerMenu extends AppCompatActivity {
             case R.id.menuSettings:
                 return true;
             case R.id.menuExit:
-                finishAffinity();
+                finishAffinity(); //exit from application
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

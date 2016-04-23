@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="testSettingsCheck"
+        android:defaultValue="true"
+        android:title="TestCheck"
+        android:summary="my testing of new settings"/>
+    <CheckBoxPreference
+        android:key="secondTestSettingsCheck"
+        android:defaultValue="false"
+        android:title="SecondTestCheck"
+        android:summary="Second test check in new settings"/>
+    <EditTextPreference
+        android:key="testEdit"
+        android:defaultValue="14"
+        android:title="Размер шрифта"
+        android:summary="Настройка размера шрифта"
+        android:dialogTitle="Введите от 10 до 32"/>
+    <ListPreference
+        android:key="testArray"
+        android:defaultValue="1"
+        android:entries="@array/traide_points"
+        android:entryValues="@array/traide_points"
+        android:dialogTitle="Выберите торговую точку"
+        android:title="Выбор торг. точки"
+        android:summary="Выберите торговую точку"/>
+    <SwitchPreference
+        android:key="best"
+        android:summaryOn="сделать ЗБС?"
+        android:summaryOff="нафиг такая х-я?"
+        android:switchTextOff="NO"
+        android:switchTextOn="YES"/>
+
+
+</PreferenceScreen>

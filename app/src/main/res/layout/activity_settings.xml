@@ -43,7 +43,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsCard"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/mCard"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsSTP"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/mSTP"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsPhone"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/mPhone"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsFlash"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/mFlash"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsAcces"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/mAccesories"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsFoto"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/mFoto"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"
@@ -151,7 +151,7 @@
                android:textSize="20sp"
                android:id="@+id/textViewInSettingsTerm"
                android:layout_weight="0.5"
-               android:text="DEBUG"
+               android:text="@string/Term"
                android:gravity="bottom"/>
            <EditText
                android:layout_width="match_parent"

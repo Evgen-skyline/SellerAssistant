@@ -117,11 +117,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id){
-            case R.id.menuSettings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            case R.id.menuSettings://вызов настроек из меню
+                Intent intent = new Intent(MainActivity.this, SettingsActivityPF.class);
+                //Intent intent = new Intent(MainActivity.this, MyPreferenceActivity.class);
+                //Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.menuExit:
+            case R.id.menuExit://ВЫХОД ИЗ ПРИЛОЖЕНИЯ
                 finishAffinity();
                 return true;
             default:

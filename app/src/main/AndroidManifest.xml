@@ -26,7 +26,16 @@
         <activity
             android:name=".DayEdit"
             android:screenOrientation="portrait" />
-        <activity android:name=".SettingsActivity"
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyPreferenceActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivityPF"
+            android:label="@string/title_activity_settings_activity_pf"
             android:screenOrientation="portrait"/>
     </application>
 
