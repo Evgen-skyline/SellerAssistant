@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,30 +18,48 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
+    //UI
     private Button mNewSellerBut;
     private Spinner mChoiseSellerSpin;
     private Button mNextBut;
     private Button mExRtBut;
     private Button mAboutBut;
-    private DB_seller mDBseller;
-    private SQLiteDatabase mSQLiteDB;
+    private TextView mTV; //DEBUG
+
+    //константы
     private static final int KEY_INTENT_DB_ADD = 1;//код возврата для intent
-    //private static final int KEY_INTENT_NEXT_BUTTON = 2;
     public static final String KEY_INTENT_EXTRA_USER = "user";
-    private String newSaller;//возвращаемое имя из "добавить продавца"
     private static final String APP_PREFERENCES = "usersPreferences";//имя файла настроек
     private static final String APP_PREFERENCES_SET = "usersSet";
-    private SharedPreferences mSettings;//отвечает за работу с настройками
-    private Set<String> usersSet = new HashSet<String>();
-    private SharedPreferences.Editor editor;
+    public static final String APP_PREFERENCES_TP_SET = "tradePointsSet";
+    public static final String TP_CARD = "Card";
+    public static final String TP_STP = "Stp";
+    public static final String TP_PHONE = "Phone";
+    public static final String TP_FLASH = "Flash";
+    public static final String TP_ACCESORIES = "Accesories";
+    public static final String TP_FOTO = "Foto";
+    public static final String TP_TERM = "Term";
+
+    private DB_seller mDBseller;
+    private SQLiteDatabase mSQLiteDB;
+
+    private String newSaller;//возвращаемое имя из "добавить продавца"
+    private SharedPreferences mUserSettings;//отвечает за работу с настройками
+    private SharedPreferences.Editor editor;//editor для пользователей
+    private SharedPreferences tradePointsPref;
+    private SharedPreferences.Editor editorTP;
+    private Set<String> usersSet = new HashSet<String>();//Список пользователей
+    private Set<String> tradePoints = new HashSet<String>();//Список торговых точек
+
     private ArrayList<String> arrayList;
     private ArrayAdapter<String> arrayAdapter;
 
-    private TextView mTV; //DEBUG
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +70,17 @@ public class MainActivity extends AppCompatActivity {
         mExRtBut = (Button)findViewById(R.id.buttonExchangeRates);
         mAboutBut = (Button)findViewById(R.id.buttonAbout);
         mChoiseSellerSpin = (Spinner)findViewById(R.id.spinner);
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);//инициализация
-        editor = mSettings.edit();
+        mUserSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);//инициализация
+        tradePointsPref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = mUserSettings.edit();
         mTV = (TextView)findViewById(R.id.textViewDebug); //DEBUG  DELETE
 
-        if(mSettings.contains(APP_PREFERENCES_SET)){
-            usersSet = mSettings.getStringSet(APP_PREFERENCES_SET, null);
+        if(mUserSettings.contains(APP_PREFERENCES_SET)){
+            usersSet = mUserSettings.getStringSet(APP_PREFERENCES_SET, null);
         }
-
+        if(!(tradePointsPref.contains(APP_PREFERENCES_TP_SET))){
+            setDefaultTradePoints();
+        }
     }
 
     @Override
@@ -77,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         mChoiseSellerSpin.setPrompt("Выберите продавца");
     }
 
-    public void clickForAddSeller(View view) {
+    public void clickForAddSeller(View view) {//кнопка добавление продавца
         Intent intent = new Intent(MainActivity.this, AddSeller.class);
         startActivityForResult(intent, KEY_INTENT_DB_ADD);
     }
@@ -93,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clickOnNextButton(View view) {
+    public void clickOnNextButton(View view) {//кнопка далее
         try {
             String selectedUser = mChoiseSellerSpin.getSelectedItem().toString();
             if (selectedUser != null || !selectedUser.equals("")) {
@@ -113,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {//обработка выбора в контекстном меню
         int id = item.getItemId();
 
         switch (id){
@@ -131,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String reverseName(String srcName){
+    public String reverseName(String srcName){//перевод кирилицы в латинские
         String result = "";
         String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
         String[] _alpha = {"a","b","v","g","d","e","yo","g","z","i","y","i",
@@ -154,7 +176,92 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    public void clickAboutProg(View view) {
+    public void clickAboutProg(View view) {//кнопка "о программе"
 
+    }
+
+    private void setDefaultTradePoints(){
+        tradePoints.add("КР7");
+        tradePoints.add("ХТЗ");
+        tradePoints.add("ХТЗ-Н");
+        tradePoints.add("МАГАЗИН");
+        tradePoints.add("МАРИЯ");
+        tradePoints.add("СМАК");
+        tradePoints.add("СИНТЕЗ");
+
+        editorTP = tradePointsPref.edit();
+        editorTP.putStringSet(APP_PREFERENCES_TP_SET, tradePoints);
+
+        Iterator<String> itr = tradePoints.iterator();
+        while (itr.hasNext()){
+            String nameTP = itr.next().toString();
+            switch (nameTP){
+                case "КР7":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)15);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                case "ХТЗ":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)12);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                case "ХТЗ-Н":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)12);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                case "МАГАЗИН":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)12);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                case "МАРИЯ":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)15);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                case "СМАК":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)15);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                case "СИНТЕЗ":
+                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+                    editorTP.putFloat(nameTP + TP_STP, (float)7);
+                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)25);
+                    editorTP.putFloat(nameTP + TP_FOTO, (float)25);
+                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    break;
+                default: break;
+            }
+        }
+        editorTP.apply();
     }
 }

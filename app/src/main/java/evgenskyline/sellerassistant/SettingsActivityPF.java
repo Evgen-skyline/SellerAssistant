@@ -4,6 +4,7 @@ package evgenskyline.sellerassistant;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -22,7 +24,10 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -151,23 +156,102 @@ public class SettingsActivityPF extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             //addPreferencesFromResource(R.xml.pref_general);
             //setHasOptionsMenu(true);
-
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
             //bindPreferenceSummaryToValue(findPreference("example_text"));
             //bindPreferenceSummaryToValue(findPreference("example_list"));
-
             //==================================================================
+            SharedPreferences mTP_Pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = mTP_Pref.edit();
+            Set<String> tradePointsSet = new HashSet<String>();
+            tradePointsSet = mTP_Pref.getStringSet(MainActivity.APP_PREFERENCES_TP_SET, null);
+            if (tradePointsSet == null){
+                return;
+            }
 
-            PreferenceScreen ps = getPreferenceManager().createPreferenceScreen(getActivity());
-            CheckBoxPreference cbp = new CheckBoxPreference(getActivity());
+            PreferenceScreen rootPS = getPreferenceManager().createPreferenceScreen(getActivity());
+
+            Iterator<String> itr = tradePointsSet.iterator();
+            while (itr.hasNext()){
+                String tpName = itr.next().toString();
+                PreferenceScreen ps = getPreferenceManager().createPreferenceScreen(getActivity());
+                ps.setTitle(tpName.toUpperCase());
+                ps.setSummary("настройки % для " + tpName);
+                ps.setKey(tpName + "_KEY");
+
+                EditTextPreference etpCard = new EditTextPreference(getActivity());
+                etpCard.setKey(tpName + MainActivity.TP_CARD);
+                etpCard.setTitle("Карточки");
+                etpCard.setSummary("% для карточек");
+                //etpCard.setDefaultValue((float)1.4);
+                ps.addPreference(etpCard);
+
+                EditTextPreference etpStp = new EditTextPreference(getActivity());
+                etpStp.setKey(tpName + MainActivity.TP_STP);
+                etpStp.setTitle("Стартовые пакеты");
+                etpStp.setSummary("% для стратовых пакетов");
+                //etpStp.setDefaultValue((float)7);
+                ps.addPreference(etpStp);
+
+                EditTextPreference etpFlash = new EditTextPreference(getActivity());
+                etpFlash.setKey(tpName + MainActivity.TP_FLASH);
+                etpFlash.setTitle("Флешки");
+                etpFlash.setSummary("% для флешек и карт памяти");
+                //etpFlash.setDefaultValue((float)7);
+                ps.addPreference(etpFlash);
+
+                EditTextPreference etpPhone = new EditTextPreference(getActivity());
+                etpPhone.setKey(tpName + MainActivity.TP_PHONE);
+                etpPhone.setTitle("Телефоны");
+                etpPhone.setSummary("% для телефонов");
+                //etpPhone.setDefaultValue((float)2);
+                ps.addPreference(etpPhone);
+
+                EditTextPreference etpAcces = new EditTextPreference(getActivity());
+                etpAcces.setKey(tpName + MainActivity.TP_ACCESORIES);
+                etpAcces.setTitle("Аксессуары");
+                etpAcces.setSummary("% для аксессуаров");
+                //etpAcces.setDefaultValue((float)15);
+                ps.addPreference(etpAcces);
+
+                EditTextPreference etpFoto = new EditTextPreference(getActivity());
+                etpFoto.setKey(tpName + MainActivity.TP_FOTO);
+                etpFoto.setTitle("Фото");
+                etpFoto.setSummary("% для фото-товаров");
+                //etpFoto.setDefaultValue((float)15);
+                ps.addPreference(etpFoto);
+
+                EditTextPreference etpTerm = new EditTextPreference(getActivity());
+                etpTerm.setKey(tpName + MainActivity.TP_TERM);
+                etpTerm.setTitle("Терминал");
+                etpTerm.setSummary("% для терминала");
+                //etpTerm.setDefaultValue((float)3);
+                ps.addPreference(etpTerm);
+
+                rootPS.addPreference(ps);
+            }
+            this.setPreferenceScreen(rootPS);
+
+            /*CheckBoxPreference cbp = new CheckBoxPreference(getActivity());
             cbp.setKey("key");
             cbp.setTitle("CheckBox");
             cbp.setSummary("Check Box for example");
-            ps.addPreference(cbp);
-            this.setPreferenceScreen(ps);
+            rootPS.addPreference(cbp);
+
+            PreferenceScreen ps2 = getPreferenceManager().createPreferenceScreen(getActivity());
+            ps2.setKey("ps2");
+            ps2.setTitle("TesScreen");
+            ps2.setSummary("Заготовка под торговые точки");
+
+            CheckBoxPreference cbp2 = new CheckBoxPreference(getActivity());
+            cbp2.setKey("key2");
+            cbp2.setTitle("CheckBox2");
+            cbp2.setSummary("Check Box in new Screen");
+            ps2.addPreference(cbp2);
+
+            rootPS.addPreference(ps2);*/
         }
 
         @Override
