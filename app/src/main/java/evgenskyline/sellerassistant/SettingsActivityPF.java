@@ -173,6 +173,13 @@ public class SettingsActivityPF extends AppCompatPreferenceActivity {
 
             PreferenceScreen rootPS = getPreferenceManager().createPreferenceScreen(getActivity());
 
+            /*
+            Динамическое добавление торговых точек,
+            Список точек берётся из контейнера HashSet<String>
+            имя ключа - имя точки + _KEY    (прим.: КР7_KEY)
+            имя каждой позиции - имя точки + название позиции (прим.: КР7Card)
+            имя точек написаны кирилицей
+             */
             Iterator<String> itr = tradePointsSet.iterator();
             while (itr.hasNext()){
                 String tpName = itr.next().toString();
@@ -185,73 +192,51 @@ public class SettingsActivityPF extends AppCompatPreferenceActivity {
                 etpCard.setKey(tpName + MainActivity.TP_CARD);
                 etpCard.setTitle("Карточки");
                 etpCard.setSummary("% для карточек");
-                //etpCard.setDefaultValue((float)1.4);
                 ps.addPreference(etpCard);
 
                 EditTextPreference etpStp = new EditTextPreference(getActivity());
                 etpStp.setKey(tpName + MainActivity.TP_STP);
                 etpStp.setTitle("Стартовые пакеты");
                 etpStp.setSummary("% для стратовых пакетов");
-                //etpStp.setDefaultValue((float)7);
                 ps.addPreference(etpStp);
 
                 EditTextPreference etpFlash = new EditTextPreference(getActivity());
                 etpFlash.setKey(tpName + MainActivity.TP_FLASH);
                 etpFlash.setTitle("Флешки");
                 etpFlash.setSummary("% для флешек и карт памяти");
-                //etpFlash.setDefaultValue((float)7);
                 ps.addPreference(etpFlash);
 
                 EditTextPreference etpPhone = new EditTextPreference(getActivity());
                 etpPhone.setKey(tpName + MainActivity.TP_PHONE);
                 etpPhone.setTitle("Телефоны");
                 etpPhone.setSummary("% для телефонов");
-                //etpPhone.setDefaultValue((float)2);
                 ps.addPreference(etpPhone);
 
                 EditTextPreference etpAcces = new EditTextPreference(getActivity());
                 etpAcces.setKey(tpName + MainActivity.TP_ACCESORIES);
                 etpAcces.setTitle("Аксессуары");
                 etpAcces.setSummary("% для аксессуаров");
-                //etpAcces.setDefaultValue((float)15);
                 ps.addPreference(etpAcces);
 
                 EditTextPreference etpFoto = new EditTextPreference(getActivity());
                 etpFoto.setKey(tpName + MainActivity.TP_FOTO);
                 etpFoto.setTitle("Фото");
                 etpFoto.setSummary("% для фото-товаров");
-                //etpFoto.setDefaultValue((float)15);
                 ps.addPreference(etpFoto);
 
                 EditTextPreference etpTerm = new EditTextPreference(getActivity());
                 etpTerm.setKey(tpName + MainActivity.TP_TERM);
                 etpTerm.setTitle("Терминал");
                 etpTerm.setSummary("% для терминала");
-                //etpTerm.setDefaultValue((float)3);
                 ps.addPreference(etpTerm);
 
                 rootPS.addPreference(ps);
             }
             this.setPreferenceScreen(rootPS);
 
-            /*CheckBoxPreference cbp = new CheckBoxPreference(getActivity());
-            cbp.setKey("key");
-            cbp.setTitle("CheckBox");
-            cbp.setSummary("Check Box for example");
-            rootPS.addPreference(cbp);
-
-            PreferenceScreen ps2 = getPreferenceManager().createPreferenceScreen(getActivity());
-            ps2.setKey("ps2");
-            ps2.setTitle("TesScreen");
-            ps2.setSummary("Заготовка под торговые точки");
-
-            CheckBoxPreference cbp2 = new CheckBoxPreference(getActivity());
-            cbp2.setKey("key2");
-            cbp2.setTitle("CheckBox2");
-            cbp2.setSummary("Check Box in new Screen");
-            ps2.addPreference(cbp2);
-
-            rootPS.addPreference(ps2);*/
+            /*
+            потом написать добавление/удаление точек
+             */
         }
 
         @Override

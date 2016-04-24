@@ -197,67 +197,67 @@ public class MainActivity extends AppCompatActivity {
             String nameTP = itr.next().toString();
             switch (nameTP){
                 case "КР7":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)15);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "15");
+                    editorTP.putString(nameTP + TP_FOTO, "15");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 case "ХТЗ":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)12);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "12");
+                    editorTP.putString(nameTP + TP_FOTO, "12");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 case "ХТЗ-Н":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)12);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "12");
+                    editorTP.putString(nameTP + TP_FOTO, "12");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 case "МАГАЗИН":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)12);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "2");
+                    editorTP.putString(nameTP + TP_FOTO, "12");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 case "МАРИЯ":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)15);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "15");
+                    editorTP.putString(nameTP + TP_FOTO, "15");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 case "СМАК":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)15);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "15");
+                    editorTP.putString(nameTP + TP_FOTO, "15");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 case "СИНТЕЗ":
-                    editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-                    editorTP.putFloat(nameTP + TP_STP, (float)7);
-                    editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-                    editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-                    editorTP.putFloat(nameTP + TP_ACCESORIES, (float)25);
-                    editorTP.putFloat(nameTP + TP_FOTO, (float)25);
-                    editorTP.putFloat(nameTP + TP_TERM, (float)3);
+                    editorTP.putString(nameTP + TP_CARD, "1.4");
+                    editorTP.putString(nameTP + TP_STP, "7");
+                    editorTP.putString(nameTP + TP_FLASH, "7");
+                    editorTP.putString(nameTP + TP_PHONE, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "25");
+                    editorTP.putString(nameTP + TP_FOTO, "25");
+                    editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 default: break;
             }
@@ -265,3 +265,69 @@ public class MainActivity extends AppCompatActivity {
         editorTP.apply();
     }
 }
+
+/*
+case "КР7":
+        editorTP.putString(nameTP + TP_CARD, (float)1.4);
+        editorTP.putString(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)15);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+        case "ХТЗ":
+        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+        editorTP.putFloat(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)12);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+        case "ХТЗ-Н":
+        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+        editorTP.putFloat(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)12);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+        case "МАГАЗИН":
+        editorTP.putString(nameTP + TP_CARD, "1.4");
+        editorTP.putFloat(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)12);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+        case "МАРИЯ":
+        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+        editorTP.putFloat(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)15);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+        case "СМАК":
+        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+        editorTP.putFloat(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)15);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+        case "СИНТЕЗ":
+        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
+        editorTP.putFloat(nameTP + TP_STP, (float)7);
+        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
+        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
+        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)25);
+        editorTP.putFloat(nameTP + TP_FOTO, (float)25);
+        editorTP.putFloat(nameTP + TP_TERM, (float)3);
+        break;
+default: break;*/
