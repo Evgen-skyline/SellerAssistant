@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
         switch (id){
             case R.id.menuSettings://вызов настроек из меню
                 Intent intent = new Intent(MainActivity.this, SettingsActivityPF.class);
-                //Intent intent = new Intent(MainActivity.this, MyPreferenceActivity.class);
-                //Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menuExit://ВЫХОД ИЗ ПРИЛОЖЕНИЯ

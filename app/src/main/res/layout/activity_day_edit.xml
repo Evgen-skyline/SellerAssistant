@@ -25,42 +25,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextDateInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:hint="ДД.ММ.ГГГГ"
+                android:inputType="date"
+                android:maxLength="10" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextCardInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextSTPInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextPhoneInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextFlashInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextAccesoriesInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextFotoInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextTerminalInDayEdit"
-                android:layout_weight="0.125"/>
+                android:layout_weight="0.125"
+                android:inputType="numberDecimal" />
 
         </LinearLayout>
         <LinearLayout
@@ -73,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewDateInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mDate"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
             <TextView
@@ -81,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewCardInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mCard"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
             <TextView
@@ -89,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewSTPInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mSTP"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
             <TextView
@@ -97,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewPhoneInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mPhone"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
             <TextView
@@ -105,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewFlashInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mFlash"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
             <TextView
@@ -113,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewAccesoriesInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mAccesories"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
             <TextView
@@ -121,15 +131,16 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewFotoInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mFoto"
                 android:layout_weight="0.125"
-                android:gravity="bottom" />
+                android:gravity="bottom"
+                android:singleLine="false" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewTerminalInDayEdit"
-                android:text="DEBUG"
+                android:text="@string/mTerminal"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
 
@@ -142,7 +153,7 @@
         android:id="@+id/textViewSummInDayEdit"
         android:textSize="20sp"
         android:layout_weight="0.1"
-        android:text="DEBUG"
+        android:text="@string/mDayResult"
         android:gravity="center_vertical|center_horizontal" />
     <Button
         android:layout_width="match_parent"

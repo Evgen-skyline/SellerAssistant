@@ -47,6 +47,8 @@ public class AddSeller extends AppCompatActivity {
 
         switch (id){
             case R.id.menuSettings:
+                Intent intent = new Intent(AddSeller.this, SettingsActivityPF.class);
+                startActivity(intent);
                 return true;
             case R.id.menuExit:
                 finishAffinity();

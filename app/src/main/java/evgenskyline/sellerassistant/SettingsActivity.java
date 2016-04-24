@@ -14,7 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
+/*
+НЕ ИСПОЛЬЗУЕМЫЙ КЛАСС(жалко удалить)
+ */
 public class SettingsActivity extends AppCompatActivity {
     private TextView mTV_Card;
     private TextView mTV_STP;
