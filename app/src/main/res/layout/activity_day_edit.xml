@@ -161,5 +161,6 @@
         android:id="@+id/buttonSaveInDayEdit"
         android:textSize="20sp"
         android:text="@string/mButtonSaveInDayEdit"
-        android:layout_weight="0.1"/>
+        android:layout_weight="0.1"
+        android:onClick="clickOnSaveButtonInDayEdit"/>
 </LinearLayout>

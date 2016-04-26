@@ -35,26 +35,10 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     public static final String DB_COLUMN_SALES_FOTO_R = "fotoR";
     public static final String DB_COLUMN_SALES_TERM_R = "terminalR";
     //строка на создание таблицы пользователя
-    public String CREATE_USER_TABLE = "create table if not exists " + DB_TABLE_NAME + " ("
-            + BaseColumns._ID + " integer primary key autoincrement, "
-            + DB_COLUMN_DATE + " integer not null, "
-            + DB_COLUMN_TRADE_POINT + " text not null, "
-            + DB_COLUMN_SALES_CARD + " real not null, "
-            + DB_COLUMN_SALES_STP + " real not null, "
-            + DB_COLUMN_SALES_PHONE + " real not null, "
-            + DB_COLUMN_SALES_FLASH + " real not null, "
-            + DB_COLUMN_SALES_ACCESORIES + " real not null, "
-            + DB_COLUMN_SALES_FOTO + " real not null, "
-            + DB_COLUMN_SALES_TERM + " real not null, "
-            + DB_COLUMN_SALES_CARD_R + " real not null, "
-            + DB_COLUMN_SALES_STP_R + " real not null, "
-            + DB_COLUMN_SALES_PHONE_R + " real not null, "
-            + DB_COLUMN_SALES_FLASH_R + " real not null, "
-            + DB_COLUMN_SALES_ACCESORIES_R + " real not null, "
-            + DB_COLUMN_SALES_FOTO_R + " real not null, "
-            + DB_COLUMN_SALES_TERM_R + " real not null);";
+    public String CREATE_USER_TABLE;
 
-    //поля для таблицы с настройками % на каждую торговую точку
+    //поля для таблицы с настройками % на каждую торговую точку(НЕ ИСПОЛЬЗУЕТСЯ)
+    //реализовал через SharedPreferences
     public static final String DB_SETTINGS_TABLE_NAME = "settings";
     public static final String DB_SET_COL_NAME_TP = "nameTP";
     public static final String DB_SET_COL_CARD = "percCard";
@@ -83,6 +67,24 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     public DB_seller(Context context, String _seller){
         super(context, DB_NAME, null, DB_VERSION);
         DB_TABLE_NAME = _seller;
+        CREATE_USER_TABLE = "create table if not exists " + DB_TABLE_NAME + " ("
+                + BaseColumns._ID + " integer primary key autoincrement, "
+                + DB_COLUMN_DATE + " integer not null, "
+                + DB_COLUMN_TRADE_POINT + " text, "
+                + DB_COLUMN_SALES_CARD + " real, "
+                + DB_COLUMN_SALES_STP + " real, "
+                + DB_COLUMN_SALES_PHONE + " real, "
+                + DB_COLUMN_SALES_FLASH + " real, "
+                + DB_COLUMN_SALES_ACCESORIES + " real, "
+                + DB_COLUMN_SALES_FOTO + " real, "
+                + DB_COLUMN_SALES_TERM + " real, "
+                + DB_COLUMN_SALES_CARD_R + " real, "
+                + DB_COLUMN_SALES_STP_R + " real, "
+                + DB_COLUMN_SALES_PHONE_R + " real, "
+                + DB_COLUMN_SALES_FLASH_R + " real, "
+                + DB_COLUMN_SALES_ACCESORIES_R + " real, "
+                + DB_COLUMN_SALES_FOTO_R + " real, "
+                + DB_COLUMN_SALES_TERM_R + " real);";
     }
 
 

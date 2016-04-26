@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String reverseName(String srcName){//перевод кирилицы в латинские
+    /*public String reverseName(String srcName){//перевод кирилицы в латинские
         String result = "";
         String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
         String[] _alpha = {"a","b","v","g","d","e","yo","g","z","i","y","i",
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             result = nname.toString();
         }
         return result;
-    }
+    }*/
 
     public void clickAboutProg(View view) {//кнопка "о программе"
 
