@@ -26,9 +26,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextDateInDayEdit"
                 android:layout_weight="0.125"
-                android:hint="ДД.ММ.ГГГГ"
+                android:hint="ДДММГГГГ"
                 android:inputType="date"
-                android:maxLength="10" />
+                android:maxLength="8" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

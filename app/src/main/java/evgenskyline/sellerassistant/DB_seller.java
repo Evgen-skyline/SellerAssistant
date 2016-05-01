@@ -16,7 +16,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     private static final int DB_VERSION = 1;
 
     //поля для таблицы с данными про з/п
-    private String DB_TABLE_NAME = "";//передаём через конструктор транслитное имя пользователя
+    public String DB_TABLE_NAME = "";//передаём через конструктор транслитное имя пользователя
     public static final String DB_COLUMN_DATE = "date";
     public static final String DB_COLUMN_TRADE_POINT = "tradePoint";
     public static final String DB_COLUMN_SALES_CARD = "card";
@@ -69,7 +69,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
         DB_TABLE_NAME = _seller;
         CREATE_USER_TABLE = "create table if not exists " + DB_TABLE_NAME + " ("
                 + BaseColumns._ID + " integer primary key autoincrement, "
-                + DB_COLUMN_DATE + " integer not null, "
+                + DB_COLUMN_DATE + " integer not null UNIQUE, "
                 + DB_COLUMN_TRADE_POINT + " text, "
                 + DB_COLUMN_SALES_CARD + " real, "
                 + DB_COLUMN_SALES_STP + " real, "
