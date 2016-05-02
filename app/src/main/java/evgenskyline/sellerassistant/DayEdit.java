@@ -24,12 +24,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class DayEdit extends AppCompatActivity {
     //ui
     private TextView mTVsum;
     private Spinner spinnerInDayEdit;
+    private Spinner monthSpinner;
     private EditText mET_card;
     private EditText mET_stp;
     private EditText mET_flash;
@@ -48,8 +50,10 @@ public class DayEdit extends AppCompatActivity {
 
     private SharedPreferences mSPreferences;
     private Set<String> tradePoints = new HashSet<String>();
-    ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> arrayList;
+    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> arrayList;
+    private static final String LAST_SELECTED_TP_IN_SPINNER = "lastSelectedItemInSpinner";
+    private static final String LAST_SELECTED_MONTH = "lastSelectedMonth";
 
     //% по позициям
     private String TPname;
@@ -96,20 +100,39 @@ public class DayEdit extends AppCompatActivity {
         mTV_date = (TextView) findViewById(R.id.textViewDateInDayEdit);
         saveButton = (Button)findViewById(R.id.buttonSaveInDayEdit);
         spinnerInDayEdit = (Spinner)findViewById(R.id.spinnerInDayEdit);
+        monthSpinner = (Spinner)findViewById(R.id.mMonthSpinnerInDayEdit);
 
         mSPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        userName =reverseName(getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER));
-        mTVsum.setText(userName);
-        db_seller = new DB_seller(this, userName);
-        sl_db = db_seller.getReadableDatabase();
+        String tmp = getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER);
+        userName =reverseName(tmp);
+        //mTVsum.setText(userName);
 
-        //наполнение спинера
+        //наполнение спинеров
         tradePoints = mSPreferences.getStringSet(MainActivity.APP_PREFERENCES_TP_SET, null);
         arrayList = new ArrayList<String>(tradePoints);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
         spinnerInDayEdit.setAdapter(arrayAdapter);
-        spinnerInDayEdit.setPrompt("КР7");
+        if(mSPreferences.contains(LAST_SELECTED_TP_IN_SPINNER)) {
+            String lastSelected = mSPreferences.getString(LAST_SELECTED_TP_IN_SPINNER, null);
+            if(lastSelected != null) {
+                spinnerInDayEdit.setSelection(arrayAdapter.getPosition(lastSelected));//значение по умолчанию
+            }
+        }
+
+        ArrayList<String> months = new ArrayList<String>();
+        months.add("Январь"); months.add("Февраль"); months.add("Март"); months.add("Апрель");
+        months.add("Май"); months.add("Июнь"); months.add("Июль"); months.add("Август");
+        months.add("Сентябрь"); months.add("Октябрь"); months.add("Ноябрь"); months.add("Декабрь");
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(this,
+                R.layout.support_simple_spinner_dropdown_item, months);
+        monthSpinner.setAdapter(monthAdapter);
+        if(mSPreferences.contains(LAST_SELECTED_MONTH)){
+            String lstSlctd = mSPreferences.getString(LAST_SELECTED_MONTH, null);
+            if(lstSlctd != null){
+                monthSpinner.setSelection(monthAdapter.getPosition(lstSlctd));
+            }
+        }
 
         /*
         если меняется точка, сразу считываются на неё % и пересчитывается сумма за день
@@ -185,6 +208,10 @@ public class DayEdit extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mSaveDataInDB();
+                SharedPreferences.Editor editor = mSPreferences.edit();
+                editor.putString(LAST_SELECTED_TP_IN_SPINNER, spinnerInDayEdit.getSelectedItem().toString());
+                editor.putString(LAST_SELECTED_MONTH, monthSpinner.getSelectedItem().toString());
+                editor.apply();
             }
         });
         alertDialogBuilder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
@@ -217,7 +244,7 @@ public class DayEdit extends AppCompatActivity {
                 "k","l","m","n","o","p","r","s","t","u",
                 "f","h","tz","ch","sh","sh","'","e","yu","ya"};
         if(srcName != "" || srcName != null){
-            srcName.toLowerCase();
+            srcName = srcName.toLowerCase();
             StringBuffer nname = new StringBuffer("");
             char[] chs = srcName.toCharArray();
             for (int i = 0; i < chs.length; i++) {
@@ -292,6 +319,10 @@ public class DayEdit extends AppCompatActivity {
     }
 
     private void mSaveDataInDB(){
+        db_seller = new DB_seller(this, userName);
+        sl_db = db_seller.getReadableDatabase();
+        sl_db.execSQL(DB_seller.CREATE_USER_TABLE);//create table for current user, if not exist
+
         String cardTMP = mET_card.getText().toString();
         String stpTMP = mET_stp.getText().toString();
         String phoneTMP = mET_phone.getText().toString();
@@ -310,6 +341,7 @@ public class DayEdit extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         //суём в базу суммы продаж
+        values.put(DB_seller.DB_COLUMN_MONTH, monthSpinner.getSelectedItem().toString());//месяц з/п
         values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
         values.put(DB_seller.DB_COLUMN_DATE, Integer.parseInt(mET_date.getText().toString()));
         values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
@@ -330,9 +362,25 @@ public class DayEdit extends AppCompatActivity {
         values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));
         try {
             sl_db.insert(userName, null, values);
+            values.clear();
+            sl_db.close();
+            db_seller.close();
         }catch (Exception e){
+            sl_db.close();
+            db_seller.close();
             Toast.makeText(this, "Ошибка добавления в базу" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void mRandomizeForDebug(View view) {
+        Random random = new Random();
+        mET_card.setText(String.valueOf(random.nextInt(3000)));
+        mET_stp.setText(String.valueOf(random.nextInt(250)));
+        mET_flash.setText(String.valueOf(random.nextInt(400)));
+        mET_phone.setText(String.valueOf(random.nextInt(1700)));
+        mET_accesories.setText(String.valueOf(random.nextInt(1000)));
+        mET_foto.setText(String.valueOf(random.nextInt(800)));
+        mET_terminal.setText(String.valueOf(random.nextInt(3000)));
     }
 }

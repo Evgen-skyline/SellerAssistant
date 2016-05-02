@@ -73,9 +73,9 @@ public class SettingsActivity extends AppCompatActivity {
         mSet = getSharedPreferences(DB_PREF_SET, Context.MODE_PRIVATE);
         editor = mSet.edit();
 
-        mDBseller = new DB_seller(this);
+        /*mDBseller = new DB_seller(this);
         sdb = mDBseller.getReadableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();*/
 
         if(!(mSet.contains(TP_SET))){//точки по умолчанию, добавляются припервом запуске
             tradePoints.add("КР7");
@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putStringSet(TP_SET, tradePoints);
             editor.apply();
 
-            values.put(DB_seller.DB_SET_COL_NAME_TP, "КР7");
+            /*values.put(DB_seller.DB_SET_COL_NAME_TP, "КР7");
             values.put(DB_seller.DB_SET_COL_CARD, 1.4);
             values.put(DB_seller.DB_SET_COL_STP, 7);
             values.put(DB_seller.DB_SET_COL_PHONE, 2);
@@ -151,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
             values.put(DB_seller.DB_SET_COL_FOTO, 15);
             values.put(DB_seller.DB_SET_COL_TERM, 3);
             sdb.insert(DB_seller.DB_SETTINGS_TABLE_NAME, null, values);
-            values.clear();
+            values.clear();*/
 
         }else {
             tradePoints = mSet.getStringSet(TP_SET, null);

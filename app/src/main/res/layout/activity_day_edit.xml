@@ -7,6 +7,12 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/mMonthSpinnerInDayEdit"
+        android:layout_weight="0.1"
+        android:layout_gravity="center_horizontal"/>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/spinnerInDayEdit"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.1"/>
@@ -155,6 +161,14 @@
         android:layout_weight="0.1"
         android:text="@string/mDayResult"
         android:gravity="center_vertical|center_horizontal" />
+
+    <!-- ДЛЯ ДЕБАГА, УДАЛИТЬ К РЕЛИЗУ -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mRandomizeButton"
+        android:text="рандомные значения"
+        android:onClick="mRandomizeForDebug"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -17,6 +17,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
 
     //поля для таблицы с данными про з/п
     public String DB_TABLE_NAME = "";//передаём через конструктор транслитное имя пользователя
+    public static final String DB_COLUMN_MONTH = "month";
     public static final String DB_COLUMN_DATE = "date";
     public static final String DB_COLUMN_TRADE_POINT = "tradePoint";
     public static final String DB_COLUMN_SALES_CARD = "card";
@@ -35,11 +36,11 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     public static final String DB_COLUMN_SALES_FOTO_R = "fotoR";
     public static final String DB_COLUMN_SALES_TERM_R = "terminalR";
     //строка на создание таблицы пользователя
-    public String CREATE_USER_TABLE;
+    public static String CREATE_USER_TABLE;
 
     //поля для таблицы с настройками % на каждую торговую точку(НЕ ИСПОЛЬЗУЕТСЯ)
     //реализовал через SharedPreferences
-    public static final String DB_SETTINGS_TABLE_NAME = "settings";
+   /* public static final String DB_SETTINGS_TABLE_NAME = "settings";
     public static final String DB_SET_COL_NAME_TP = "nameTP";
     public static final String DB_SET_COL_CARD = "percCard";
     public static final String DB_SET_COL_STP = "percSTP";
@@ -47,9 +48,9 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     public static final String DB_SET_COL_FLASH = "percflash";
     public static final String DB_SET_COL_ACCES = "percAccesories";
     public static final String DB_SET_COL_FOTO = "percFoto";
-    public static final String DB_SET_COL_TERM = "percTerm";
+    public static final String DB_SET_COL_TERM = "percTerm";*/
     //строка на создание таблицы с настройками
-    public static final String CREATE_TABLE_SETTINGS = "create table if not exists " + DB_SETTINGS_TABLE_NAME
+   /* public static final String CREATE_TABLE_SETTINGS = "create table if not exists " + DB_SETTINGS_TABLE_NAME
             +" (" + BaseColumns._ID + " integer primary key autoincrement, "
             + DB_SET_COL_NAME_TP + " text not null, "
             + DB_SET_COL_CARD + " real not null, "
@@ -58,7 +59,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
             + DB_SET_COL_FLASH + " real not null, "
             + DB_SET_COL_ACCES + " real not null, "
             + DB_SET_COL_FOTO + " real not null, "
-            + DB_SET_COL_TERM + " real not null);";
+            + DB_SET_COL_TERM + " real not null);";*/
 
     public DB_seller(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -69,6 +70,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
         DB_TABLE_NAME = _seller;
         CREATE_USER_TABLE = "create table if not exists " + DB_TABLE_NAME + " ("
                 + BaseColumns._ID + " integer primary key autoincrement, "
+                + DB_COLUMN_MONTH + " text, "
                 + DB_COLUMN_DATE + " integer not null UNIQUE, "
                 + DB_COLUMN_TRADE_POINT + " text, "
                 + DB_COLUMN_SALES_CARD + " real, "
@@ -88,23 +90,25 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     }
 
 
-    public DB_seller(Context context){
+    /*public DB_seller(Context context){
         super(context, DB_NAME, null, DB_VERSION);
-    }
+    }*/
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        if(!(DB_TABLE_NAME.equals("")) ) {
+        db.execSQL(CREATE_USER_TABLE);
+
+        /*if(!(DB_TABLE_NAME.equals("")) ) {
             db.execSQL(CREATE_USER_TABLE);
-        }
-        db.execSQL(CREATE_TABLE_SETTINGS);
+        }*/
+        //db.execSQL(CREATE_TABLE_SETTINGS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w("SQLite ", "обновляемся с версии " + oldVersion + " на версию " + newVersion);
         db.execSQL("DROP TABLE IF IT EXISTS " + DB_TABLE_NAME);
-        db.execSQL("DROP TABLE IF IT EXISTS " + DB_SETTINGS_TABLE_NAME);
+        //db.execSQL("DROP TABLE IF IT EXISTS " + DB_SETTINGS_TABLE_NAME);
         onCreate(db);
     }
 }

@@ -151,29 +151,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*public String reverseName(String srcName){//перевод кирилицы в латинские
-        String result = "";
-        String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
-        String[] _alpha = {"a","b","v","g","d","e","yo","g","z","i","y","i",
-                "k","l","m","n","o","p","r","s","t","u",
-                "f","h","tz","ch","sh","sh","'","e","yu","ya"};
-        if(srcName != "" || srcName != null){
-            srcName.toLowerCase();
-            StringBuffer nname = new StringBuffer("");
-            char[] chs = srcName.toCharArray();
-            for (int i = 0; i < chs.length; i++) {
-                int k = alpha.indexOf(chs[i]);
-                if (k != -1)
-                    nname.append(_alpha[k]);
-                else {
-                    nname.append(chs[i]);
-                }
-            }
-            result = nname.toString();
-        }
-        return result;
-    }*/
-
     public void clickAboutProg(View view) {//кнопка "о программе"
 
     }
@@ -226,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     editorTP.putString(nameTP + TP_STP, "7");
                     editorTP.putString(nameTP + TP_FLASH, "7");
                     editorTP.putString(nameTP + TP_PHONE, "2");
-                    editorTP.putString(nameTP + TP_ACCESORIES, "2");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "12");
                     editorTP.putString(nameTP + TP_FOTO, "12");
                     editorTP.putString(nameTP + TP_TERM, "3");
                     break;
