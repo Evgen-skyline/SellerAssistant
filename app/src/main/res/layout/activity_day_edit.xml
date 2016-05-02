@@ -8,33 +8,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mMonthSpinnerInDayEdit"
-        android:layout_weight="0.1"
+        android:layout_weight="0.083"
         android:layout_gravity="center_horizontal"/>
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerInDayEdit"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.1"/>
+        android:layout_weight="0.083"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/textViewDateInDayEdit"
+        android:text="@string/mDate"
+        android:layout_weight="0.083"
+        android:gravity="bottom" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="0.8">
+        android:layout_weight="0.6">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="0.5">
-            <EditText
+            <!--<EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextDateInDayEdit"
                 android:layout_weight="0.125"
                 android:hint="ДДММГГГГ"
                 android:inputType="date"
-                android:maxLength="8" />
+                android:maxLength="8" />-->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,14 +92,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="0.5">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:id="@+id/textViewDateInDayEdit"
-                android:text="@string/mDate"
-                android:layout_weight="0.125"
-                android:gravity="bottom" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -158,7 +159,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewSummInDayEdit"
         android:textSize="20sp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.083"
         android:text="@string/mDayResult"
         android:gravity="center_vertical|center_horizontal" />
 
@@ -175,6 +176,6 @@
         android:id="@+id/buttonSaveInDayEdit"
         android:textSize="20sp"
         android:text="@string/mButtonSaveInDayEdit"
-        android:layout_weight="0.1"
+        android:layout_weight="0.083"
         android:onClick="clickOnSaveButtonInDayEdit"/>
 </LinearLayout>

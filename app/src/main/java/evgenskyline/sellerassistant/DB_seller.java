@@ -71,7 +71,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
         CREATE_USER_TABLE = "create table if not exists " + DB_TABLE_NAME + " ("
                 + BaseColumns._ID + " integer primary key autoincrement, "
                 + DB_COLUMN_MONTH + " text, "
-                + DB_COLUMN_DATE + " integer not null UNIQUE, "
+                + DB_COLUMN_DATE + " text not null UNIQUE, "
                 + DB_COLUMN_TRADE_POINT + " text, "
                 + DB_COLUMN_SALES_CARD + " real, "
                 + DB_COLUMN_SALES_STP + " real, "

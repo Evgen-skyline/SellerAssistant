@@ -1,5 +1,6 @@
 package evgenskyline.sellerassistant;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,18 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -39,9 +43,14 @@ public class DayEdit extends AppCompatActivity {
     private EditText mET_accesories;
     private EditText mET_foto;
     private EditText mET_terminal;
-    private EditText mET_date;
+    //private EditText mET_date;
     private TextView mTV_date;
     private Button saveButton;
+
+    //для даты
+    Calendar dateCalendar;
+    String dateStr;
+    String dateSQL; //строка для записи в БД
 
     //for DB
     private String userName;
@@ -52,6 +61,7 @@ public class DayEdit extends AppCompatActivity {
     private Set<String> tradePoints = new HashSet<String>();
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> arrayList;
+    private ArrayList<String> months;
     private static final String LAST_SELECTED_TP_IN_SPINNER = "lastSelectedItemInSpinner";
     private static final String LAST_SELECTED_MONTH = "lastSelectedMonth";
 
@@ -96,7 +106,7 @@ public class DayEdit extends AppCompatActivity {
         mET_foto.addTextChangedListener(textWatcher);
         mET_terminal = (EditText)findViewById(R.id.editTextTerminalInDayEdit);
         mET_terminal.addTextChangedListener(textWatcher);
-        mET_date = (EditText)findViewById(R.id.editTextDateInDayEdit);
+        //mET_date = (EditText)findViewById(R.id.editTextDateInDayEdit);
         mTV_date = (TextView) findViewById(R.id.textViewDateInDayEdit);
         saveButton = (Button)findViewById(R.id.buttonSaveInDayEdit);
         spinnerInDayEdit = (Spinner)findViewById(R.id.spinnerInDayEdit);
@@ -120,7 +130,7 @@ public class DayEdit extends AppCompatActivity {
             }
         }
 
-        ArrayList<String> months = new ArrayList<String>();
+        months = new ArrayList<String>();
         months.add("Январь"); months.add("Февраль"); months.add("Март"); months.add("Апрель");
         months.add("Май"); months.add("Июнь"); months.add("Июль"); months.add("Август");
         months.add("Сентябрь"); months.add("Октябрь"); months.add("Ноябрь"); months.add("Декабрь");
@@ -133,7 +143,6 @@ public class DayEdit extends AppCompatActivity {
                 monthSpinner.setSelection(monthAdapter.getPosition(lstSlctd));
             }
         }
-
         /*
         если меняется точка, сразу считываются на неё % и пересчитывается сумма за день
          */
@@ -146,14 +155,50 @@ public class DayEdit extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-    }
 
+        //а тут немного извращений
+        //тестовый диалог на ввод даты
+
+
+        dateCalendar = Calendar.getInstance();
+        mTV_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dpd = new DatePickerDialog(DayEdit.this, dateListener,
+                        dateCalendar.get(Calendar.YEAR),
+                        dateCalendar.get(Calendar.MONTH),
+                        dateCalendar.get(Calendar.DAY_OF_MONTH));
+                dpd.show();
+            }
+        });
+
+    }
+    //==============================================================================================
+    DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            dateCalendar.set(Calendar.YEAR, year);
+            dateCalendar.set(Calendar.MONTH, monthOfYear);
+            dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setIitialDateInTV();
+        }
+    };
+
+    private void setIitialDateInTV(){
+        dateStr = DateUtils.formatDateTime(this,
+                dateCalendar.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+        mTV_date.setText(dateStr);
+        dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
+
+    }
+    //==============================================================================================
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
+    //==============================================================================================
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -170,7 +215,7 @@ public class DayEdit extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    //==============================================================================================
     /*
     для подсчёта з/п за день рантайм,
     срабатывает после каждого изменения в любом EditText
@@ -187,17 +232,17 @@ public class DayEdit extends AppCompatActivity {
             mRunTimeCount();
         }
     };
-
+    //==============================================================================================
     /*
     сохранение данных в базу
      */
     public void clickOnSaveButtonInDayEdit(View view) { //кнопка "Сохранить"
         //boolean confirmFlag = false;
 
-        if(mET_date.getText().toString().length() != 8) {
+        /*if(mET_date.getText().toString().length() != 8) {
             Toast.makeText(this, "Неправильный формат даты", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
         /*
         запрос на подтверждение сохранения
          */
@@ -229,14 +274,14 @@ public class DayEdit extends AppCompatActivity {
         });
         alertDialogBuilder.show();
     }
-
+    //==============================================================================================
     @Override
     protected void onResume() {
         super.onResume();
         mInicializationPercents();
         mRunTimeCount();
     }
-
+    //==============================================================================================
     public String reverseName(String srcName){//перевод кирилицы в латинские
         String result = "";
         String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
@@ -259,7 +304,7 @@ public class DayEdit extends AppCompatActivity {
         }
         return result;
     }
-
+    //==============================================================================================
     /*
     считывание % из настроек
      */
@@ -276,10 +321,9 @@ public class DayEdit extends AppCompatActivity {
         }catch (Exception e){
                 Toast.makeText(this, "Проблеммы с чтением настроек %" + "\n"
                         + e.toString(), Toast.LENGTH_LONG).show();
-            return;
         }
     }
-
+    //==============================================================================================
     /*
     подсчёт суммы за день рантайм
      */
@@ -317,7 +361,10 @@ public class DayEdit extends AppCompatActivity {
             mTVsum.setText("ERROR in runtime count");
         }
     }
-
+    //==============================================================================================
+    /*
+    отправка данных в БД
+     */
     private void mSaveDataInDB(){
         db_seller = new DB_seller(this, userName);
         sl_db = db_seller.getReadableDatabase();
@@ -343,7 +390,7 @@ public class DayEdit extends AppCompatActivity {
         //суём в базу суммы продаж
         values.put(DB_seller.DB_COLUMN_MONTH, monthSpinner.getSelectedItem().toString());//месяц з/п
         values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
-        values.put(DB_seller.DB_COLUMN_DATE, Integer.parseInt(mET_date.getText().toString()));
+        values.put(DB_seller.DB_COLUMN_DATE, dateSQL);
         values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
         values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
         values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
@@ -372,15 +419,83 @@ public class DayEdit extends AppCompatActivity {
                     + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
-
+    //==============================================================================================
+    /*
+    метод исключительно для дебага
+    СЕЙЧАС НЕ РАБОТАЕТ!!!!
+    надо придумать что-то с датой
+     */
     public void mRandomizeForDebug(View view) {
         Random random = new Random();
-        mET_card.setText(String.valueOf(random.nextInt(3000)));
-        mET_stp.setText(String.valueOf(random.nextInt(250)));
-        mET_flash.setText(String.valueOf(random.nextInt(400)));
-        mET_phone.setText(String.valueOf(random.nextInt(1700)));
-        mET_accesories.setText(String.valueOf(random.nextInt(1000)));
-        mET_foto.setText(String.valueOf(random.nextInt(800)));
-        mET_terminal.setText(String.valueOf(random.nextInt(3000)));
+        int date = 10012016;
+        for (int y=6; y<12; y++) {
+            monthSpinner.setSelection(y);
+            for (int i = 0; i < 5; i++) {
+                mET_card.setText(String.valueOf(random.nextInt(3000)));
+                mET_stp.setText(String.valueOf(random.nextInt(250)));
+                mET_flash.setText(String.valueOf(random.nextInt(400)));
+                mET_phone.setText(String.valueOf(random.nextInt(1700)));
+                mET_accesories.setText(String.valueOf(random.nextInt(1000)));
+                mET_foto.setText(String.valueOf(random.nextInt(800)));
+                mET_terminal.setText(String.valueOf(random.nextInt(3000)));
+
+                date += 1000000;
+                //mET_date.setText(String.valueOf(date));
+
+                db_seller = new DB_seller(this, userName);
+                sl_db = db_seller.getReadableDatabase();
+                sl_db.execSQL(DB_seller.CREATE_USER_TABLE);//create table for current user, if not exist
+
+                String cardTMP = mET_card.getText().toString();
+                String stpTMP = mET_stp.getText().toString();
+                String phoneTMP = mET_phone.getText().toString();
+                String flashTMP = mET_flash.getText().toString();
+                String accesTMP = mET_accesories.getText().toString();
+                String fotoTMP = mET_foto.getText().toString();
+                String termTMP = mET_terminal.getText().toString();
+
+                card_D = cardTMP.equals("") ? 0 : Double.parseDouble(cardTMP);
+                stp_D = stpTMP.equals("") ? 0 : Double.parseDouble(stpTMP);
+                phone_D = phoneTMP.equals("") ? 0 : Double.parseDouble(phoneTMP);
+                flash_D = flashTMP.equals("") ? 0 : Double.parseDouble(flashTMP);
+                acces_D = accesTMP.equals("") ? 0 : Double.parseDouble(accesTMP);
+                foto_D = fotoTMP.equals("") ? 0 : Double.parseDouble(fotoTMP);
+                term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
+
+                ContentValues values = new ContentValues();
+                //суём в базу суммы продаж
+                values.put(DB_seller.DB_COLUMN_MONTH, monthSpinner.getSelectedItem().toString());//месяц з/п
+                values.put(DB_seller.DB_COLUMN_TRADE_POINT, arrayList.get(random.nextInt(6)));
+                values.put(DB_seller.DB_COLUMN_DATE, dateSQL);
+                values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
+                values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
+                values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
+                values.put(DB_seller.DB_COLUMN_SALES_FLASH, flash_D);
+                values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES, acces_D);
+                values.put(DB_seller.DB_COLUMN_SALES_FOTO, foto_D);
+                values.put(DB_seller.DB_COLUMN_SALES_TERM, term_D);
+
+                //кладём в базу з/п от этих сумм
+                values.put(DB_seller.DB_COLUMN_SALES_CARD_R, card_D * (cardPercent / 100));
+                values.put(DB_seller.DB_COLUMN_SALES_STP_R, stp_D * (stpPercent / 100));
+                values.put(DB_seller.DB_COLUMN_SALES_PHONE_R, phone_D * (phonePercent / 100));
+                values.put(DB_seller.DB_COLUMN_SALES_FLASH_R, flash_D * (flashPercent / 100));
+                values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES_R, acces_D * (accesPercent / 100));
+                values.put(DB_seller.DB_COLUMN_SALES_FOTO_R, foto_D * (fotoPercent / 100));
+                values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent / 100));
+                try {
+                    sl_db.insert(userName, null, values);
+                    values.clear();
+                    sl_db.close();
+                    db_seller.close();
+                } catch (Exception e) {
+                    sl_db.close();
+                    db_seller.close();
+                    Toast.makeText(this, "Ошибка добавления в базу" + "\n"
+                            + e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+            date += 10000 - 5000000;
+        }
     }
 }
