@@ -21,11 +21,16 @@
             android:id="@+id/mButtonShowReportInMonthReport"
             android:text="@string/mButtonShowReport"
             android:onClick="clickToShowReport"/>
-        <TextView
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:id="@+id/textViewInMonthReport"/>
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/textViewInMonthReport"/>
+        </ScrollView>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

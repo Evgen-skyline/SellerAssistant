@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -426,10 +427,11 @@ public class DayEdit extends AppCompatActivity {
      */
     public void mRandomizeForDebug(View view) {
         Random random = new Random();
-        for (int y=6; y<12; y++) {
+        for (int y=0; y<12; y++) {
             monthSpinner.setSelection(y);
             for (int i = 0; i < 5; i++) {
                 long date = random.nextLong();
+                date = date > 0? date : date * -1;
                 mET_card.setText(String.valueOf(random.nextInt(3000)));
                 mET_stp.setText(String.valueOf(random.nextInt(250)));
                 mET_flash.setText(String.valueOf(random.nextInt(400)));

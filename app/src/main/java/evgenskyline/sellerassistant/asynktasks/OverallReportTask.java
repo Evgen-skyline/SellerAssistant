@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.text.format.DateUtils;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import evgenskyline.sellerassistant.ReportActivity;
@@ -24,7 +26,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     private SQLiteDatabase sl_db;
     private ArrayList<UnitFromDB> tableFromDB;
 
-    private UnitFromDB unitFromDB; //DEBUG FOR TEST
+    //private UnitFromDB unitFromDB; //DEBUG FOR TEST
 
     public OverallReportTask(String _user, String _month, Context _context){
         super();
@@ -47,8 +49,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         Cursor mCursor = sl_db.rawQuery("select * from "+user+" where "+DB_seller.DB_COLUMN_MONTH+" = "
                 +"\"" +month+ "\"", null);
         mCursor.moveToFirst();
-        //while (mCursor.isAfterLast() == false){
-            unitFromDB = new UnitFromDB();
+        while (mCursor.isAfterLast() == false){
+            UnitFromDB unitFromDB = new UnitFromDB();
             unitFromDB.setNameOfTradePoint(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_TRADE_POINT)));
             unitFromDB.setDateInMiliSec(Long.parseLong(mCursor.getString(
@@ -87,13 +89,10 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
 
             tableFromDB.add(unitFromDB);
             mCursor.moveToNext();
-        //}
-
-
-
+        }
         sl_db.close();
         db_seller.close();
-        return null;
+        return tableFromDB;
     }
 
     @Override
@@ -104,21 +103,33 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
         super.onPostExecute(dbTable);
-        String stringBuilder;
-        //UnitFromDB unitFromDB = new UnitFromDB();
-        //unitFromDB = dbTable.get(0);
-        stringBuilder = unitFromDB.getNameOfTradePoint() + "\n"
-                +"Date: " + String.valueOf(unitFromDB.getDateInMiliSec()) + "\n"
-                +"Card: " + String.valueOf(unitFromDB.getCardSum()) + "\n"
-                +"STP: " + String.valueOf(unitFromDB.getStpSum())+"\n"
-                +"Phone: " + String.valueOf(unitFromDB.getPhoneSum())+"\n"
-                +"Flash: " + String.valueOf(unitFromDB.getFlashSum())+"\n"
-                +"Accesories: "+String.valueOf(unitFromDB.getAccesSum()) +"\n"
-                +"Foto: " + String.valueOf(unitFromDB.getFotoSum())+"\n"
-                +"Term: " + String.valueOf(unitFromDB.getTermSum())+"\n"
-                +"CASH-SUM: " + String.valueOf(unitFromDB.cashSumWithTerminal())+"\n"
-                +"SUM-ZP: " + String.valueOf(unitFromDB.sumZpWithTerminal());
-        ReportActivity.mTV_Report.setText(stringBuilder);
+        try {
+            StringBuffer result = new StringBuffer();
+            for (int i = 0; i < dbTable.size(); i++) {
+               result.append(convertUnitFromDbToString(dbTable.get(i)));
+            }
+            ReportActivity.mTV_Report.setText(result.toString());
+        }catch (Exception e){
+            ReportActivity.mTV_Report.setText(e.toString());
+        }
+    }
+    private String convertUnitFromDbToString(UnitFromDB unit){
 
+        String date = DateUtils.formatDateTime(context, unit.getDateInMiliSec(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+        StringBuffer result = new StringBuffer();
+        result.append(unit.getNameOfTradePoint() + "\n");
+        result.append("Дата: " + date + "\n");
+        result.append("Карточки: " + String.valueOf(unit.getCardSum()) + "\n");
+        result.append("Ст.пакеты: " + String.valueOf(unit.getStpSum()) + "\n");
+        result.append("Телефоны: " + String.valueOf(unit.getPhoneSum()) + "\n");
+        result.append("Флешки: " + String.valueOf(unit.getFlashSum()) + "\n");
+        result.append("Аксессуары: " + String.valueOf(unit.getAccesSum()) + "\n");
+        result.append("Фото: " + String.valueOf(unit.getFotoSum()) + "\n");
+        result.append("Терминал: " + String.valueOf(unit.getTermSum()) + "\n");
+        result.append("Касса: " + String.valueOf(unit.cashSumWithTerminal()) + "\n");
+        result.append("З/П за день(с терминалом): " + String.valueOf(unit.sumZpWithTerminal()) + "\n");
+        result.append("З/П за терминал: " + String.valueOf(unit.getTermZP())+"\n\n\n");
+        return result.toString();
     }
 }
