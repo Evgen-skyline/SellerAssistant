@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import evgenskyline.sellerassistant.dbwork.DB_seller;
+
 public class DayEdit extends AppCompatActivity {
     //ui
     private TextView mTVsum;
@@ -61,9 +63,11 @@ public class DayEdit extends AppCompatActivity {
     private Set<String> tradePoints = new HashSet<String>();
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> arrayList;
-    private ArrayList<String> months;
+    //private ArrayList<String> months = new ArrayList<String>();
+    public static String[] monthArr = new String[]{"Январь", "Февраль", "Март", "Апрель",
+    "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
     private static final String LAST_SELECTED_TP_IN_SPINNER = "lastSelectedItemInSpinner";
-    private static final String LAST_SELECTED_MONTH = "lastSelectedMonth";
+    public static final String LAST_SELECTED_MONTH = "lastSelectedMonth";
 
     //% по позициям
     private String TPname;
@@ -123,6 +127,7 @@ public class DayEdit extends AppCompatActivity {
         arrayList = new ArrayList<String>(tradePoints);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
         spinnerInDayEdit.setAdapter(arrayAdapter);
+        //установка последней выбраной точки
         if(mSPreferences.contains(LAST_SELECTED_TP_IN_SPINNER)) {
             String lastSelected = mSPreferences.getString(LAST_SELECTED_TP_IN_SPINNER, null);
             if(lastSelected != null) {
@@ -130,13 +135,14 @@ public class DayEdit extends AppCompatActivity {
             }
         }
 
-        months = new ArrayList<String>();
+        /*months = new ArrayList<String>();
         months.add("Январь"); months.add("Февраль"); months.add("Март"); months.add("Апрель");
         months.add("Май"); months.add("Июнь"); months.add("Июль"); months.add("Август");
-        months.add("Сентябрь"); months.add("Октябрь"); months.add("Ноябрь"); months.add("Декабрь");
+        months.add("Сентябрь"); months.add("Октябрь"); months.add("Ноябрь"); months.add("Декабрь");*/
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(this,
-                R.layout.support_simple_spinner_dropdown_item, months);
+                R.layout.support_simple_spinner_dropdown_item, monthArr);
         monthSpinner.setAdapter(monthAdapter);
+        //установка последнего выбраного месяца
         if(mSPreferences.contains(LAST_SELECTED_MONTH)){
             String lstSlctd = mSPreferences.getString(LAST_SELECTED_MONTH, null);
             if(lstSlctd != null){
@@ -158,8 +164,6 @@ public class DayEdit extends AppCompatActivity {
 
         //а тут немного извращений
         //тестовый диалог на ввод даты
-
-
         dateCalendar = Calendar.getInstance();
         mTV_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,24 +178,20 @@ public class DayEdit extends AppCompatActivity {
 
     }
     //==============================================================================================
+    //Listener для DatePickerDialog
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateCalendar.set(Calendar.YEAR, year);
             dateCalendar.set(Calendar.MONTH, monthOfYear);
             dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setIitialDateInTV();
+            dateStr = DateUtils.formatDateTime(DayEdit.this,
+                    dateCalendar.getTimeInMillis(),
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+            mTV_date.setText(dateStr);
+            dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
         }
     };
-
-    private void setIitialDateInTV(){
-        dateStr = DateUtils.formatDateTime(this,
-                dateCalendar.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
-        mTV_date.setText(dateStr);
-        dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
-
-    }
     //==============================================================================================
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -282,7 +282,7 @@ public class DayEdit extends AppCompatActivity {
         mRunTimeCount();
     }
     //==============================================================================================
-    public String reverseName(String srcName){//перевод кирилицы в латинские
+    public static String reverseName(String srcName){//перевод кирилицы в латинские
         String result = "";
         String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
         String[] _alpha = {"a","b","v","g","d","e","yo","g","z","i","y","i",
@@ -422,15 +422,14 @@ public class DayEdit extends AppCompatActivity {
     //==============================================================================================
     /*
     метод исключительно для дебага
-    СЕЙЧАС НЕ РАБОТАЕТ!!!!
     надо придумать что-то с датой
      */
     public void mRandomizeForDebug(View view) {
         Random random = new Random();
-        int date = 10012016;
         for (int y=6; y<12; y++) {
             monthSpinner.setSelection(y);
             for (int i = 0; i < 5; i++) {
+                long date = random.nextLong();
                 mET_card.setText(String.valueOf(random.nextInt(3000)));
                 mET_stp.setText(String.valueOf(random.nextInt(250)));
                 mET_flash.setText(String.valueOf(random.nextInt(400)));
@@ -438,9 +437,6 @@ public class DayEdit extends AppCompatActivity {
                 mET_accesories.setText(String.valueOf(random.nextInt(1000)));
                 mET_foto.setText(String.valueOf(random.nextInt(800)));
                 mET_terminal.setText(String.valueOf(random.nextInt(3000)));
-
-                date += 1000000;
-                //mET_date.setText(String.valueOf(date));
 
                 db_seller = new DB_seller(this, userName);
                 sl_db = db_seller.getReadableDatabase();
@@ -466,7 +462,7 @@ public class DayEdit extends AppCompatActivity {
                 //суём в базу суммы продаж
                 values.put(DB_seller.DB_COLUMN_MONTH, monthSpinner.getSelectedItem().toString());//месяц з/п
                 values.put(DB_seller.DB_COLUMN_TRADE_POINT, arrayList.get(random.nextInt(6)));
-                values.put(DB_seller.DB_COLUMN_DATE, dateSQL);
+                values.put(DB_seller.DB_COLUMN_DATE, date);
                 values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
                 values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
                 values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
@@ -495,7 +491,6 @@ public class DayEdit extends AppCompatActivity {
                             + e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
-            date += 10000 - 5000000;
         }
     }
 }

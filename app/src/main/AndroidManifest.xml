@@ -32,7 +32,11 @@
         <activity
             android:name=".SettingsActivityPF"
             android:label="@string/title_activity_settings_activity_pf"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportActivity"
+            android:label="@string/title_activity_report"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

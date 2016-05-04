@@ -1,4 +1,4 @@
-package evgenskyline.sellerassistant;
+package evgenskyline.sellerassistant.dbwork;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -70,7 +70,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
         DB_TABLE_NAME = _seller;
         CREATE_USER_TABLE = "create table if not exists " + DB_TABLE_NAME + " ("
                 + BaseColumns._ID + " integer primary key autoincrement, "
-                + DB_COLUMN_MONTH + " text, "
+                + DB_COLUMN_MONTH + " text, "   //месяц в который считать з/п
                 + DB_COLUMN_DATE + " text not null UNIQUE, "
                 + DB_COLUMN_TRADE_POINT + " text, "
                 + DB_COLUMN_SALES_CARD + " real, "
@@ -111,4 +111,5 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
         //db.execSQL("DROP TABLE IF IT EXISTS " + DB_SETTINGS_TABLE_NAME);
         onCreate(db);
     }
+
 }

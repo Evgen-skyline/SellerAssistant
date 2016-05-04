@@ -13,6 +13,7 @@ public class SellerMenu extends AppCompatActivity {
 
     private TextView mTextViewSeller;
     private String seller;
+
     //private Button mButtonAddDayResult;
 
     @Override
@@ -24,6 +25,9 @@ public class SellerMenu extends AppCompatActivity {
         mTextViewSeller.setText(seller);
     }
 
+    /*
+    кнопка "Ввод итогов дня"
+     */
     public void clickAddDayResult(View view) {
         Intent intent = new Intent(this, DayEdit.class);
         intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
@@ -51,5 +55,14 @@ public class SellerMenu extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /*
+    кнопка "отобразить отчёт за месяц"
+     */
+    public void clickReportForMonth(View view) {
+        Intent intent = new Intent(SellerMenu.this, ReportActivity.class);
+        intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
+        startActivity(intent);
     }
 }

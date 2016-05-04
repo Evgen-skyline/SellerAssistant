@@ -1,6 +1,5 @@
 package evgenskyline.sellerassistant;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import evgenskyline.sellerassistant.dbwork.DB_seller;
+
 /*
 НЕ ИСПОЛЬЗУЕМЫЙ КЛАСС(жалко удалить)
  */

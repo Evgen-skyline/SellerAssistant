@@ -14,12 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import evgenskyline.sellerassistant.dbwork.DB_seller;
 
 public class MainActivity extends AppCompatActivity {
 
