@@ -26,13 +26,19 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     private SQLiteDatabase sl_db;
     private ArrayList<UnitFromDB> tableFromDB;
 
+    public static final int OVERALL_REPORT = 1;
+    public static final int EACH_POINT_REPORT = 2;
+
+    private int typeOfReport;
+
     //private UnitFromDB unitFromDB; //DEBUG FOR TEST
 
-    public OverallReportTask(String _user, String _month, Context _context){
+    public OverallReportTask(String _user, String _month, Context _context, int flagForTypeReport){
         super();
         context = _context;
         user = _user;
         month = _month;
+        typeOfReport = flagForTypeReport;
     }
 
     @Override
@@ -103,14 +109,23 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
         super.onPostExecute(dbTable);
-        try {
-            StringBuffer result = new StringBuffer();
-            for (int i = 0; i < dbTable.size(); i++) {
-               result.append(convertUnitFromDbToString(dbTable.get(i)));
-            }
-            ReportActivity.mTV_Report.setText(result.toString());
-        }catch (Exception e){
-            ReportActivity.mTV_Report.setText(e.toString());
+        switch (typeOfReport){
+            case OVERALL_REPORT:
+                String report = stringForOveralReport(dbTable);
+                ReportActivity.mTV_Report.setText(report);
+                break;
+            case EACH_POINT_REPORT:
+                try {
+                    StringBuffer result = new StringBuffer();
+                    for (int i = 0; i < dbTable.size(); i++) {
+                        result.append(convertUnitFromDbToString(dbTable.get(i)));
+                    }
+                    ReportActivity.mTV_Report.setText(result.toString());
+                }catch (Exception e){
+                    ReportActivity.mTV_Report.setText(e.toString());
+                };
+                break;
+            default: break;
         }
     }
     private String convertUnitFromDbToString(UnitFromDB unit){
@@ -128,8 +143,57 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         result.append("Фото: " + String.valueOf(unit.getFotoSum()) + "\n");
         result.append("Терминал: " + String.valueOf(unit.getTermSum()) + "\n");
         result.append("Касса: " + String.valueOf(unit.cashSumWithTerminal()) + "\n");
-        result.append("З/П за день(с терминалом): " + String.valueOf(unit.sumZpWithTerminal()) + "\n");
+        result.append("З/П за день(без терминала): " + String.valueOf(unit.sumZpWithoutTerminal()) + "\n");
         result.append("З/П за терминал: " + String.valueOf(unit.getTermZP())+"\n\n\n");
         return result.toString();
+    }
+
+    private String stringForOveralReport(ArrayList<UnitFromDB> dbTable){
+        double cardResult=0;
+        double stpResult=0;
+        double phoneResult=0;
+        double flashResult=0;
+        double accesResult=0;
+        double fotoResult=0;
+        double termResult=0;
+        double cardZpResult=0;
+        double stpZpResult=0;
+        double phoneZpResult=0;
+        double flashZpResult=0;
+        double accesZpResult=0;
+        double fotoZpResult=0;
+        double termZpResult=0;
+        for (int i = 0; i < dbTable.size(); i++) {
+            cardResult += dbTable.get(i).getCardSum();
+            stpResult += dbTable.get(i).getStpSum();
+            phoneResult += dbTable.get(i).getPhoneSum();
+            flashResult += dbTable.get(i).getFlashSum();
+            accesResult += dbTable.get(i).getAccesSum();
+            fotoResult += dbTable.get(i).getFotoSum();
+            termResult += dbTable.get(i).getTermSum();
+            cardZpResult += dbTable.get(i).getCardZP();
+            stpZpResult += dbTable.get(i).getStpZP();
+            phoneZpResult += dbTable.get(i).getPhoneZP();
+            flashZpResult += dbTable.get(i).getFlashZP();
+            accesZpResult += dbTable.get(i).getAccesZP();
+            fotoZpResult += dbTable.get(i).getFotoZP();
+            termZpResult += dbTable.get(i).getTermZP();
+        }
+        double zpSumWithoutTerm = cardZpResult + stpZpResult + phoneZpResult
+                + flashZpResult + accesZpResult + fotoZpResult;
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("З/П без терминала: " + String.valueOf(zpSumWithoutTerm) + "\n");
+        strBuilder.append("З/П терминал: " + String.valueOf(termZpResult) + "\n");
+        strBuilder.append("Всего: " + String.valueOf((zpSumWithoutTerm+termZpResult)) + "\n\n");
+        strBuilder.append("Товаров продано: \n");
+        strBuilder.append("Карточек на: " + String.valueOf(cardResult) + "\n");
+        strBuilder.append("Ст.п. на: " + String.valueOf(stpResult) + "\n");
+        strBuilder.append("Телефонов на: " + String.valueOf(phoneResult) + "\n");
+        strBuilder.append("Флешек и microSD на: " + String.valueOf(flashResult) + "\n");
+        strBuilder.append("Аксессуаров на: " + String.valueOf(accesResult) + "\n");
+        strBuilder.append("Фото на: " + String.valueOf(fotoResult) + "\n");
+        strBuilder.append("Терминал: " + String.valueOf(termResult) + "\n");
+
+        return strBuilder.toString();
     }
 }

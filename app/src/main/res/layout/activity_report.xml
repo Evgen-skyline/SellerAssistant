@@ -21,6 +21,22 @@
             android:id="@+id/mButtonShowReportInMonthReport"
             android:text="@string/mButtonShowReport"
             android:onClick="clickToShowReport"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonOverallInReport"
+                android:text="@string/mRadioButtonOverall"
+                android:textSize="20sp" />
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonEachInReport"
+                android:text="@string/mRadioButtonEach"
+                android:textSize="20sp" />
+        </RadioGroup>
 
         <ScrollView
             android:layout_width="match_parent"
