@@ -39,6 +39,7 @@ public class DayEdit extends AppCompatActivity {
     private TextView mTVsum;
     private Spinner spinnerInDayEdit;
     private Spinner monthSpinner;
+    private Spinner yearSpinner;
     private EditText mET_card;
     private EditText mET_stp;
     private EditText mET_flash;
@@ -46,7 +47,6 @@ public class DayEdit extends AppCompatActivity {
     private EditText mET_accesories;
     private EditText mET_foto;
     private EditText mET_terminal;
-    //private EditText mET_date;
     private TextView mTV_date;
     private Button saveButton;
 
@@ -116,6 +116,8 @@ public class DayEdit extends AppCompatActivity {
         saveButton = (Button)findViewById(R.id.buttonSaveInDayEdit);
         spinnerInDayEdit = (Spinner)findViewById(R.id.spinnerInDayEdit);
         monthSpinner = (Spinner)findViewById(R.id.mMonthSpinnerInDayEdit);
+        yearSpinner = (Spinner)findViewById(R.id.DayEditYearSpinner);
+        dateCalendar = Calendar.getInstance();
 
         mSPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -123,7 +125,7 @@ public class DayEdit extends AppCompatActivity {
         userName =reverseName(tmp);
         //mTVsum.setText(userName);
 
-        //наполнение спинеров
+        //наполнение спинера торговых точек
         tradePoints = mSPreferences.getStringSet(MainActivity.APP_PREFERENCES_TP_SET, null);
         arrayList = new ArrayList<String>(tradePoints);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
@@ -135,11 +137,7 @@ public class DayEdit extends AppCompatActivity {
                 spinnerInDayEdit.setSelection(arrayAdapter.getPosition(lastSelected));//значение по умолчанию
             }
         }
-
-        /*months = new ArrayList<String>();
-        months.add("Январь"); months.add("Февраль"); months.add("Март"); months.add("Апрель");
-        months.add("Май"); months.add("Июнь"); months.add("Июль"); months.add("Август");
-        months.add("Сентябрь"); months.add("Октябрь"); months.add("Ноябрь"); months.add("Декабрь");*/
+        //наполнение спинера месяцев
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, monthArr);
         monthSpinner.setAdapter(monthAdapter);
@@ -150,6 +148,17 @@ public class DayEdit extends AppCompatActivity {
                 monthSpinner.setSelection(monthAdapter.getPosition(lstSlctd));
             }
         }
+        //наполнение спинера года
+        ArrayList yearList = new ArrayList<Integer>();
+        Integer currentYear = dateCalendar.get(Calendar.YEAR);
+        for (int y = 2016; y <= currentYear; y++){
+            yearList.add(y);
+        }
+        //Toast.makeText(this, String.valueOf(currentYear), Toast.LENGTH_LONG).show();
+        ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
+                yearList);
+        yearSpinner.setAdapter(yearAdapter);
+        yearSpinner.setSelection(yearAdapter.getPosition(currentYear));
         /*
         если меняется точка, сразу считываются на неё % и пересчитывается сумма за день
          */
@@ -165,7 +174,6 @@ public class DayEdit extends AppCompatActivity {
 
         //а тут немного извращений
         //тестовый диалог на ввод даты
-        dateCalendar = Calendar.getInstance();
         mTV_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,12 +246,6 @@ public class DayEdit extends AppCompatActivity {
     сохранение данных в базу
      */
     public void clickOnSaveButtonInDayEdit(View view) { //кнопка "Сохранить"
-        //boolean confirmFlag = false;
-
-        /*if(mET_date.getText().toString().length() != 8) {
-            Toast.makeText(this, "Неправильный формат даты", Toast.LENGTH_LONG).show();
-            return;
-        }*/
         /*
         запрос на подтверждение сохранения
          */
@@ -388,8 +390,11 @@ public class DayEdit extends AppCompatActivity {
         term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
 
         ContentValues values = new ContentValues();
+
         //суём в базу суммы продаж
-        values.put(DB_seller.DB_COLUMN_MONTH, monthSpinner.getSelectedItem().toString());//месяц з/п
+        String monthForDB = monthSpinner.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString();
+        Toast.makeText(this, monthForDB, Toast.LENGTH_LONG).show();
+        values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
         values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
         values.put(DB_seller.DB_COLUMN_DATE, dateSQL);
         values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);

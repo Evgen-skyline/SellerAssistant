@@ -9,15 +9,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import evgenskyline.sellerassistant.asynktasks.OverallReportTask;
 
 public class ReportActivity extends AppCompatActivity {
     private Spinner mSpinnerMonths;
+    private Spinner yearSpinner;
     public static TextView mTV_Report;
     private RadioButton mRB_Overall;
     private RadioButton mRB_Each;
@@ -28,6 +33,8 @@ public class ReportActivity extends AppCompatActivity {
 
     private OverallReportTask reportTask;
 
+    private Calendar dateCalendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +44,17 @@ public class ReportActivity extends AppCompatActivity {
         String tmpUser = getIntent().getExtras().getString(MainActivity.KEY_INTENT_EXTRA_USER);
         seller = DayEdit.reverseName(tmpUser);//Имя юзера на латинице
         mSpinnerMonths = (Spinner)findViewById(R.id.spinnerInMonthReport);
+        yearSpinner = (Spinner)findViewById(R.id.ReportActivityYearSpinner);
         mTV_Report = (TextView)findViewById(R.id.textViewInMonthReport);
         mRB_Overall = (RadioButton)findViewById(R.id.radioButtonOverallInReport);
         mRB_Each = (RadioButton)findViewById(R.id.radioButtonEachInReport);
+        mRB_Overall.setOnCheckedChangeListener(checkedChangeListener);
+        mRB_Each.setOnCheckedChangeListener(checkedChangeListener);
+        dateCalendar = Calendar.getInstance();
 
         mSPreference = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //наполнение спинера
+        //наполнение спинера месяца
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, DayEdit.monthArr);
         mSpinnerMonths.setAdapter(arrayAdapter);
@@ -51,17 +62,40 @@ public class ReportActivity extends AppCompatActivity {
         if(mSPreference.contains(DayEdit.LAST_SELECTED_MONTH)){
             mSpinnerMonths.setSelection(arrayAdapter.getPosition(mSPreference.getString(DayEdit.LAST_SELECTED_MONTH, null)));
         }
+
+        //наполнение спинера года
+        ArrayList yearList = new ArrayList<Integer>();
+        Integer currentYear = dateCalendar.get(Calendar.YEAR);
+        for (int y = 2016; y <= currentYear; y++){
+            yearList.add(y);
+        }
+        //Toast.makeText(this, String.valueOf(currentYear), Toast.LENGTH_LONG).show();
+        ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
+                yearList);
+        yearSpinner.setAdapter(yearAdapter);
+        yearSpinner.setSelection(yearAdapter.getPosition(currentYear));
     }
 
-    public void clickToShowReport(View view) {
+    private void makeReportFromDB(){
         int flag = OverallReportTask.OVERALL_REPORT;
         if(mRB_Overall.isChecked()){
             flag = OverallReportTask.OVERALL_REPORT;
         }else if(mRB_Each.isChecked()){
             flag = OverallReportTask.EACH_POINT_REPORT;
         }
-        reportTask = new OverallReportTask(seller, mSpinnerMonths.getSelectedItem().toString(),
-                ReportActivity.this, flag);
+        String monthAndYear = mSpinnerMonths.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString();
+        reportTask = new OverallReportTask(seller, monthAndYear, ReportActivity.this, flag);
         reportTask.execute();
     }
+
+    public void clickToShowReport(View view) {
+        makeReportFromDB();
+    }
+
+    private RadioButton.OnCheckedChangeListener checkedChangeListener = new RadioButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            makeReportFromDB();
+        }
+    };
 }

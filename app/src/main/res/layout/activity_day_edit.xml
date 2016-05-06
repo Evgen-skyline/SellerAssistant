@@ -4,12 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Spinner
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mMonthSpinnerInDayEdit"
         android:layout_weight="0.083"
-        android:layout_gravity="center_horizontal"/>
+        android:orientation="horizontal">
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mMonthSpinnerInDayEdit"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.5"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/DayEditYearSpinner"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
+
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
