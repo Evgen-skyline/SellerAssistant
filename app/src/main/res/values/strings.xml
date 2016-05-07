@@ -24,6 +24,8 @@
     <string name="mFlash">Флешки</string>
     <string name="mFoto">Фото</string>
     <string name="Term">Терминал</string>
+    <string name="mSellerMenuDialogButtonNext">Продолжить</string>
+    <string name="mSellerMenuDialogButtonCancel">Отмена</string>
 
     <!-- Strings related to Settings -->
 

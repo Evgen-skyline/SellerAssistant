@@ -12,27 +12,27 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/mMonthSpinnerInDayEdit"
+            android:id="@+id/DayChangeMonthSpinner"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.5"/>
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/DayEditYearSpinner"
+            android:id="@+id/DayChangeYearSpinner"
             android:layout_weight="0.5"/>
     </LinearLayout>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinnerInDayEdit"
+        android:id="@+id/DayChangePointsSpinner"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.083"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:id="@+id/textViewDateInDayEdit"
+        android:id="@+id/DayChangeDateTextView"
         android:text="@string/mDate"
         android:layout_weight="0.083"
         android:gravity="bottom" />
@@ -47,54 +47,46 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="0.5">
-            <!--<EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editTextDateInDayEdit"
-                android:layout_weight="0.125"
-                android:hint="ДДММГГГГ"
-                android:inputType="date"
-                android:maxLength="8" />-->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextCardInDayEdit"
+                android:id="@+id/DayChangeCardEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextSTPInDayEdit"
+                android:id="@+id/DayChangeStpEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextPhoneInDayEdit"
+                android:id="@+id/DayChangePhoneEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextFlashInDayEdit"
+                android:id="@+id/DayChangeFlashEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextAccesoriesInDayEdit"
+                android:id="@+id/DayChangeAccesoriesEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextFotoInDayEdit"
+                android:id="@+id/DayChangeFotoEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextTerminalInDayEdit"
+                android:id="@+id/DayChangeTerminalEditText"
                 android:layout_weight="0.125"
                 android:inputType="numberDecimal" />
 
@@ -109,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewCardInDayEdit"
+                android:id="@+id/DayChangeCardTextView"
                 android:text="@string/mCard"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
@@ -117,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewSTPInDayEdit"
+                android:id="@+id/DayChangeStpTextView"
                 android:text="@string/mSTP"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
@@ -125,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewPhoneInDayEdit"
+                android:id="@+id/DayChangePhoneTextView"
                 android:text="@string/mPhone"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
@@ -133,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewFlashInDayEdit"
+                android:id="@+id/DayChangeFlashTextView"
                 android:text="@string/mFlash"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
@@ -141,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewAccesoriesInDayEdit"
+                android:id="@+id/DayChangeAccesoriesTextView"
                 android:text="@string/mAccesories"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
@@ -149,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewFotoInDayEdit"
+                android:id="@+id/DayChangeFotoTextView"
                 android:text="@string/mFoto"
                 android:layout_weight="0.125"
                 android:gravity="bottom"
@@ -158,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewTerminalInDayEdit"
+                android:id="@+id/DayChangeTerminalTextView"
                 android:text="@string/mTerminal"
                 android:layout_weight="0.125"
                 android:gravity="bottom" />
@@ -169,23 +161,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewSummInDayEdit"
+        android:id="@+id/DayChangeSummTextView"
         android:textSize="20sp"
         android:layout_weight="0.083"
         android:text="@string/mDayResult"
         android:gravity="center_vertical|center_horizontal" />
 
-    <!-- ДЛЯ ДЕБАГА, УДАЛИТЬ К РЕЛИЗУ -->
-    <!--<Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/mRandomizeButton"
-        android:text="рандомные значения"
-        android:onClick="mRandomizeForDebug"/>-->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonSaveInDayEdit"
+        android:id="@+id/DayChangeButtonSave"
         android:textSize="20sp"
         android:text="@string/mButtonSaveInDayEdit"
         android:layout_weight="0.083"

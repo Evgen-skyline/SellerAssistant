@@ -427,8 +427,9 @@ public class DayEdit extends AppCompatActivity {
     }
     //==============================================================================================
     /*
+    НЕ НАЖИМАТЬ!!!
     метод исключительно для дебага
-    надо придумать что-то с датой
+    ДЛЯ ИСПОЛЬЗОВАНИЯ НАДО ПОПРАВИТЬ ДАТУ
      */
     public void mRandomizeForDebug(View view) {
         Random random = new Random();

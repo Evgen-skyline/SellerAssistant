@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:foregroundGravity="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SellerMenuDialogTextView"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:gravity="center" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:foregroundGravity="center">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SellerMenuDialogButtonNext"
+            android:textSize="20sp"
+            android:text="@string/mSellerMenuDialogButtonNext"
+            android:layout_weight="0.5"
+            android:gravity="center" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SellerMenuDialogButtonCancel"
+            android:textSize="20sp"
+            android:text="@string/mSellerMenuDialogButtonCancel"
+            android:layout_weight="0.5"
+            android:gravity="center" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -35,5 +35,6 @@
         android:id="@+id/buttonDayEdit"
         android:textSize="20sp"
         android:text="@string/mButtonDayEdit"
-        android:layout_weight="0.2"/>
+        android:layout_weight="0.2"
+        android:onClick="sellerMenuClickDayChange"/>
 </LinearLayout>
