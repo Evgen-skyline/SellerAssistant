@@ -59,8 +59,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
             UnitFromDB unitFromDB = new UnitFromDB();
             unitFromDB.setNameOfTradePoint(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_TRADE_POINT)));
-            unitFromDB.setDateInMiliSec(Long.parseLong(mCursor.getString(
-                    mCursor.getColumnIndex(DB_seller.DB_COLUMN_DATE))));
+            unitFromDB.setDate(mCursor.getString(
+                    mCursor.getColumnIndex(DB_seller.DB_COLUMN_DATE)));
             unitFromDB.setMonth(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_MONTH)));
             unitFromDB.setCardSum(mCursor.getDouble(mCursor.getColumnIndex(
@@ -130,11 +130,10 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     }
     private String convertUnitFromDbToString(UnitFromDB unit){
 
-        String date = DateUtils.formatDateTime(context, unit.getDateInMiliSec(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+
         StringBuffer result = new StringBuffer();
         result.append(unit.getNameOfTradePoint() + "\n");
-        result.append("Дата: " + date + "\n");
+        result.append("Дата: " + unit.getDate() + "\n");
         result.append("Карточки: " + String.valueOf(unit.getCardSum()) + "\n");
         result.append("Ст.пакеты: " + String.valueOf(unit.getStpSum()) + "\n");
         result.append("Телефоны: " + String.valueOf(unit.getPhoneSum()) + "\n");

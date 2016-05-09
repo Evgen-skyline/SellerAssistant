@@ -127,8 +127,10 @@ public class SellerMenu extends AppCompatActivity {
         mButton_DialogNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String dateTmp = DateUtils.formatDateTime(dialog.getContext(), dateCalendar.getTimeInMillis(),
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
                 //проверка на существование даты!!!
-                if(ifDateExist(SellerMenu.this, DayEdit.reverseName(seller), dateCalendar.getTimeInMillis())) {
+                if(ifDateExist(SellerMenu.this, DayEdit.reverseName(seller), dateTmp)) {
                     Intent intent = new Intent(SellerMenu.this, DayChangeActivity.class);
                     intent.putExtra(dateForExtra, dateCalendar.getTimeInMillis());
                     intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
@@ -155,11 +157,11 @@ public class SellerMenu extends AppCompatActivity {
         }
     };
 
-    public static boolean ifDateExist(Context __context, String userTable, Long date){
+    public static boolean ifDateExist(Context __context, String userTable, String date){
         DB_seller db_seller = new DB_seller(__context, userTable);    //БД с таблицей юзера(userName)
         SQLiteDatabase sl_db = db_seller.getReadableDatabase();
         String query;
-        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = " + String.valueOf(date);
+        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = \'" + date+"\'";
         Cursor cursor = sl_db.rawQuery(query, null);
         if(cursor.getCount() <= 0){
             cursor.close();

@@ -6,7 +6,7 @@ package evgenskyline.sellerassistant.dbwork;
 public class UnitFromDB {
     private String nameOfTradePoint;
     private String month;
-    private long dateInMiliSec;
+    private String date;
     private double cardSum;
     private double stpSum;
     private double phoneSum;
@@ -41,16 +41,10 @@ public class UnitFromDB {
         this.nameOfTradePoint = nameOfTradePoint;
     }
 
-    public long getDateInMiliSec() {
-        return dateInMiliSec;
+    public String getDate() {
+        return date;
     }
-
-    public void setDateInMiliSec(long dateInMiliSec) {
-        this.dateInMiliSec = dateInMiliSec;
-    }
-    /*public void setDateInMiliSec(String dateInMiliSec){
-        this.dateInMiliSec = Long.parseLong(dateInMiliSec);
-    }*/
+    public void setDate(String date){this.date = date;}
 
     public double getCardSum() {
         return cardSum;

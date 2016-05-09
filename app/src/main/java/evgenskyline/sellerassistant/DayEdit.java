@@ -392,10 +392,13 @@ public class DayEdit extends AppCompatActivity {
 
         //суём в базу суммы продаж
         String monthForDB = monthSpinner.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString();
-        Toast.makeText(this, monthForDB, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, monthForDB, Toast.LENGTH_LONG).show();
         values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
         values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
-        values.put(DB_seller.DB_COLUMN_DATE, dateSQL);
+
+        values.put(DB_seller.DB_COLUMN_DATE, DateUtils.formatDateTime(this, dateCalendar.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));//дата
+
         values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
         values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
         values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
