@@ -2,7 +2,10 @@ package evgenskyline.sellerassistant;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -12,8 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
+
+import evgenskyline.sellerassistant.dbwork.DB_seller;
 
 public class SellerMenu extends AppCompatActivity {
 
@@ -23,6 +29,8 @@ public class SellerMenu extends AppCompatActivity {
     private Calendar dateCalendar;
     private String dateStr;
     Dialog dialog;
+
+    public static final String dateForExtra = "dateForExtra";
 
     //private Button mButtonAddDayResult;
 
@@ -34,6 +42,11 @@ public class SellerMenu extends AppCompatActivity {
         seller = getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER);
         mTextViewSeller.setText(seller);
         dateCalendar = Calendar.getInstance();
+
+       /* String query;
+        query = "Select * from " + DayEdit.reverseName(seller) + " where " + DB_seller.DB_COLUMN_DATE
+                + " = " + String.valueOf(System.currentTimeMillis());
+        mTextViewSeller.setText(query);*/
     }
 
     /*
@@ -114,10 +127,18 @@ public class SellerMenu extends AppCompatActivity {
         mButton_DialogNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //МЕСТО ПОД НОВЫЙ INTENT
-                //Добавить проверку на существование даты!!!
-                Intent intent = new Intent(SellerMenu.this, DayChangeActivity.class);
-                startActivity(intent);
+                //проверка на существование даты!!!
+                if(ifDateExist(SellerMenu.this, DayEdit.reverseName(seller), dateCalendar.getTimeInMillis())) {
+                    Intent intent = new Intent(SellerMenu.this, DayChangeActivity.class);
+                    intent.putExtra(dateForExtra, dateCalendar.getTimeInMillis());
+                    intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(SellerMenu.this, "В базе нет такой даты"
+                            + String.valueOf(dateCalendar.getTimeInMillis()), Toast.LENGTH_LONG).show();
+                }
+
+                dialog.dismiss();
             }
         });
     }
@@ -133,5 +154,24 @@ public class SellerMenu extends AppCompatActivity {
             mTV_dialogDate.setText("\n" + dateStr + "\n");//при вводе даты, сразу записываем это в TextView
         }
     };
+
+    public static boolean ifDateExist(Context __context, String userTable, Long date){
+        DB_seller db_seller = new DB_seller(__context, userTable);    //БД с таблицей юзера(userName)
+        SQLiteDatabase sl_db = db_seller.getReadableDatabase();
+        String query;
+        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = " + String.valueOf(date);
+        Cursor cursor = sl_db.rawQuery(query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            sl_db.close();
+            db_seller.close();
+            return false;
+        }else {
+            cursor.close();
+            sl_db.close();
+            db_seller.close();
+            return true;
+        }
+    }
 
 }

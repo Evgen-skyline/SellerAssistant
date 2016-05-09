@@ -1,10 +1,13 @@
 package evgenskyline.sellerassistant.dbwork;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import evgenskyline.sellerassistant.DayEdit;
 
 /**
  * Created by evgen on 12.04.2016.
@@ -110,6 +113,28 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
         db.execSQL("DROP TABLE IF IT EXISTS " + DB_TABLE_NAME);
         //db.execSQL("DROP TABLE IF IT EXISTS " + DB_SETTINGS_TABLE_NAME);
         onCreate(db);
+    }
+
+    /*
+    Проверка на существование даты!!!
+     */
+    public static boolean ifDateExist(Context __context, String userTable, Long date){
+        DB_seller db_seller = new DB_seller(__context, userTable);    //БД с таблицей юзера(userName)
+        SQLiteDatabase sl_db = db_seller.getReadableDatabase();
+        String query;
+        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = " + String.valueOf(date);
+        Cursor cursor = sl_db.rawQuery(query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            sl_db.close();
+            db_seller.close();
+            return false;
+        }else {
+            cursor.close();
+            sl_db.close();
+            db_seller.close();
+            return true;
+        }
     }
 
 }

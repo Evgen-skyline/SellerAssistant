@@ -145,6 +145,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         result.append("Касса: " + String.valueOf(unit.cashSumWithTerminal()) + "\n");
         result.append("З/П за день(без терминала): " + String.valueOf(unit.sumZpWithoutTerminal()) + "\n");
         result.append("З/П за терминал: " + String.valueOf(unit.getTermZP())+"\n\n\n");
+        result.append("Всего: " + String.valueOf(unit.sumZpWithTerminal()));
         return result.toString();
     }
 

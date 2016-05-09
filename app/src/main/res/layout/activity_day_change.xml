@@ -35,7 +35,8 @@
         android:id="@+id/DayChangeDateTextView"
         android:text="@string/mDate"
         android:layout_weight="0.083"
-        android:gravity="bottom" />
+        android:gravity="bottom"
+        android:onClick="clickOnDateTextView"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -174,5 +175,5 @@
         android:textSize="20sp"
         android:text="@string/mButtonSaveInDayEdit"
         android:layout_weight="0.083"
-        android:onClick="clickOnSaveButtonInDayEdit"/>
+        android:onClick="clickOnSaveButtonInDayChange"/>
 </LinearLayout>

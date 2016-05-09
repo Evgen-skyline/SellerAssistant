@@ -48,7 +48,7 @@ public class DayEdit extends AppCompatActivity {
     private EditText mET_foto;
     private EditText mET_terminal;
     private TextView mTV_date;
-    private Button saveButton;
+    //private Button saveButton;
 
     //для даты
     Calendar dateCalendar;
@@ -61,13 +61,13 @@ public class DayEdit extends AppCompatActivity {
     private SQLiteDatabase sl_db;
 
     private SharedPreferences mSPreferences;
-    private Set<String> tradePoints = new HashSet<String>();
+    private Set tradePoints = new HashSet<String>();
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> arrayList;
     //private ArrayList<String> months = new ArrayList<String>();
-    public static String[] monthArr = new String[]{"Январь", "Февраль", "Март", "Апрель",
+    public static final String[] monthArr = new String[]{"Январь", "Февраль", "Март", "Апрель",
     "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
-    private static final String LAST_SELECTED_TP_IN_SPINNER = "lastSelectedItemInSpinner";
+    public static final String LAST_SELECTED_TP_IN_SPINNER = "lastSelectedItemInSpinner";
     public static final String LAST_SELECTED_MONTH = "lastSelectedMonth";
 
     //% по позициям
@@ -113,7 +113,7 @@ public class DayEdit extends AppCompatActivity {
         mET_terminal.addTextChangedListener(textWatcher);
         //mET_date = (EditText)findViewById(R.id.editTextDateInDayEdit);
         mTV_date = (TextView) findViewById(R.id.textViewDateInDayEdit);
-        saveButton = (Button)findViewById(R.id.buttonSaveInDayEdit);
+        //saveButton = (Button)findViewById(R.id.buttonSaveInDayEdit);
         spinnerInDayEdit = (Spinner)findViewById(R.id.spinnerInDayEdit);
         monthSpinner = (Spinner)findViewById(R.id.mMonthSpinnerInDayEdit);
         yearSpinner = (Spinner)findViewById(R.id.DayEditYearSpinner);
@@ -154,7 +154,6 @@ public class DayEdit extends AppCompatActivity {
         for (int y = 2016; y <= currentYear; y++){
             yearList.add(y);
         }
-        //Toast.makeText(this, String.valueOf(currentYear), Toast.LENGTH_LONG).show();
         ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
                 yearList);
         yearSpinner.setAdapter(yearAdapter);
