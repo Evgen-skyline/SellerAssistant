@@ -28,6 +28,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
 
     public static final int OVERALL_REPORT = 1;
     public static final int EACH_POINT_REPORT = 2;
+    public static final int ONE_DAY_BY_DATE = 3;
 
     private int typeOfReport;
 
@@ -59,7 +60,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
             UnitFromDB unitFromDB = new UnitFromDB();
             unitFromDB.setNameOfTradePoint(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_TRADE_POINT)));
-            unitFromDB.setDate(mCursor.getString(
+            unitFromDB.setDate(mCursor.getLong(
                     mCursor.getColumnIndex(DB_seller.DB_COLUMN_DATE)));
             unitFromDB.setMonth(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_MONTH)));
@@ -129,11 +130,12 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         }
     }
     private String convertUnitFromDbToString(UnitFromDB unit){
-
+        String dateStr = DateUtils.formatDateTime(context, unit.getDate(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
 
         StringBuffer result = new StringBuffer();
         result.append(unit.getNameOfTradePoint() + "\n");
-        result.append("Дата: " + unit.getDate() + "\n");
+        result.append("Дата: " + dateStr + "\n");
         result.append("Карточки: " + String.valueOf(unit.getCardSum()) + "\n");
         result.append("Ст.пакеты: " + String.valueOf(unit.getStpSum()) + "\n");
         result.append("Телефоны: " + String.valueOf(unit.getPhoneSum()) + "\n");
@@ -143,8 +145,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         result.append("Терминал: " + String.valueOf(unit.getTermSum()) + "\n");
         result.append("Касса: " + String.valueOf(unit.cashSumWithTerminal()) + "\n");
         result.append("З/П за день(без терминала): " + String.valueOf(unit.sumZpWithoutTerminal()) + "\n");
-        result.append("З/П за терминал: " + String.valueOf(unit.getTermZP())+"\n\n\n");
-        result.append("Всего: " + String.valueOf(unit.sumZpWithTerminal()));
+        result.append("З/П за терминал: " + String.valueOf(unit.getTermZP())+"\n");
+        result.append("Всего: " +  String.valueOf(unit.sumZpWithTerminal()) + "\n\n\n");
         return result.toString();
     }
 

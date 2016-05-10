@@ -6,22 +6,22 @@ package evgenskyline.sellerassistant.dbwork;
 public class UnitFromDB {
     private String nameOfTradePoint;
     private String month;
-    private String date;
-    private double cardSum;
-    private double stpSum;
-    private double phoneSum;
-    private double flashSum;
-    private double accesSum;
-    private double fotoSum;
-    private double termSum;
+    private Long date=0L;
+    private double cardSum=0;
+    private double stpSum=0;
+    private double phoneSum=0;
+    private double flashSum=0;
+    private double accesSum=0;
+    private double fotoSum=0;
+    private double termSum=0;
 
-    private double cardZP;
-    private double stpZP;
-    private double phoneZP;
-    private double flashZP;
-    private double accesZP;
-    private double fotoZP;
-    private double termZP;
+    private double cardZP = 0;
+    private double stpZP=0;
+    private double phoneZP=0;
+    private double flashZP=0;
+    private double accesZP=0;
+    private double fotoZP=0;
+    private double termZP=0;
 
     public UnitFromDB(){}
 
@@ -41,10 +41,10 @@ public class UnitFromDB {
         this.nameOfTradePoint = nameOfTradePoint;
     }
 
-    public String getDate() {
+    public Long getDate() {
         return date;
     }
-    public void setDate(String date){this.date = date;}
+    public void setDate(Long date){this.date = date;}
 
     public double getCardSum() {
         return cardSum;

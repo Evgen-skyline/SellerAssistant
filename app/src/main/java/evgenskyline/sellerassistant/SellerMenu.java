@@ -30,7 +30,7 @@ public class SellerMenu extends AppCompatActivity {
     private String dateStr;
     Dialog dialog;
 
-    public static final String dateForExtra = "dateForExtra";
+    public static final String DATE_FOR_EXTRA = "dateForExtra";
 
     //private Button mButtonAddDayResult;
 
@@ -127,12 +127,10 @@ public class SellerMenu extends AppCompatActivity {
         mButton_DialogNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dateTmp = DateUtils.formatDateTime(dialog.getContext(), dateCalendar.getTimeInMillis(),
-                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
                 //проверка на существование даты!!!
-                if(ifDateExist(SellerMenu.this, DayEdit.reverseName(seller), dateTmp)) {
+                if(DB_seller.ifDateExist(SellerMenu.this, DayEdit.reverseName(seller), dateCalendar.getTimeInMillis())) {
                     Intent intent = new Intent(SellerMenu.this, DayChangeActivity.class);
-                    intent.putExtra(dateForExtra, dateCalendar.getTimeInMillis());
+                    intent.putExtra(DATE_FOR_EXTRA, dateCalendar.getTimeInMillis());
                     intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
                     startActivity(intent);
                 }else {
@@ -151,17 +149,21 @@ public class SellerMenu extends AppCompatActivity {
             dateCalendar.set(Calendar.YEAR, year);
             dateCalendar.set(Calendar.MONTH, monthOfYear);
             dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateCalendar.set(Calendar.HOUR, 8);
+            dateCalendar.set(Calendar.MINUTE, 1);
+            dateCalendar.set(Calendar.SECOND, 1);
+            dateCalendar.set(Calendar.MILLISECOND, 1);
             dateStr = DateUtils.formatDateTime(dialog.getContext(), dateCalendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
             mTV_dialogDate.setText("\n" + dateStr + "\n");//при вводе даты, сразу записываем это в TextView
         }
     };
 
-    public static boolean ifDateExist(Context __context, String userTable, String date){
+   /* public static boolean ifDateExist(Context __context, String userTable, Long date){
         DB_seller db_seller = new DB_seller(__context, userTable);    //БД с таблицей юзера(userName)
         SQLiteDatabase sl_db = db_seller.getReadableDatabase();
         String query;
-        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = \'" + date+"\'";
+        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = " + String.valueOf(date);
         Cursor cursor = sl_db.rawQuery(query, null);
         if(cursor.getCount() <= 0){
             cursor.close();
@@ -174,6 +176,6 @@ public class SellerMenu extends AppCompatActivity {
             db_seller.close();
             return true;
         }
-    }
+    }*/
 
 }

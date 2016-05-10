@@ -1,10 +1,13 @@
 package evgenskyline.sellerassistant;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import evgenskyline.sellerassistant.dbwork.DB_seller;
+import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 public class DayChangeActivity extends AppCompatActivity {
     //UI
@@ -67,6 +71,8 @@ public class DayChangeActivity extends AppCompatActivity {
     private Set tradePoints = new HashSet<String>();
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> arrayList;
+    private ArrayAdapter<String> monthAdapter;
+    ArrayAdapter<Integer> yearAdapter;
 
     Calendar dateCalendar;
     String dateStr;
@@ -104,7 +110,7 @@ public class DayChangeActivity extends AppCompatActivity {
         spinnerYear = (Spinner)findViewById(R.id.DayChangeYearSpinner);
 
         dateCalendar = Calendar.getInstance();
-        dateCalendar.setTimeInMillis(getIntent().getLongExtra(SellerMenu.dateForExtra, System.currentTimeMillis()));
+        dateCalendar.setTimeInMillis(getIntent().getLongExtra(SellerMenu.DATE_FOR_EXTRA, System.currentTimeMillis()));
         mTV_date.setText(DateUtils.formatDateTime(DayChangeActivity.this,
                 dateCalendar.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
 
@@ -118,25 +124,11 @@ public class DayChangeActivity extends AppCompatActivity {
         arrayList = new ArrayList<String>(tradePoints);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
         spinnerTradePoint.setAdapter(arrayAdapter);
-        //установка последней выбраной точки
-        if(mSPreferences.contains(DayEdit.LAST_SELECTED_TP_IN_SPINNER)) {
-            String lastSelected = mSPreferences.getString(DayEdit.LAST_SELECTED_TP_IN_SPINNER, null);
-            if(lastSelected != null) {
-                spinnerTradePoint.setSelection(arrayAdapter.getPosition(lastSelected));//значение по умолчанию
-            }
-        }
 
         //наполнение спинера месяцев
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(this,
-                R.layout.support_simple_spinner_dropdown_item, DayEdit.monthArr);
+        monthAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,
+                DayEdit.monthArr);
         spinnerMonth.setAdapter(monthAdapter);
-        //установка последнего выбраного месяца
-        if(mSPreferences.contains(DayEdit.LAST_SELECTED_MONTH)){
-            String lstSlctd = mSPreferences.getString(DayEdit.LAST_SELECTED_MONTH, null);
-            if(lstSlctd != null){
-                spinnerMonth.setSelection(monthAdapter.getPosition(lstSlctd));
-            }
-        }
 
         //наполнение спинера года
         ArrayList yearList = new ArrayList<Integer>();
@@ -145,7 +137,7 @@ public class DayChangeActivity extends AppCompatActivity {
         for (int y = 2016; y <= currentYear; y++){
             yearList.add(y);
         }
-        ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
+        yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
                 yearList);
         spinnerYear.setAdapter(yearAdapter);
         spinnerYear.setSelection(yearAdapter.getPosition(currentYear));
@@ -163,8 +155,57 @@ public class DayChangeActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        mSetDataFromDbToEditText();
     }
+    //==============================================================================================
+     /*
+     установка значений из базы в эдит-поля
+     */
+    private void mSetDataFromDbToEditText(){
+        DB_seller db_seller = new DB_seller(this, userName);    //БД с таблицей юзера(userName)
+        SQLiteDatabase sl_db = db_seller.getReadableDatabase();
+        String query;
+        query = "Select * from " + userName + " where " + DB_seller.DB_COLUMN_DATE + " = "
+                + String.valueOf(dateCalendar.getTimeInMillis());
+        Cursor mCursor = sl_db.rawQuery(query, null);
+        mCursor.moveToFirst();
+        spinnerTradePoint.setSelection(arrayAdapter.getPosition(mCursor.getString(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_TRADE_POINT))));
 
+        //в БД месяц записан в формате "март2016", т.е. месяц+год
+        String monthFromDB = mCursor.getString(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_MONTH));
+        StringBuilder yearBuilder = new StringBuilder();
+        StringBuilder monthBuilder = new StringBuilder();
+        int i = monthFromDB.indexOf("2");
+        yearBuilder.append(monthFromDB.substring(i));
+        monthBuilder.append(monthFromDB.substring(0,i));
+        int year = Integer.parseInt(yearBuilder.toString());
+        monthFromDB = monthBuilder.toString();
+        spinnerMonth.setSelection(monthAdapter.getPosition(monthFromDB));
+        spinnerYear.setSelection(yearAdapter.getPosition(year));
+
+        //Toast.makeText(this, monthFromDB, Toast.LENGTH_LONG).show();
+        mET_card.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_CARD))));
+        mET_stp.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_STP))));
+        mET_phone.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_PHONE))));
+        mET_flash.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_FLASH))));
+        mET_accesories.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_ACCESORIES))));
+        mET_foto.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_FOTO))));
+        mET_terminal.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
+                DB_seller.DB_COLUMN_SALES_TERM))));
+
+        mCursor.close();
+        sl_db.close();
+        db_seller.close();
+    }
+    //==============================================================================================
     /*
     обработка клика по дате
      */
@@ -175,7 +216,10 @@ public class DayChangeActivity extends AppCompatActivity {
                 dateCalendar.get(Calendar.DAY_OF_MONTH));
         dpd.show();
     }
-    //Listener для DatePickerDialog
+    //==============================================================================================
+    /*
+    Listener для DatePickerDialog
+     */
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -189,14 +233,14 @@ public class DayChangeActivity extends AppCompatActivity {
             dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
         }
     };
-
-
+    //==============================================================================================
     @Override
     protected void onResume() {
         super.onResume();
         mInicializationPercents();
         mRunTimeCount();
     }
+    //==============================================================================================
     /*
     прикручиваем меню
      */
@@ -205,7 +249,7 @@ public class DayChangeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
+    //==============================================================================================
     /*
     обработка выбора в контекстном меню
      */
@@ -224,14 +268,51 @@ public class DayChangeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    //==============================================================================================
     /*
     кнопка "Сохранить"
      */
     public void clickOnSaveButtonInDayChange(View view) {
+         /*
+        запрос на подтверждение сохранения
+         */
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Вы всё правильно ввели?");
+        alertDialogBuilder.setMessage("Сохранить данные?");
+        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mSaveDataInDB();
+                SharedPreferences.Editor editor = mSPreferences.edit();
+                editor.putString(DayEdit.LAST_SELECTED_TP_IN_SPINNER, spinnerTradePoint.getSelectedItem().toString());
+                editor.putString(DayEdit.LAST_SELECTED_MONTH, spinnerMonth.getSelectedItem().toString());
+                editor.apply();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                return;
+            }
+        });
+        alertDialogBuilder.show();
+    }
+    //==============================================================================================
+    /*
+    непосредственное сохранение в базу
+     */
+    private void mSaveDataInDB(){
 
     }
 
+    //==============================================================================================
     /*
     для подсчёта з/п за день рантайм,
     срабатывает после каждого изменения в любом EditText
@@ -248,7 +329,7 @@ public class DayChangeActivity extends AppCompatActivity {
             mRunTimeCount();
         }
     };
-
+    //==============================================================================================
     /*
     подсчёт суммы за день рантайм
      */
@@ -286,7 +367,7 @@ public class DayChangeActivity extends AppCompatActivity {
             mTVsum.setText("ERROR in runtime count");
         }
     }
-
+    //==============================================================================================
     /*
     считывание % из настроек
      */

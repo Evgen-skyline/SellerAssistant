@@ -193,11 +193,16 @@ public class DayEdit extends AppCompatActivity {
             dateCalendar.set(Calendar.YEAR, year);
             dateCalendar.set(Calendar.MONTH, monthOfYear);
             dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateCalendar.set(Calendar.HOUR, 8);
+            dateCalendar.set(Calendar.MINUTE, 1);
+            dateCalendar.set(Calendar.SECOND, 1);
+            dateCalendar.set(Calendar.MILLISECOND, 1);
             dateStr = DateUtils.formatDateTime(DayEdit.this,
                     dateCalendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
             mTV_date.setText(dateStr);
             dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
+            Toast.makeText(DayEdit.this, dateSQL, Toast.LENGTH_LONG).show();
         }
     };
     //==============================================================================================
@@ -284,7 +289,10 @@ public class DayEdit extends AppCompatActivity {
         mRunTimeCount();
     }
     //==============================================================================================
-    public static String reverseName(String srcName){//перевод кирилицы в латинские
+    /*
+    перевод кирилицы в латинские
+     */
+    public static String reverseName(String srcName){
         String result = "";
         String alpha = new String("абвгдеёжзиыйклмнопрстуфхцчшщьэюя");
         String[] _alpha = {"a","b","v","g","d","e","yo","g","z","i","y","i",
@@ -396,8 +404,7 @@ public class DayEdit extends AppCompatActivity {
         values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
         values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
 
-        values.put(DB_seller.DB_COLUMN_DATE, DateUtils.formatDateTime(this, dateCalendar.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));//дата
+        values.put(DB_seller.DB_COLUMN_DATE, dateCalendar.getTimeInMillis());//дата
 
         values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
         values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
