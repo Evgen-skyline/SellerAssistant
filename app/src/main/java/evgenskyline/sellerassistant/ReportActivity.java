@@ -21,11 +21,13 @@ import java.util.Calendar;
 import evgenskyline.sellerassistant.asynktasks.OverallReportTask;
 
 public class ReportActivity extends AppCompatActivity {
-    private Spinner mSpinnerMonths;
-    private Spinner yearSpinner;
+    public static Spinner mSpinnerMonths;
+    public static Spinner yearSpinner;
     public static TextView mTV_Report;
     private RadioButton mRB_Overall;
     private RadioButton mRB_Each;
+
+    public static ArrayAdapter<String> arrayAdapter;
 
     private SharedPreferences mSPreference;
 
@@ -55,7 +57,7 @@ public class ReportActivity extends AppCompatActivity {
         mSPreference = PreferenceManager.getDefaultSharedPreferences(this);
 
         //наполнение спинера месяца
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+        arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, DayEdit.monthArr);
         mSpinnerMonths.setAdapter(arrayAdapter);
         //установка последнего выбраного месяца

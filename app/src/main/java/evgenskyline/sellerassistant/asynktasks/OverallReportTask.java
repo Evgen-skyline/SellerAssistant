@@ -25,6 +25,9 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     private DB_seller db_seller;
     private SQLiteDatabase sl_db;
     private ArrayList<UnitFromDB> tableFromDB;
+    private long startDate;//начало и конец месяца для посчёта терминала
+    private long endDate;
+    private double termSum = 0.0;
 
     public static final int OVERALL_REPORT = 1;
     public static final int EACH_POINT_REPORT = 2;
@@ -45,7 +48,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
+        getDateRangeForTerminal();
     }
 
     @Override
@@ -97,6 +100,18 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
             tableFromDB.add(unitFromDB);
             mCursor.moveToNext();
         }
+        //SELECT name, city FROM tbl_info WHERE age < 15 AND city="Москва";
+        //"select * from "+user+" where "+DB_seller.DB_COLUMN_MONTH+" = " + "\"" +month+ "\""
+        Cursor cursorTerm = sl_db.rawQuery("SELECT * FROM " + user
+                + " WHERE " + DB_seller.DB_COLUMN_DATE + " > " + String.valueOf(startDate)
+                + " AND " + DB_seller.DB_COLUMN_DATE + " < " + String.valueOf(endDate), null);
+        cursorTerm.moveToFirst();
+        while (cursorTerm.isAfterLast() == false){
+            termSum += cursorTerm.getDouble(cursorTerm.getColumnIndex(DB_seller.DB_COLUMN_SALES_TERM_R));
+            cursorTerm.moveToNext();
+        }
+        mCursor.close();
+        cursorTerm.close();
         sl_db.close();
         db_seller.close();
         return tableFromDB;
@@ -110,10 +125,13 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
         super.onPostExecute(dbTable);
+        /*String test = "SELECT * FROM " + user
+                + " WHERE " + DB_seller.DB_COLUMN_DATE + " > " + String.valueOf(startDate)
+                + " AND " + DB_seller.DB_COLUMN_DATE + " < " + String.valueOf(endDate);*/
         switch (typeOfReport){
             case OVERALL_REPORT:
                 String report = stringForOveralReport(dbTable);
-                ReportActivity.mTV_Report.setText(report);
+                ReportActivity.mTV_Report.setText(/*test + "\n" + */report);
                 break;
             case EACH_POINT_REPORT:
                 try {
@@ -195,7 +213,36 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         strBuilder.append("Аксессуаров на: " + String.valueOf(accesResult) + "\n");
         strBuilder.append("Фото на: " + String.valueOf(fotoResult) + "\n");
         strBuilder.append("Терминал: " + String.valueOf(termResult) + "\n");
+        strBuilder.append("Терминал за " + ReportActivity.mSpinnerMonths.getSelectedItem().toString()
+                    + ": " + String.valueOf(termSum));
 
         return strBuilder.toString();
+    }
+
+    private void getDateRangeForTerminal(){
+        Calendar monthBegin = Calendar.getInstance();
+        Calendar monthEnd = Calendar.getInstance();
+
+        int selectedYear = Integer.parseInt(ReportActivity.yearSpinner.getSelectedItem().toString());
+        int selectedMonth = ReportActivity.arrayAdapter.getPosition(
+                ReportActivity.mSpinnerMonths.getSelectedItem().toString());
+        monthBegin.set(Calendar.YEAR, selectedYear);
+        monthBegin.set(Calendar.MONTH, selectedMonth);
+        monthBegin.set(Calendar.DAY_OF_MONTH, 1);
+        monthBegin.set(Calendar.HOUR, 8);
+        monthBegin.set(Calendar.MINUTE, 1);
+        monthBegin.set(Calendar.SECOND, 1);
+        monthBegin.set(Calendar.MILLISECOND, 0);
+
+        monthEnd.set(Calendar.YEAR, selectedYear);
+        monthEnd.set(Calendar.MONTH, selectedMonth +1);
+        monthEnd.set(Calendar.DAY_OF_MONTH, 1);
+        monthEnd.set(Calendar.HOUR, 8);
+        monthEnd.set(Calendar.MINUTE, 1);
+        monthEnd.set(Calendar.SECOND, 1);
+        monthEnd.set(Calendar.MILLISECOND, -10);
+
+        startDate = monthBegin.getTimeInMillis();
+        endDate = monthEnd.getTimeInMillis();
     }
 }
