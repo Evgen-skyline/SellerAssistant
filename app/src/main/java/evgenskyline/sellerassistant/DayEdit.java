@@ -422,8 +422,9 @@ public class DayEdit extends AppCompatActivity {
         values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES_R, acces_D * (accesPercent/100));
         values.put(DB_seller.DB_COLUMN_SALES_FOTO_R, foto_D * (fotoPercent/100));
         values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));
+        Long returnedResult =0L;
         try {
-            sl_db.insert(userName, null, values);
+            returnedResult = sl_db.insert(userName, null, values);
             values.clear();
             sl_db.close();
             db_seller.close();
@@ -432,6 +433,12 @@ public class DayEdit extends AppCompatActivity {
             db_seller.close();
             Toast.makeText(this, "Ошибка добавления в базу" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();
+        }
+        if(returnedResult > 0){
+            Toast.makeText(this, "Сохранено", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "Такая дата уже существует, НЕ СОХРАНЕНО" + "\n"
+                    + "Попробуйте другую дату", Toast.LENGTH_LONG).show();
         }
     }
     //==============================================================================================

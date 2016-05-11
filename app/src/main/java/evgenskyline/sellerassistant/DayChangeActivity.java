@@ -1,12 +1,14 @@
 package evgenskyline.sellerassistant;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.provider.BaseColumns;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,6 +84,7 @@ public class DayChangeActivity extends AppCompatActivity {
     private String userName;
     private DB_seller db_seller;    //БД с таблицей юзера(userName)
     private SQLiteDatabase sl_db;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +204,8 @@ public class DayChangeActivity extends AppCompatActivity {
         mET_terminal.setText(String.valueOf(mCursor.getDouble(mCursor.getColumnIndex(
                 DB_seller.DB_COLUMN_SALES_TERM))));
 
+        id = String.valueOf(mCursor.getString(mCursor.getColumnIndex(BaseColumns._ID)));
+
         mCursor.close();
         sl_db.close();
         db_seller.close();
@@ -226,6 +231,10 @@ public class DayChangeActivity extends AppCompatActivity {
             dateCalendar.set(Calendar.YEAR, year);
             dateCalendar.set(Calendar.MONTH, monthOfYear);
             dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateCalendar.set(Calendar.HOUR, 8);
+            dateCalendar.set(Calendar.MINUTE, 1);
+            dateCalendar.set(Calendar.SECOND, 1);
+            dateCalendar.set(Calendar.MILLISECOND, 1);
             dateStr = DateUtils.formatDateTime(DayChangeActivity.this,
                     dateCalendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
@@ -283,10 +292,6 @@ public class DayChangeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mSaveDataInDB();
-                SharedPreferences.Editor editor = mSPreferences.edit();
-                editor.putString(DayEdit.LAST_SELECTED_TP_IN_SPINNER, spinnerTradePoint.getSelectedItem().toString());
-                editor.putString(DayEdit.LAST_SELECTED_MONTH, spinnerMonth.getSelectedItem().toString());
-                editor.apply();
             }
         });
         alertDialogBuilder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
@@ -309,7 +314,73 @@ public class DayChangeActivity extends AppCompatActivity {
     непосредственное сохранение в базу
      */
     private void mSaveDataInDB(){
+        db_seller = new DB_seller(this, userName);
+        sl_db = db_seller.getReadableDatabase();
+        sl_db.execSQL(DB_seller.CREATE_USER_TABLE);//create table for current user, if not exist
 
+        String cardTMP = mET_card.getText().toString();
+        String stpTMP = mET_stp.getText().toString();
+        String phoneTMP = mET_phone.getText().toString();
+        String flashTMP = mET_flash.getText().toString();
+        String accesTMP = mET_accesories.getText().toString();
+        String fotoTMP = mET_foto.getText().toString();
+        String termTMP = mET_terminal.getText().toString();
+
+        card_D = cardTMP.equals("") ? 0 : Double.parseDouble(cardTMP);
+        stp_D = stpTMP.equals("") ? 0 : Double.parseDouble(stpTMP);
+        phone_D = phoneTMP.equals("") ? 0 : Double.parseDouble(phoneTMP);
+        flash_D = flashTMP.equals("") ? 0 : Double.parseDouble(flashTMP);
+        acces_D = accesTMP.equals("") ? 0 : Double.parseDouble(accesTMP);
+        foto_D = fotoTMP.equals("") ? 0 : Double.parseDouble(fotoTMP);
+        term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
+
+        ContentValues values = new ContentValues();
+
+        //суём в базу суммы продаж
+        String monthForDB = spinnerMonth.getSelectedItem().toString() + spinnerYear.getSelectedItem().toString();
+        //Toast.makeText(this, monthForDB, Toast.LENGTH_LONG).show();
+        values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
+        values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
+
+        values.put(DB_seller.DB_COLUMN_DATE, dateCalendar.getTimeInMillis());//дата
+
+        values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
+        values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
+        values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
+        values.put(DB_seller.DB_COLUMN_SALES_FLASH, flash_D);
+        values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES, acces_D);
+        values.put(DB_seller.DB_COLUMN_SALES_FOTO, foto_D);
+        values.put(DB_seller.DB_COLUMN_SALES_TERM, term_D);
+
+        //кладём в базу з/п от этих сумм
+        values.put(DB_seller.DB_COLUMN_SALES_CARD_R, card_D * (cardPercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_STP_R, stp_D * (stpPercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_PHONE_R, phone_D * (phonePercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_FLASH_R, flash_D * (flashPercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES_R, acces_D * (accesPercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_FOTO_R, foto_D * (fotoPercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));
+        int returnedResult =0;
+        try {
+            String where = BaseColumns._ID + " = " + id;
+            returnedResult = sl_db.update(userName, values, where, null);
+            values.clear();
+            sl_db.close();
+            db_seller.close();
+
+        }catch (Exception e){
+            values.clear();
+            sl_db.close();
+            db_seller.close();
+            Toast.makeText(this, "Какая-то ошибка при добавлении в базу" + "\n"
+                    + e.toString(), Toast.LENGTH_LONG).show();
+        }
+        if(returnedResult > 0){
+            Toast.makeText(this, "Сохранено", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "Такая дата уже существует, НЕ СОХРАНЕНО" + "\n"
+                    + "Попробуйте другую дату", Toast.LENGTH_LONG).show();
+        }
     }
 
     //==============================================================================================

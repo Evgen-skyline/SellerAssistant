@@ -32,8 +32,6 @@ public class SellerMenu extends AppCompatActivity {
 
     public static final String DATE_FOR_EXTRA = "dateForExtra";
 
-    //private Button mButtonAddDayResult;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +39,6 @@ public class SellerMenu extends AppCompatActivity {
         mTextViewSeller = (TextView)findViewById(R.id.textViewOnSellerMenu);
         seller = getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER);
         mTextViewSeller.setText(seller);
-        dateCalendar = Calendar.getInstance();
-
-       /* String query;
-        query = "Select * from " + DayEdit.reverseName(seller) + " where " + DB_seller.DB_COLUMN_DATE
-                + " = " + String.valueOf(System.currentTimeMillis());
-        mTextViewSeller.setText(query);*/
     }
 
     /*
@@ -58,12 +50,18 @@ public class SellerMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /*
+    меню
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    /*
+    обработка выбора в меню
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -94,6 +92,7 @@ public class SellerMenu extends AppCompatActivity {
     редактирование определённого дня
      */
     public void sellerMenuClickDayChange(View view) {
+        dateCalendar = Calendar.getInstance();
         dialog = new Dialog(SellerMenu.this);//диалог для запроса даты на редактирование
         dialog.setTitle("Укажите день для редактирования");
         dialog.setContentView(R.layout.dialog_view);//кастомная разметка для диалога
@@ -121,6 +120,7 @@ public class SellerMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                dateCalendar.clear();
             }
         });
 
@@ -133,12 +133,17 @@ public class SellerMenu extends AppCompatActivity {
                     intent.putExtra(DATE_FOR_EXTRA, dateCalendar.getTimeInMillis());
                     intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
                     startActivity(intent);
+                    dialog.dismiss();
                 }else {
-                    Toast.makeText(SellerMenu.this, "В базе нет такой даты"
-                            + String.valueOf(dateCalendar.getTimeInMillis()), Toast.LENGTH_LONG).show();
+                    if(mTV_dialogDate.getText().equals("\nВведите дату\n")){
+                        Toast.makeText(SellerMenu.this, "Введите дату", Toast.LENGTH_LONG).show();
+                    }else {
+                        dateStr = DateUtils.formatDateTime(dialog.getContext(), dateCalendar.getTimeInMillis(),
+                                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+                        Toast.makeText(SellerMenu.this, "В базе нет такой даты"
+                                + dateStr, Toast.LENGTH_LONG).show();
+                    }
                 }
-
-                dialog.dismiss();
             }
         });
     }
@@ -158,24 +163,4 @@ public class SellerMenu extends AppCompatActivity {
             mTV_dialogDate.setText("\n" + dateStr + "\n");//при вводе даты, сразу записываем это в TextView
         }
     };
-
-   /* public static boolean ifDateExist(Context __context, String userTable, Long date){
-        DB_seller db_seller = new DB_seller(__context, userTable);    //БД с таблицей юзера(userName)
-        SQLiteDatabase sl_db = db_seller.getReadableDatabase();
-        String query;
-        query = "Select * from " + userTable + " where " + DB_seller.DB_COLUMN_DATE + " = " + String.valueOf(date);
-        Cursor cursor = sl_db.rawQuery(query, null);
-        if(cursor.getCount() <= 0){
-            cursor.close();
-            sl_db.close();
-            db_seller.close();
-            return false;
-        }else {
-            cursor.close();
-            sl_db.close();
-            db_seller.close();
-            return true;
-        }
-    }*/
-
 }
