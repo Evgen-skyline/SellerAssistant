@@ -1,5 +1,6 @@
 package evgenskyline.sellerassistant;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -98,13 +100,20 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, arrayList);
         mChoiseSellerSpin.setAdapter(arrayAdapter);
         mChoiseSellerSpin.setPrompt("Выберите продавца");
+        //Toast.makeText(this, "invoke resume", Toast.LENGTH_SHORT).show();
     }
 
-    public void clickForAddSeller(View view) {//кнопка добавление продавца
+    /*
+        кнопка добавление продавца
+         */
+    public void clickForAddSeller(View view) {
         Intent intent = new Intent(MainActivity.this, AddSeller.class);
         startActivityForResult(intent, KEY_INTENT_DB_ADD);
     }
 
+    /*
+    возврат данных из другой activity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -116,7 +125,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clickOnNextButton(View view) {//кнопка далее
+    /*
+    кнопка далее
+     */
+    public void clickOnNextButton(View view) {
         try {
             String selectedUser = mChoiseSellerSpin.getSelectedItem().toString();
             if (selectedUser != null || !selectedUser.equals("")) {
@@ -129,14 +141,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    контекстное меню
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    /*
+    обработка выбора в контекстном меню
+     */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {//обработка выбора в контекстном меню
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (id){
@@ -152,10 +170,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clickAboutProg(View view) {//кнопка "о программе"
-
+    /*
+    кнопка "о программе"
+     */
+    public void clickAboutProg(View view) {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setTitle(R.string.mAboutTitle);//инструкции
+        dialog.setContentView(R.layout.dialog_about);
+        dialog.show();
+        Button mButOk = (Button)dialog.findViewById(R.id.mDialogAboutButtonOk);
+        mButOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
+    /*
+    установка дефолтных процентов на дефолтные торговые точки
+     */
     private void setDefaultTradePoints(){
         tradePoints.add("КР7");
         tradePoints.add("ХТЗ");
@@ -241,69 +275,3 @@ public class MainActivity extends AppCompatActivity {
         editorTP.apply();
     }
 }
-
-/*
-case "КР7":
-        editorTP.putString(nameTP + TP_CARD, (float)1.4);
-        editorTP.putString(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)15);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-        case "ХТЗ":
-        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-        editorTP.putFloat(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)12);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-        case "ХТЗ-Н":
-        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-        editorTP.putFloat(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)12);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-        case "МАГАЗИН":
-        editorTP.putString(nameTP + TP_CARD, "1.4");
-        editorTP.putFloat(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)12);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)12);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-        case "МАРИЯ":
-        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-        editorTP.putFloat(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)15);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-        case "СМАК":
-        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-        editorTP.putFloat(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)15);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)15);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-        case "СИНТЕЗ":
-        editorTP.putFloat(nameTP + TP_CARD, (float)1.4);
-        editorTP.putFloat(nameTP + TP_STP, (float)7);
-        editorTP.putFloat(nameTP + TP_FLASH, (float)7);
-        editorTP.putFloat(nameTP + TP_PHONE, (float)2);
-        editorTP.putFloat(nameTP + TP_ACCESORIES, (float)25);
-        editorTP.putFloat(nameTP + TP_FOTO, (float)25);
-        editorTP.putFloat(nameTP + TP_TERM, (float)3);
-        break;
-default: break;*/

@@ -94,7 +94,7 @@ public class SellerMenu extends AppCompatActivity {
     public void sellerMenuClickDayChange(View view) {
         dateCalendar = Calendar.getInstance();
         dialog = new Dialog(SellerMenu.this);//диалог для запроса даты на редактирование
-        dialog.setTitle("Укажите день для редактирования");
+        dialog.setTitle("Укажите день для \nредактирования");
         dialog.setContentView(R.layout.dialog_view);//кастомная разметка для диалога
         //элементы из этой разметки
         mTV_dialogDate = (TextView)dialog.findViewById(R.id.SellerMenuDialogTextView);
