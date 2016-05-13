@@ -193,6 +193,7 @@ public class DayEdit extends AppCompatActivity {
             dateCalendar.set(Calendar.MONTH, monthOfYear);
             dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             dateCalendar.set(Calendar.HOUR, 8);
+            dateCalendar.set(Calendar.AM_PM, Calendar.AM);
             dateCalendar.set(Calendar.MINUTE, 1);
             dateCalendar.set(Calendar.SECOND, 1);
             dateCalendar.set(Calendar.MILLISECOND, 1);
@@ -201,7 +202,7 @@ public class DayEdit extends AppCompatActivity {
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
             mTV_date.setText(dateStr);
             dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
-            Toast.makeText(DayEdit.this, dateSQL, Toast.LENGTH_LONG).show();
+            //Toast.makeText(DayEdit.this, dateSQL, Toast.LENGTH_LONG).show();
         }
     };
     //==============================================================================================

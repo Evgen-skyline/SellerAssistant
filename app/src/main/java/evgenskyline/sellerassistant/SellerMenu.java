@@ -155,6 +155,7 @@ public class SellerMenu extends AppCompatActivity {
             dateCalendar.set(Calendar.MONTH, monthOfYear);
             dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             dateCalendar.set(Calendar.HOUR, 8);
+            dateCalendar.set(Calendar.AM_PM, Calendar.AM);
             dateCalendar.set(Calendar.MINUTE, 1);
             dateCalendar.set(Calendar.SECOND, 1);
             dateCalendar.set(Calendar.MILLISECOND, 1);
