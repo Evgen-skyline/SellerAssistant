@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         arrayList = new ArrayList<String>(usersSet);
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, arrayList);
         mChoiseSellerSpin.setAdapter(arrayAdapter);
         mChoiseSellerSpin.setPrompt("Выберите продавца");
     }

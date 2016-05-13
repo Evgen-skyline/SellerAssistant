@@ -28,6 +28,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     private long startDate;//начало и конец месяца для посчёта терминала
     private long endDate;
     private double termSum = 0.0;
+    private double termCash = 0.0;
+    private int countWorkDay = 0;
 
     public static final int OVERALL_REPORT = 1;
     public static final int EACH_POINT_REPORT = 2;
@@ -96,6 +98,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
                     DB_seller.DB_COLUMN_SALES_FOTO_R)));
             unitFromDB.setTermZP(mCursor.getDouble(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_SALES_TERM_R)));
+            countWorkDay++;
 
             tableFromDB.add(unitFromDB);
             mCursor.moveToNext();
@@ -108,6 +111,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         cursorTerm.moveToFirst();
         while (cursorTerm.isAfterLast() == false){
             termSum += cursorTerm.getDouble(cursorTerm.getColumnIndex(DB_seller.DB_COLUMN_SALES_TERM_R));
+            termCash += cursorTerm.getDouble(cursorTerm.getColumnIndex(DB_seller.DB_COLUMN_SALES_TERM));
             cursorTerm.moveToNext();
         }
         mCursor.close();
@@ -203,8 +207,11 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
                 + flashZpResult + accesZpResult + fotoZpResult;
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("З/П без терминала: " + String.valueOf(zpSumWithoutTerm) + "\n");
-        strBuilder.append("З/П терминал: " + String.valueOf(termZpResult) + "\n");
-        strBuilder.append("Всего: " + String.valueOf((zpSumWithoutTerm+termZpResult)) + "\n\n");
+        strBuilder.append("Терминал за " + ReportActivity.mSpinnerMonths.getSelectedItem().toString()
+                + ": " + String.valueOf(termSum) + "\n");
+        strBuilder.append("Всего: " + String.valueOf((zpSumWithoutTerm+termSum)) + "\n\n");
+        strBuilder.append("Кол-во рабочих дней: " + countWorkDay + "\n");
+        strBuilder.append("Средняя з/п за день: " + String.valueOf((zpSumWithoutTerm+termSum)/countWorkDay)+"\n\n");
         strBuilder.append("Товаров продано: \n");
         strBuilder.append("Карточек на: " + String.valueOf(cardResult) + "\n");
         strBuilder.append("Ст.п. на: " + String.valueOf(stpResult) + "\n");
@@ -212,9 +219,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         strBuilder.append("Флешек и microSD на: " + String.valueOf(flashResult) + "\n");
         strBuilder.append("Аксессуаров на: " + String.valueOf(accesResult) + "\n");
         strBuilder.append("Фото на: " + String.valueOf(fotoResult) + "\n");
-        strBuilder.append("Терминал: " + String.valueOf(termResult) + "\n");
-        strBuilder.append("Терминал за " + ReportActivity.mSpinnerMonths.getSelectedItem().toString()
-                    + ": " + String.valueOf(termSum));
+        strBuilder.append("Терминал: " + String.valueOf(termCash) + "\n");
+
 
         return strBuilder.toString();
     }

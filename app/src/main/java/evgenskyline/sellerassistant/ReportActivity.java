@@ -57,8 +57,7 @@ public class ReportActivity extends AppCompatActivity {
         mSPreference = PreferenceManager.getDefaultSharedPreferences(this);
 
         //наполнение спинера месяца
-        arrayAdapter = new ArrayAdapter<String>(this,
-                R.layout.support_simple_spinner_dropdown_item, DayEdit.monthArr);
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, DayEdit.monthArr);
         mSpinnerMonths.setAdapter(arrayAdapter);
         //установка последнего выбраного месяца
         if(mSPreference.contains(DayEdit.LAST_SELECTED_MONTH)){
@@ -68,12 +67,11 @@ public class ReportActivity extends AppCompatActivity {
         //наполнение спинера года
         ArrayList yearList = new ArrayList<Integer>();
         Integer currentYear = dateCalendar.get(Calendar.YEAR);
-        for (int y = 2016; y <= currentYear; y++){
+        for (int y = 2016; y <= currentYear+1; y++){
             yearList.add(y);
         }
         //Toast.makeText(this, String.valueOf(currentYear), Toast.LENGTH_LONG).show();
-        ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
-                yearList);
+        ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_layout, yearList);
         yearSpinner.setAdapter(yearAdapter);
         yearSpinner.setSelection(yearAdapter.getPosition(currentYear));
     }

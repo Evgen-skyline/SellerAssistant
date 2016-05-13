@@ -125,23 +125,21 @@ public class DayChangeActivity extends AppCompatActivity {
         //наполнение спинера торговых точек
         tradePoints = mSPreferences.getStringSet(MainActivity.APP_PREFERENCES_TP_SET, null);
         arrayList = new ArrayList<String>(tradePoints);
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, arrayList);
         spinnerTradePoint.setAdapter(arrayAdapter);
 
         //наполнение спинера месяцев
-        monthAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,
-                DayEdit.monthArr);
+        monthAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, DayEdit.monthArr);
         spinnerMonth.setAdapter(monthAdapter);
 
         //наполнение спинера года
         ArrayList yearList = new ArrayList<Integer>();
         Calendar tmpCalendar = Calendar.getInstance();
         Integer currentYear = tmpCalendar.get(Calendar.YEAR);
-        for (int y = 2016; y <= currentYear; y++){
+        for (int y = 2016; y <= currentYear+1; y++){
             yearList.add(y);
         }
-        yearAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item,
-                yearList);
+        yearAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_layout, yearList);
         spinnerYear.setAdapter(yearAdapter);
         spinnerYear.setSelection(yearAdapter.getPosition(currentYear));
 
