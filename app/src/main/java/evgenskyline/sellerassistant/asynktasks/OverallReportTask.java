@@ -1,5 +1,6 @@
 package evgenskyline.sellerassistant.asynktasks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,7 +34,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
 
     public static final int OVERALL_REPORT = 1;
     public static final int EACH_POINT_REPORT = 2;
-    public static final int ONE_DAY_BY_DATE = 3;
+    ProgressDialog pDialog;
+
 
     private int typeOfReport;
 
@@ -51,6 +53,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     protected void onPreExecute() {
         super.onPreExecute();
         getDateRangeForTerminal();
+        pDialog = ProgressDialog.show(context, "", "Downloading...", true);
+        pDialog.show();
     }
 
     @Override
@@ -129,6 +133,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
         super.onPostExecute(dbTable);
+        pDialog.dismiss();
         /*String test = "SELECT * FROM " + user
                 + " WHERE " + DB_seller.DB_COLUMN_DATE + " > " + String.valueOf(startDate)
                 + " AND " + DB_seller.DB_COLUMN_DATE + " < " + String.valueOf(endDate);*/

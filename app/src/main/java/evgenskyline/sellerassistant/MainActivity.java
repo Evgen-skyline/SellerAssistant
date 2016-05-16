@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import evgenskyline.sellerassistant.dbwork.DB_seller;
+import evgenskyline.sellerassistant.exchangerates.ExchangeRates;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -273,5 +274,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         editorTP.apply();
+    }
+
+    /*
+    кнопка "Курс валют от НБУ"
+     */
+    public void clickOnExchangeRates(View view) {
+        Intent intent = new Intent(MainActivity.this, ExchangeRates.class);
+        startActivity(intent);
     }
 }

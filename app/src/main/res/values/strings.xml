@@ -26,6 +26,7 @@
     <string name="Term">Терминал</string>
     <string name="mSellerMenuDialogButtonNext">Продолжить</string>
     <string name="mSellerMenuDialogButtonCancel">Отмена</string>
+    <string name="mExchangeRatesButtonShow">Отобразить курс за дату</string>
     <string name="mManualForAboutActivity">
         При первом запуске надо добавить нового продавца.
         После этого нажмите кнопку "Дальше" и выберите необходимый Вам пункт.\n\n
