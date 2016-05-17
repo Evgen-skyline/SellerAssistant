@@ -27,6 +27,17 @@
     <string name="mSellerMenuDialogButtonNext">Продолжить</string>
     <string name="mSellerMenuDialogButtonCancel">Отмена</string>
     <string name="mExchangeRatesButtonShow">Отобразить курс за дату</string>
+    <string name="mDayChangeButtonDelete">Удалить день</string>
+    <string name="mDayChangeTitleForDayDelete">Вы всё правильно ввели?</string>
+    <string name="mDayChangeMessageForDayDelete">Сохранить данные?</string>
+    <string name="mEmptySellerReport">Этот продавец ещё не работал</string>
+    <string name="mYES">Да</string>
+    <string name="mNO">Нет</string>
+    <string name="mCANCEL">Отмена</string>
+    <string name="mDATE">Дата: </string>
+    <string name="mWasDelete">Удалено</string>
+    <string name="mDialogAddSellerTitle">Введите имя</string>
+    <string name="mNotDelete">НЕ УДАЛЕНО!!!\nНет такой даты</string>
     <string name="mManualForAboutActivity">
         При первом запуске надо добавить нового продавца.
         После этого нажмите кнопку "Дальше" и выберите необходимый Вам пункт.\n\n

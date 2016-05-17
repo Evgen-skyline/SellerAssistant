@@ -44,6 +44,7 @@ public class ExchangeRates extends AppCompatActivity {
 
     private Calendar calendar;
 
+    private String lastSelected = "";
     private static final String mURL = "http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=";
     //20160516&json
 
@@ -121,9 +122,11 @@ public class ExchangeRates extends AppCompatActivity {
         return urlBuilder.toString();
     }
 
+//==================================================================================================
+
     private class DownloadTask extends AsyncTask<String, Integer, ArrayList<String>>{
         private HashMap<String, CurrencyRate> hMap;
-        ProgressDialog pDialog;
+        private ProgressDialog pDialog;
 
         @Override
         protected void onPreExecute() {
@@ -188,8 +191,12 @@ public class ExchangeRates extends AppCompatActivity {
             ArrayAdapter arrayAdapter = new ArrayAdapter<String>(ExchangeRates.this,
                     R.layout.spinner_layout_left, list);
             spinnerCurrency.setAdapter(arrayAdapter);
-            if (list.contains("USD  Долар США")) {
-                spinnerCurrency.setSelection(arrayAdapter.getPosition("USD  Долар США"));
+            if(!(lastSelected.equals(""))){
+                spinnerCurrency.setSelection(arrayAdapter.getPosition(lastSelected));
+            }else{
+                if (list.contains("USD  Долар США")) {
+                    spinnerCurrency.setSelection(arrayAdapter.getPosition("USD  Долар США"));
+                }
             }
 
             if (spinnerCurrency.getSelectedItem() == null){
@@ -206,6 +213,7 @@ public class ExchangeRates extends AppCompatActivity {
                     strBuilder.append(cr.toString() + "\n");
                     strBuilder.append("Курс: " + cr.getRate() + "\n");
                     mTV_main.setText(strBuilder.toString());
+                    lastSelected = spinnerCurrency.getSelectedItem().toString();
                 }
 
                 @Override

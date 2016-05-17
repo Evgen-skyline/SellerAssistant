@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="evgenskyline.sellerassistant">
+    package="evgenskyline.sellerassistant"
+    android:versionCode="3"
+    android:versionName="1.1">
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 
@@ -21,16 +23,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddSeller"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".SellerMenu"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DayEdit"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivityPF"

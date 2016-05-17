@@ -1,6 +1,7 @@
 package evgenskyline.sellerassistant;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -43,7 +44,7 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
 
         //инициализации
-        String tmpUser = getIntent().getExtras().getString(MainActivity.KEY_INTENT_EXTRA_USER);
+        String tmpUser = getIntent().getExtras().getString(MainActivity.KEY_USER);
         seller = DayEdit.reverseName(tmpUser);//Имя юзера на латинице
         mSpinnerMonths = (Spinner)findViewById(R.id.spinnerInMonthReport);
         yearSpinner = (Spinner)findViewById(R.id.ReportActivityYearSpinner);
@@ -55,7 +56,6 @@ public class ReportActivity extends AppCompatActivity {
         dateCalendar = Calendar.getInstance();
 
         mSPreference = PreferenceManager.getDefaultSharedPreferences(this);
-
         //наполнение спинера месяца
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, DayEdit.monthArr);
         mSpinnerMonths.setAdapter(arrayAdapter);
@@ -70,7 +70,6 @@ public class ReportActivity extends AppCompatActivity {
         for (int y = 2016; y <= currentYear+1; y++){
             yearList.add(y);
         }
-        //Toast.makeText(this, String.valueOf(currentYear), Toast.LENGTH_LONG).show();
         ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_layout, yearList);
         yearSpinner.setAdapter(yearAdapter);
         yearSpinner.setSelection(yearAdapter.getPosition(currentYear));

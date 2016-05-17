@@ -37,7 +37,7 @@ public class SellerMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_menu);
         mTextViewSeller = (TextView)findViewById(R.id.textViewOnSellerMenu);
-        seller = getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER);
+        seller = getIntent().getStringExtra(MainActivity.KEY_USER);
         mTextViewSeller.setText(seller);
     }
 
@@ -46,7 +46,7 @@ public class SellerMenu extends AppCompatActivity {
      */
     public void clickAddDayResult(View view) {
         Intent intent = new Intent(this, DayEdit.class);
-        intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
+        intent.putExtra(MainActivity.KEY_USER, seller);
         startActivity(intent);
     }
 
@@ -65,7 +65,6 @@ public class SellerMenu extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id){
             case R.id.menuSettings:
                 Intent intent = new Intent(SellerMenu.this, SettingsActivityPF.class);
@@ -84,7 +83,7 @@ public class SellerMenu extends AppCompatActivity {
      */
     public void clickReportForMonth(View view) {
         Intent intent = new Intent(SellerMenu.this, ReportActivity.class);
-        intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
+        intent.putExtra(MainActivity.KEY_USER, seller);
         startActivity(intent);
     }
 
@@ -102,7 +101,6 @@ public class SellerMenu extends AppCompatActivity {
         Button mButton_DialogCancel = (Button)dialog.findViewById(R.id.SellerMenuDialogButtonCancel);
 
         mTV_dialogDate.setText("\nВведите дату\n");
-
         mTV_dialogDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +129,7 @@ public class SellerMenu extends AppCompatActivity {
                 if(DB_seller.ifDateExist(SellerMenu.this, DayEdit.reverseName(seller), dateCalendar.getTimeInMillis())) {
                     Intent intent = new Intent(SellerMenu.this, DayChangeActivity.class);
                     intent.putExtra(DATE_FOR_EXTRA, dateCalendar.getTimeInMillis());
-                    intent.putExtra(MainActivity.KEY_INTENT_EXTRA_USER, seller);
+                    intent.putExtra(MainActivity.KEY_USER, seller);
                     startActivity(intent);
                     dialog.dismiss();
                 }else {

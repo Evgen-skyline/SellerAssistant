@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import evgenskyline.sellerassistant.R;
 import evgenskyline.sellerassistant.ReportActivity;
 import evgenskyline.sellerassistant.dbwork.DB_seller;
 import evgenskyline.sellerassistant.dbwork.UnitFromDB;
@@ -34,12 +36,11 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
 
     public static final int OVERALL_REPORT = 1;
     public static final int EACH_POINT_REPORT = 2;
-    ProgressDialog pDialog;
+    private ProgressDialog pDialog;
 
+    private boolean flagForExeptionInSql = false;
 
     private int typeOfReport;
-
-    //private UnitFromDB unitFromDB; //DEBUG FOR TEST
 
     public OverallReportTask(String _user, String _month, Context _context, int flagForTypeReport){
         super();
@@ -62,8 +63,14 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         tableFromDB = new ArrayList<UnitFromDB>();
         db_seller = new DB_seller(context, user);
         sl_db = db_seller.getReadableDatabase();
-        Cursor mCursor = sl_db.rawQuery("select * from "+user+" where "+DB_seller.DB_COLUMN_MONTH+" = "
-                +"\"" +month+ "\"", null);
+        Cursor mCursor = null;
+        try {
+            mCursor = sl_db.rawQuery("select * from " + user + " where " + DB_seller.DB_COLUMN_MONTH + " = "
+                    + "\"" + month + "\"", null);
+        }catch (SQLiteException e){
+            flagForExeptionInSql = true;
+            return tableFromDB;
+        }
         mCursor.moveToFirst();
         while (mCursor.isAfterLast() == false){
             UnitFromDB unitFromDB = new UnitFromDB();
@@ -107,8 +114,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
             tableFromDB.add(unitFromDB);
             mCursor.moveToNext();
         }
-        //SELECT name, city FROM tbl_info WHERE age < 15 AND city="Москва";
-        //"select * from "+user+" where "+DB_seller.DB_COLUMN_MONTH+" = " + "\"" +month+ "\""
+
         Cursor cursorTerm = sl_db.rawQuery("SELECT * FROM " + user
                 + " WHERE " + DB_seller.DB_COLUMN_DATE + " > " + String.valueOf(startDate)
                 + " AND " + DB_seller.DB_COLUMN_DATE + " < " + String.valueOf(endDate), null);
@@ -134,9 +140,10 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
         super.onPostExecute(dbTable);
         pDialog.dismiss();
-        /*String test = "SELECT * FROM " + user
-                + " WHERE " + DB_seller.DB_COLUMN_DATE + " > " + String.valueOf(startDate)
-                + " AND " + DB_seller.DB_COLUMN_DATE + " < " + String.valueOf(endDate);*/
+        if (flagForExeptionInSql){
+            ReportActivity.mTV_Report.setText(R.string.mEmptySellerReport);
+            return;
+        }
         switch (typeOfReport){
             case OVERALL_REPORT:
                 String report = stringForOveralReport(dbTable);
@@ -225,7 +232,6 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         strBuilder.append("Аксессуаров на: " + String.valueOf(accesResult) + "\n");
         strBuilder.append("Фото на: " + String.valueOf(fotoResult) + "\n");
         strBuilder.append("Терминал: " + String.valueOf(termCash) + "\n");
-
 
         return strBuilder.toString();
     }

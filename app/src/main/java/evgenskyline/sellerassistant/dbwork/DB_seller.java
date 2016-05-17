@@ -41,29 +41,6 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     //строка на создание таблицы пользователя
     public static String CREATE_USER_TABLE;
 
-    //поля для таблицы с настройками % на каждую торговую точку(НЕ ИСПОЛЬЗУЕТСЯ)
-    //реализовал через SharedPreferences
-   /* public static final String DB_SETTINGS_TABLE_NAME = "settings";
-    public static final String DB_SET_COL_NAME_TP = "nameTP";
-    public static final String DB_SET_COL_CARD = "percCard";
-    public static final String DB_SET_COL_STP = "percSTP";
-    public static final String DB_SET_COL_PHONE = "percPhone";
-    public static final String DB_SET_COL_FLASH = "percflash";
-    public static final String DB_SET_COL_ACCES = "percAccesories";
-    public static final String DB_SET_COL_FOTO = "percFoto";
-    public static final String DB_SET_COL_TERM = "percTerm";*/
-    //строка на создание таблицы с настройками
-   /* public static final String CREATE_TABLE_SETTINGS = "create table if not exists " + DB_SETTINGS_TABLE_NAME
-            +" (" + BaseColumns._ID + " integer primary key autoincrement, "
-            + DB_SET_COL_NAME_TP + " text not null, "
-            + DB_SET_COL_CARD + " real not null, "
-            + DB_SET_COL_STP + " real not null, "
-            + DB_SET_COL_PHONE + " real not null, "
-            + DB_SET_COL_FLASH + " real not null, "
-            + DB_SET_COL_ACCES + " real not null, "
-            + DB_SET_COL_FOTO + " real not null, "
-            + DB_SET_COL_TERM + " real not null);";*/
-
     public DB_seller(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -91,11 +68,6 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
                 + DB_COLUMN_SALES_FOTO_R + " real, "
                 + DB_COLUMN_SALES_TERM_R + " real);";
     }
-
-
-    /*public DB_seller(Context context){
-        super(context, DB_NAME, null, DB_VERSION);
-    }*/
 
     @Override
     public void onCreate(SQLiteDatabase db) {

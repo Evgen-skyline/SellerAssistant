@@ -33,7 +33,6 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:id="@+id/textViewDateInDayEdit"
-        android:text="@string/mDate"
         android:layout_weight="0.083"
         android:gravity="bottom" />
 
@@ -47,14 +46,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="0.5">
-            <!--<EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editTextDateInDayEdit"
-                android:layout_weight="0.125"
-                android:hint="ДДММГГГГ"
-                android:inputType="date"
-                android:maxLength="8" />-->
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

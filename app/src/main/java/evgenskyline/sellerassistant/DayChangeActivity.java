@@ -108,16 +108,24 @@ public class DayChangeActivity extends AppCompatActivity {
         mET_terminal = (EditText)findViewById(R.id.DayChangeTerminalEditText);
         mET_terminal.addTextChangedListener(textWatcher);
         mTV_date = (TextView) findViewById(R.id.DayChangeDateTextView);
+        mTV_date.setText(R.string.mDATE);
         spinnerTradePoint = (Spinner)findViewById(R.id.DayChangePointsSpinner);
         spinnerMonth = (Spinner)findViewById(R.id.DayChangeMonthSpinner);
         spinnerYear = (Spinner)findViewById(R.id.DayChangeYearSpinner);
 
+        //так надо, чтоб время в Long совпадало
         dateCalendar = Calendar.getInstance();
+        dateCalendar.set(Calendar.HOUR, 8);
+        dateCalendar.set(Calendar.AM_PM, Calendar.AM);
+        dateCalendar.set(Calendar.MINUTE, 1);
+        dateCalendar.set(Calendar.SECOND, 1);
+        dateCalendar.set(Calendar.MILLISECOND, 1);
+
         dateCalendar.setTimeInMillis(getIntent().getLongExtra(SellerMenu.DATE_FOR_EXTRA, System.currentTimeMillis()));
         mTV_date.setText(DateUtils.formatDateTime(DayChangeActivity.this,
                 dateCalendar.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
 
-        userName = getIntent().getStringExtra(MainActivity.KEY_INTENT_EXTRA_USER);
+        userName = getIntent().getStringExtra(MainActivity.KEY_USER);
         userName = DayEdit.reverseName(userName);//перевод на латинские
 
         mSPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -290,7 +298,12 @@ public class DayChangeActivity extends AppCompatActivity {
         alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mSaveDataInDB();
+                if (!(mTV_date.getText().toString().equals("Дата: "))) {
+                    mSaveDataInDB();
+                }else {
+                    Toast.makeText(DayChangeActivity.this, "А дату кто будет указывать???", Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
         });
         alertDialogBuilder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
@@ -334,15 +347,11 @@ public class DayChangeActivity extends AppCompatActivity {
         term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
 
         ContentValues values = new ContentValues();
-
         //суём в базу суммы продаж
         String monthForDB = spinnerMonth.getSelectedItem().toString() + spinnerYear.getSelectedItem().toString();
-        //Toast.makeText(this, monthForDB, Toast.LENGTH_LONG).show();
         values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
         values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
-
         values.put(DB_seller.DB_COLUMN_DATE, dateCalendar.getTimeInMillis());//дата
-
         values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
         values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
         values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
@@ -381,7 +390,6 @@ public class DayChangeActivity extends AppCompatActivity {
                     + "Попробуйте другую дату", Toast.LENGTH_LONG).show();
         }
     }
-
     //==============================================================================================
     /*
     для подсчёта з/п за день рантайм,
@@ -455,5 +463,53 @@ public class DayChangeActivity extends AppCompatActivity {
             Toast.makeText(this, "Проблеммы с чтением настроек %" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    /*
+    Кнопка "Удалить день"
+     */
+    public void clickForDayDelete(View view) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Подтвердите");
+        alertDialogBuilder.setMessage("Вы уверены, что хотите удалить этот день\n"
+                +DateUtils.formatDateTime(DayChangeActivity.this, dateCalendar.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+        alertDialogBuilder.setPositiveButton(R.string.mYES, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!(mTV_date.getText().toString().equals(R.string.mDATE))) {
+                    db_seller = new DB_seller(DayChangeActivity.this, userName);
+                    sl_db = db_seller.getReadableDatabase();
+                    sl_db.execSQL(DB_seller.CREATE_USER_TABLE);
+
+                    String where = DB_seller.DB_COLUMN_DATE + " = " + String.valueOf(dateCalendar.getTimeInMillis());
+                    int returnedResult = sl_db.delete(userName,  where, null);
+                    sl_db.close();
+                    db_seller.close();
+                    if (returnedResult>0){
+                        Toast.makeText(DayChangeActivity.this, R.string.mWasDelete, Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(DayChangeActivity.this, R.string.mNotDelete, Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(DayChangeActivity.this, "А дату кто будет указывать???", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        });
+        alertDialogBuilder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                return;
+            }
+        });
+        alertDialogBuilder.show();
     }
 }

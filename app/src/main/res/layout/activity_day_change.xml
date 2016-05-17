@@ -22,18 +22,30 @@
             android:layout_weight="0.5"/>
     </LinearLayout>
 
-    <Spinner
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/DayChangePointsSpinner"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.083"/>
+        android:layout_weight="0.083"
+        android:orientation="horizontal">
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/DayChangePointsSpinner"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.5"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/DayChangeButtonDelete"
+            android:text="@string/mDayChangeButtonDelete"
+            android:onClick="clickForDayDelete"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:id="@+id/DayChangeDateTextView"
-        android:text="@string/mDate"
         android:layout_weight="0.083"
         android:gravity="bottom"
         android:onClick="clickOnDateTextView"/>
