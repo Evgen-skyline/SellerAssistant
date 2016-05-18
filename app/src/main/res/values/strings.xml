@@ -38,6 +38,8 @@
     <string name="mWasDelete">Удалено</string>
     <string name="mDialogAddSellerTitle">Введите имя</string>
     <string name="mNotDelete">НЕ УДАЛЕНО!!!\nНет такой даты</string>
+    <string name="mMenuReportEdit">Редактировать день</string>
+    <string name="mMenuReportDelete">Удалить день</string>
     <string name="mManualForAboutActivity">
         При первом запуске надо добавить нового продавца.
         После этого нажмите кнопку "Дальше" и выберите необходимый Вам пункт.\n\n

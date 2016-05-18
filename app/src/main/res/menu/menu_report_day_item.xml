@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuReportEdit"
+        android:orderInCategory="100"
+        android:title="@string/mMenuReportEdit"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menuReportDelete"
+        android:orderInCategory="100"
+        android:title="@string/mMenuReportDelete"
+        app:showAsAction="never"/>
+</menu>

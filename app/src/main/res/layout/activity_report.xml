@@ -53,14 +53,20 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/ReportActivityScrollView">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/textViewInMonthReport"/>
+
         </ScrollView>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reportActivityListView"
+            />
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

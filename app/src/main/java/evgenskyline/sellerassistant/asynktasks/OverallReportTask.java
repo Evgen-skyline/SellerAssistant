@@ -139,13 +139,12 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
         super.onPostExecute(dbTable);
+        pDialog.dismiss();
         if (flagForExeptionInSql){
             ReportActivity.mTV_Report.setText(R.string.mEmptySellerReport);
             return;
         }
         listener.onTaskComplite(dbTable, termSum, termCash, countWorkDay);
-        pDialog.dismiss();
-
     }
 
     public void setOnTaskCompliteListener(OnTaskComplite listener){
@@ -157,7 +156,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         Calendar monthEnd = Calendar.getInstance();
         //это конечно не инкапсуаляция, но так удобней, по другому не придумал
         int selectedYear = Integer.parseInt(ReportActivity.yearSpinner.getSelectedItem().toString());
-        int selectedMonth = ReportActivity.arrayAdapter.getPosition(
+        int selectedMonth = ReportActivity.arrayAdapterMonth.getPosition(
                 ReportActivity.mSpinnerMonths.getSelectedItem().toString());
         monthBegin.set(Calendar.YEAR, selectedYear);
         monthBegin.set(Calendar.MONTH, selectedMonth);

@@ -204,7 +204,7 @@ public class UnitFromDB {
         result.append("Касса: " + String.valueOf(this.cashSumWithTerminal()) + "\n");
         result.append("З/П за день(без терминала): " + String.valueOf(this.sumZpWithoutTerminal()) + "\n");
         result.append("З/П за терминал: " + String.valueOf(this.getTermZP())+"\n");
-        result.append("Всего: " +  String.valueOf(this.sumZpWithTerminal()) + "\n\n\n");
+        result.append("Всего: " +  String.valueOf(this.sumZpWithTerminal()) + "\n");
         return result.toString();
     }
 }

@@ -1,19 +1,23 @@
 package evgenskyline.sellerassistant;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -25,7 +29,7 @@ import java.util.Calendar;
 
 import evgenskyline.sellerassistant.asynktasks.OnTaskComplite;
 import evgenskyline.sellerassistant.asynktasks.OverallReportTask;
-import evgenskyline.sellerassistant.asynktasks.ReportFragment;
+import evgenskyline.sellerassistant.dbwork.DB_seller;
 import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 public class ReportActivity extends AppCompatActivity {
@@ -35,8 +39,9 @@ public class ReportActivity extends AppCompatActivity {
     private RadioButton mRB_Overall;
     private RadioButton mRB_Each;
     private static ScrollView mSV;
+    private ListView mListView;
 
-    public static ArrayAdapter<String> arrayAdapter;
+    public static ArrayAdapter<String> arrayAdapterMonth;
 
     private SharedPreferences mSPreference;
 
@@ -46,6 +51,9 @@ public class ReportActivity extends AppCompatActivity {
     private int flag;
     private static final int OVERALL_REPORT = 1;//общий отчёт
     private static final int EACH_POINT_REPORT = 2;//по каждой точке
+    private ArrayList<UnitFromDB> tableFromDB;
+    private ArrayAdapter<String> arrayAdapter;
+    private AdapterView.AdapterContextMenuInfo info;
 
     private Calendar dateCalendar;
 
@@ -65,15 +73,16 @@ public class ReportActivity extends AppCompatActivity {
         mRB_Overall.setOnCheckedChangeListener(checkedChangeListener);
         mRB_Each.setOnCheckedChangeListener(checkedChangeListener);
         mSV = (ScrollView)findViewById(R.id.ReportActivityScrollView);
+        mListView = (ListView)findViewById(R.id.reportActivityListView);
         dateCalendar = Calendar.getInstance();
 
         mSPreference = PreferenceManager.getDefaultSharedPreferences(this);
         //наполнение спинера месяца
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, DayEdit.monthArr);
-        mSpinnerMonths.setAdapter(arrayAdapter);
+        arrayAdapterMonth = new ArrayAdapter<String>(this, R.layout.spinner_layout, DayEdit.monthArr);
+        mSpinnerMonths.setAdapter(arrayAdapterMonth);
         //установка последнего выбраного месяца
         if(mSPreference.contains(DayEdit.LAST_SELECTED_MONTH)){
-            mSpinnerMonths.setSelection(arrayAdapter.getPosition(mSPreference.getString(DayEdit.LAST_SELECTED_MONTH, null)));
+            mSpinnerMonths.setSelection(arrayAdapterMonth.getPosition(mSPreference.getString(DayEdit.LAST_SELECTED_MONTH, null)));
         }
 
         //наполнение спинера года
@@ -85,6 +94,7 @@ public class ReportActivity extends AppCompatActivity {
         ArrayAdapter yearAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_layout, yearList);
         yearSpinner.setAdapter(yearAdapter);
         yearSpinner.setSelection(yearAdapter.getPosition(currentYear));
+
     }
 
     private void makeReportFromDB(){
@@ -101,12 +111,14 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void clickToShowReport(View view) {
+        mTV_Report.setText("");
         makeReportFromDB();
     }
 
     private RadioButton.OnCheckedChangeListener checkedChangeListener = new RadioButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mTV_Report.setText("");
             makeReportFromDB();
         }
     };
@@ -114,42 +126,97 @@ public class ReportActivity extends AppCompatActivity {
     private OnTaskComplite onTaskCompliteListener = new OnTaskComplite() {
         @Override
         public void onTaskComplite(ArrayList<UnitFromDB> dbTable, double termSum, double termCash, int countWorkDay) {
+            tableFromDB = new ArrayList<UnitFromDB>(dbTable.size());
+            tableFromDB = dbTable;
             switch (flag){
                 case OVERALL_REPORT:
                     String report = stringForOveralReport(dbTable, termSum, termCash, countWorkDay);
                     ReportActivity.mTV_Report.setText(/*test + "\n" + */report);
                     break;
                 case EACH_POINT_REPORT:
-                    try {
-                        StringBuffer result = new StringBuffer();
-                        for (int i = 0; i < dbTable.size(); i++) {
-                            result.append(dbTable.get(i).toString());
-                        }
-                        ReportActivity.mTV_Report.setText(result.toString());
-                    }catch (Exception e){
-                        ReportActivity.mTV_Report.setText(e.toString());
-                    };
+                    ArrayList<String> arrayList = new ArrayList<String>(dbTable.size()+1);
+                    for (int i=0; i<dbTable.size(); i++){
+                        arrayList.add(dbTable.get(i).toString());
+                    }
 
-                   /* LinearLayout linearLayout = (LinearLayout)findViewById(R.id.reportActivityLinearLayoutMain);
-
-                    for (int i = 0; i < dbTable.size(); i++) {
-                        android.app.FragmentTransaction mFTrans = getFragmentManager().beginTransaction();
-                        //FrameLayout mFL = new FrameLayout(ReportActivity.this);
-                        //linearLayout.addView(mFL);
-
-                        ReportFragment reportFragment = new ReportFragment();
-                        reportFragment.setText(dbTable.get(i).toString());
-
-                        mFTrans.add(R.id.reportActivityLinearLayoutMain, reportFragment);
-                        mFTrans.commit();
-
-                    }*/
-                    //mSV.addView(linearLayout);
+                    arrayAdapter = new ArrayAdapter<String>(ReportActivity.this,
+                            R.layout.spinner_layout_left, arrayList);
+                    mListView.setAdapter(arrayAdapter);
+                    registerForContextMenu(mListView);
                     break;
                 default: break;
             }
         }
     };
+
+    /*
+    контекстное меню для элементов ListView(отчёт за день)
+     */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_report_day_item, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()){
+            case R.id.menuReportEdit:
+                //открывается активность редактирования для выбраного дня
+                Intent intent = new Intent(ReportActivity.this, DayChangeActivity.class);
+                intent.putExtra(SellerMenu.DATE_FOR_EXTRA, tableFromDB.get(info.position).getDate());
+                intent.putExtra(MainActivity.KEY_USER, seller);
+                startActivity(intent);
+                return true;
+            case R.id.menuReportDelete:
+                //диалог на удаление выбраного дня
+                final Long mDate = tableFromDB.get(info.position).getDate();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle("Подтвердите");
+                alertDialogBuilder.setMessage("Вы уверены, что хотите удалить этот день\n"
+                        + DateUtils.formatDateTime(ReportActivity.this, mDate,
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                alertDialogBuilder.setPositiveButton(R.string.mYES, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DB_seller db_seller = new DB_seller(ReportActivity.this, seller);
+                        SQLiteDatabase sl_db = db_seller.getReadableDatabase();
+                        sl_db.execSQL(DB_seller.CREATE_USER_TABLE);
+
+                        String where = DB_seller.DB_COLUMN_DATE + " = "
+                                + String.valueOf(mDate);
+                        int returnedResult = sl_db.delete(seller,  where, null);
+                        sl_db.close();
+                        db_seller.close();
+                        if (returnedResult>0){
+                            Toast.makeText(ReportActivity.this, R.string.mWasDelete, Toast.LENGTH_LONG).show();
+                            makeReportFromDB();//сразу обновить список
+                        }else {
+                            Toast.makeText(ReportActivity.this, R.string.mNotDelete, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialogBuilder.setCancelable(true);
+                alertDialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        return;
+                    }
+                });
+                alertDialogBuilder.show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
     private String stringForOveralReport(ArrayList<UnitFromDB> dbTable, double termSum, double termCash, int countWorkDay){
         double cardResult=0;
@@ -203,5 +270,34 @@ public class ReportActivity extends AppCompatActivity {
         return strBuilder.toString();
     }
 
+    /*
+    контекстное меню для activity
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /*
+    обработка выбора в контекстном меню activity
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.menuSettings://вызов настроек из меню
+                Intent intent = new Intent(ReportActivity.this, SettingsActivityPF.class);
+                startActivity(intent);
+                return true;
+            case R.id.menuExit://ВЫХОД ИЗ ПРИЛОЖЕНИЯ
+                finishAffinity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
 
+//Toast.makeText(ReportActivity.this, "Listener is working ", Toast.LENGTH_LONG).show();

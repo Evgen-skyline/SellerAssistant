@@ -267,7 +267,7 @@ public class DayChangeActivity extends AppCompatActivity {
     }
     //==============================================================================================
     /*
-    обработка выбора в контекстном меню
+    обработка выбора в меню
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
