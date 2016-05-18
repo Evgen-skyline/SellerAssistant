@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -33,7 +34,7 @@ public class ReportActivity extends AppCompatActivity {
     public static TextView mTV_Report;
     private RadioButton mRB_Overall;
     private RadioButton mRB_Each;
-    public static ScrollView mSV;
+    private static ScrollView mSV;
 
     public static ArrayAdapter<String> arrayAdapter;
 
@@ -119,7 +120,7 @@ public class ReportActivity extends AppCompatActivity {
                     ReportActivity.mTV_Report.setText(/*test + "\n" + */report);
                     break;
                 case EACH_POINT_REPORT:
-                    /*try {
+                    try {
                         StringBuffer result = new StringBuffer();
                         for (int i = 0; i < dbTable.size(); i++) {
                             result.append(dbTable.get(i).toString());
@@ -127,16 +128,23 @@ public class ReportActivity extends AppCompatActivity {
                         ReportActivity.mTV_Report.setText(result.toString());
                     }catch (Exception e){
                         ReportActivity.mTV_Report.setText(e.toString());
-                    };*/
+                    };
 
-                for (int i = 0; i < dbTable.size(); i++) {
-                    ReportFragment reportFragment = new ReportFragment();
-                    FrameLayout mFL = new FrameLayout(ReportActivity.this);
-                    FragmentTransaction mFTrans;
-                    ReportActivity.mSV.addView(mFL);
-                    reportFragment.setText(dbTable.get(i).toString());
-                }
+                   /* LinearLayout linearLayout = (LinearLayout)findViewById(R.id.reportActivityLinearLayoutMain);
 
+                    for (int i = 0; i < dbTable.size(); i++) {
+                        android.app.FragmentTransaction mFTrans = getFragmentManager().beginTransaction();
+                        //FrameLayout mFL = new FrameLayout(ReportActivity.this);
+                        //linearLayout.addView(mFL);
+
+                        ReportFragment reportFragment = new ReportFragment();
+                        reportFragment.setText(dbTable.get(i).toString());
+
+                        mFTrans.add(R.id.reportActivityLinearLayoutMain, reportFragment);
+                        mFTrans.commit();
+
+                    }*/
+                    //mSV.addView(linearLayout);
                     break;
                 default: break;
             }

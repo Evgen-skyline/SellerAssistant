@@ -15,6 +15,7 @@ import evgenskyline.sellerassistant.R;
  */
 public class ReportFragment extends Fragment {
     private TextView mTV_main;
+    private String report;
 
     @Nullable
     @Override
@@ -25,6 +26,12 @@ public class ReportFragment extends Fragment {
     }
 
     public void setText(String report){
-        mTV_main.setText(report);
+        this.report = report;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //mTV_main.setText(report);
     }
 }
