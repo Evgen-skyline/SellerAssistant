@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 import evgenskyline.sellerassistant.asynktasks.OnTaskComplite;
 import evgenskyline.sellerassistant.asynktasks.OverallReportTask;
@@ -126,9 +128,16 @@ public class ReportActivity extends AppCompatActivity {
     private OnTaskComplite onTaskCompliteListener = new OnTaskComplite() {
         @Override
         public void onTaskComplite(ArrayList<UnitFromDB> dbTable, double termSum, double termCash, int countWorkDay) {
+            //сортируем по дате
+            Collections.sort(dbTable, new Comparator<UnitFromDB>() {
+                @Override
+                public int compare(UnitFromDB lhs, UnitFromDB rhs) {
+                    return lhs.getDate().compareTo(rhs.getDate());
+                }
+            });
             tableFromDB = new ArrayList<UnitFromDB>(dbTable.size());
-            tableFromDB = dbTable;
-            switch (flag){
+            tableFromDB = dbTable;//для обработки в контекстном меню
+            switch (flag){ //тип отчёта: общий или подробный
                 case OVERALL_REPORT:
                     String report = stringForOveralReport(dbTable, termSum, termCash, countWorkDay);
                     ReportActivity.mTV_Report.setText(/*test + "\n" + */report);
@@ -136,13 +145,13 @@ public class ReportActivity extends AppCompatActivity {
                 case EACH_POINT_REPORT:
                     ArrayList<String> arrayList = new ArrayList<String>(dbTable.size()+1);
                     for (int i=0; i<dbTable.size(); i++){
-                        arrayList.add(dbTable.get(i).toString());
+                        arrayList.add(dbTable.get(i).toString());//для arrayAdapter
                     }
 
                     arrayAdapter = new ArrayAdapter<String>(ReportActivity.this,
                             R.layout.spinner_layout_left, arrayList);
                     mListView.setAdapter(arrayAdapter);
-                    registerForContextMenu(mListView);
+                    registerForContextMenu(mListView);//вешаем на ListView контекстное меню
                     break;
                 default: break;
             }
@@ -159,6 +168,9 @@ public class ReportActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_report_day_item, menu);
     }
 
+    /*
+    обработка выбора из контекстного меню
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -218,6 +230,9 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    подготовка строки для общего отчёта
+     */
     private String stringForOveralReport(ArrayList<UnitFromDB> dbTable, double termSum, double termCash, int countWorkDay){
         double cardResult=0;
         double stpResult=0;
@@ -271,7 +286,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     /*
-    контекстное меню для activity
+    меню для activity
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,7 +295,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     /*
-    обработка выбора в контекстном меню activity
+    обработка выбора в меню activity
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -298,6 +313,11 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        makeReportFromDB();//обновление данных
+    }
 }
 
 //Toast.makeText(ReportActivity.this, "Listener is working ", Toast.LENGTH_LONG).show();
