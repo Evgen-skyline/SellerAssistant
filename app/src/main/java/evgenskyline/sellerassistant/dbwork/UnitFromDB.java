@@ -1,5 +1,8 @@
 package evgenskyline.sellerassistant.dbwork;
 
+import android.content.Context;
+import android.text.format.DateUtils;
+
 /**
  * Created by evgen on 04.05.2016.
  */
@@ -22,8 +25,9 @@ public class UnitFromDB {
     private double accesZP=0;
     private double fotoZP=0;
     private double termZP=0;
+    private Context context;
 
-    public UnitFromDB(){}
+    public UnitFromDB(Context context){this.context = context;}
 
     public String getMonth() {
         return month;
@@ -180,5 +184,27 @@ public class UnitFromDB {
         double result = 0;
         result = cardSum + stpSum + phoneSum + flashSum + accesSum + fotoSum + termSum;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        String dateStr = DateUtils.formatDateTime(this.context, this.getDate(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+
+        StringBuffer result = new StringBuffer();
+        result.append(this.getNameOfTradePoint() + "\n");
+        result.append("Дата: " + dateStr + "\n");
+        result.append("Карточки: " + String.valueOf(this.getCardSum()) + "\n");
+        result.append("Ст.пакеты: " + String.valueOf(this.getStpSum()) + "\n");
+        result.append("Телефоны: " + String.valueOf(this.getPhoneSum()) + "\n");
+        result.append("Флешки: " + String.valueOf(this.getFlashSum()) + "\n");
+        result.append("Аксессуары: " + String.valueOf(this.getAccesSum()) + "\n");
+        result.append("Фото: " + String.valueOf(this.getFotoSum()) + "\n");
+        result.append("Терминал: " + String.valueOf(this.getTermSum()) + "\n");
+        result.append("Касса: " + String.valueOf(this.cashSumWithTerminal()) + "\n");
+        result.append("З/П за день(без терминала): " + String.valueOf(this.sumZpWithoutTerminal()) + "\n");
+        result.append("З/П за терминал: " + String.valueOf(this.getTermZP())+"\n");
+        result.append("Всего: " +  String.valueOf(this.sumZpWithTerminal()) + "\n\n\n");
+        return result.toString();
     }
 }

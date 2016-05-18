@@ -147,7 +147,7 @@ public class ExchangeRates extends AppCompatActivity {
                 URL url = new URL(params[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.setConnectTimeout(9000);
+                urlConnection.setConnectTimeout(5000);
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
