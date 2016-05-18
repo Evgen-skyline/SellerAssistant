@@ -246,6 +246,11 @@ public class ExchangeRates extends AppCompatActivity {
             reader.endObject();
             return currencyRate;
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
     }
 
    /* //FOR DEBUG ONLY!!!(write data to SD card)

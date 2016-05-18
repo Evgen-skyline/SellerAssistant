@@ -6,4 +6,6 @@
     android:textSize="20sp"
     android:gravity="center"
     android:padding="5dip"
+    android:textStyle="bold"
+    android:background="@drawable/listview_style"
     />

@@ -149,7 +149,7 @@ public class ReportActivity extends AppCompatActivity {
                     }
 
                     arrayAdapter = new ArrayAdapter<String>(ReportActivity.this,
-                            R.layout.spinner_layout_left, arrayList);
+                            R.layout.listview_layout, arrayList);
                     mListView.setAdapter(arrayAdapter);
                     registerForContextMenu(mListView);//вешаем на ListView контекстное меню
                     break;

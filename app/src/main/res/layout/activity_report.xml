@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="evgenskyline.sellerassistant.ReportActivity">
+    tools:context="evgenskyline.sellerassistant.ReportActivity"
+    android:background="@color/button_material_light">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,12 +20,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerInMonthReport"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                android:popupBackground="@android:color/darker_gray"
+                />
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/ReportActivityYearSpinner"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                android:popupBackground="@android:color/darker_gray" />
         </LinearLayout>
 
         <Button
@@ -32,7 +36,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/mButtonShowReportInMonthReport"
             android:text="@string/mButtonShowReport"
-            android:onClick="clickToShowReport"/>
+            android:onClick="clickToShowReport"
+            android:background="@drawable/my_button_style"
+            android:layout_marginLeft="40sp"
+            android:layout_marginRight="40sp"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -42,31 +51,39 @@
                 android:id="@+id/radioButtonOverallInReport"
                 android:text="@string/mRadioButtonOverall"
                 android:textSize="20sp"
-                android:checked="true" />
+                android:checked="true"
+                android:textStyle="bold"/>
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioButtonEachInReport"
                 android:text="@string/mRadioButtonEach"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold"/>
         </RadioGroup>
 
         <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ReportActivityScrollView">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:id="@+id/textViewInMonthReport"/>
+                android:id="@+id/textViewInMonthReport"
+                android:background="@drawable/listview_style"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:textStyle="bold" />
 
         </ScrollView>
         <ListView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/reportActivityListView"
-            />
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:dividerHeight="10sp"/>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

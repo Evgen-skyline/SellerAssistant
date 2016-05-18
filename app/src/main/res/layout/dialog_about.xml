@@ -14,6 +14,7 @@
             android:textSize="20sp"
             android:id="@+id/aboutTextView"
             android:text="@string/mManualForAboutActivity"
+            android:background="@drawable/listview_style"
             />
     </ScrollView>
     <Button
@@ -23,5 +24,8 @@
         android:text="OK"
         android:textSize="20sp"
         android:layout_weight="0.1"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/my_button_style"
+        android:textStyle="bold"
+        />
 </LinearLayout>

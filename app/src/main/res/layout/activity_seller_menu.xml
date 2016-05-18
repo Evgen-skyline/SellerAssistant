@@ -10,8 +10,9 @@
         android:id="@+id/textViewOnSellerMenu"
         android:textSize="30sp"
         android:gravity="center"
-        android:text="DEBUG"
-        android:layout_weight="0.2"/>
+        android:layout_weight="0.2"
+        android:textStyle="bold"
+        android:background="@drawable/listview_style"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,13 @@
         android:textSize="20sp"
         android:text="@string/mButtonDayResults"
         android:layout_weight="0.2"
-        android:onClick="clickAddDayResult"/>
+        android:onClick="clickAddDayResult"
+        android:background="@drawable/my_button_style"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:textStyle="bold"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +34,13 @@
         android:textSize="20sp"
         android:text="@string/mButtonZpForMonth"
         android:layout_weight="0.2"
-        android:onClick="clickReportForMonth"/>
+        android:onClick="clickReportForMonth"
+        android:background="@drawable/my_button_style"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:textStyle="bold"/>
 
     <Button
         android:layout_width="match_parent"
@@ -36,5 +49,11 @@
         android:textSize="20sp"
         android:text="@string/mButtonDayEdit"
         android:layout_weight="0.2"
-        android:onClick="sellerMenuClickDayChange"/>
+        android:onClick="sellerMenuClickDayChange"
+        android:background="@drawable/my_button_style"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:textStyle="bold"/>
 </LinearLayout>

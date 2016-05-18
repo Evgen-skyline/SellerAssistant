@@ -18,14 +18,20 @@
             android:id="@+id/dialogAddSellerButtonOk"
             android:textSize="20sp"
             android:text="@string/mButtonSaveName"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5"
+            android:background="@drawable/my_button_style"
+            android:textStyle="bold"
+            />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dialogAddSellerButtonCancel"
             android:text="@string/mCANCEL"
             android:textSize="20sp"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5"
+            android:background="@drawable/my_button_style"
+            android:textStyle="bold"
+            />
 
     </LinearLayout>
 
