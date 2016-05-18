@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/holo_blue_bright">
 
     <Spinner
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:id="@+id/spinner"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.16"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/holo_blue_bright"
         android:layout_margin="10sp"
         android:popupBackground="@android:color/darker_gray" />
 

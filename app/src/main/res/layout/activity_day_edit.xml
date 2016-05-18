@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/holo_blue_bright">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,14 +16,14 @@
             android:id="@+id/mMonthSpinnerInDayEdit"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.5"
-            android:background="@drawable/listview_style"
+            android:background="@android:color/holo_blue_bright"
             android:popupBackground="@android:color/darker_gray" />
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/DayEditYearSpinner"
             android:layout_weight="0.5"
-            android:background="@drawable/listview_style"
+            android:background="@android:color/holo_blue_bright"
             android:popupBackground="@android:color/darker_gray"/>
     </LinearLayout>
 
@@ -32,7 +33,7 @@
         android:id="@+id/spinnerInDayEdit"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.083"
-        android:background="@drawable/listview_style"
+        android:background="@android:color/holo_blue_bright"
         android:popupBackground="@android:color/darker_gray"/>
     <TextView
         android:layout_width="match_parent"
