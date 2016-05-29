@@ -4,11 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +44,7 @@ public class ReportActivity extends AppCompatActivity {
     private RadioButton mRB_Each;
     private static ScrollView mSV;
     private ListView mListView;
+    private static final String TAG ="---!!!MY_LOG!!!---";
 
     public static ArrayAdapter<String> arrayAdapterMonth;
 
@@ -106,7 +109,14 @@ public class ReportActivity extends AppCompatActivity {
         }else if(mRB_Each.isChecked()){
             flag = EACH_POINT_REPORT;
         }
+        mTV_Report.setText("");
+        if (arrayAdapter != null) {
+            Log.w(TAG, "clear arrayAdapter");
+            arrayAdapter.clear();
+            arrayAdapter.notifyDataSetChanged();
+        }
         String monthAndYear = mSpinnerMonths.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString();
+        Log.w(TAG, "monthAndYear= " + monthAndYear);
         reportTask = new OverallReportTask(seller, monthAndYear, ReportActivity.this);
         reportTask.setOnTaskCompliteListener(onTaskCompliteListener);
         reportTask.execute();

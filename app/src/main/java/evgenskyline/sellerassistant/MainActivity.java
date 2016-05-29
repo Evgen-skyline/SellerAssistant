@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +28,6 @@ import evgenskyline.sellerassistant.dbwork.DB_seller;
 import evgenskyline.sellerassistant.exchangerates.ExchangeRates;
 
 public class MainActivity extends AppCompatActivity {
-
     //UI
     private Button mNewSellerBut;
     private Spinner mChoiseSellerSpin;

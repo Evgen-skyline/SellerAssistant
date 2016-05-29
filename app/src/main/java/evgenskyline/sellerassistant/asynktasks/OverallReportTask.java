@@ -10,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import evgenskyline.sellerassistant.R;
 import evgenskyline.sellerassistant.ReportActivity;
@@ -42,6 +44,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     private ProgressDialog pDialog;
 
     private boolean flagForExeptionInSql = false;
+    private String forDebug = "";
+    private static final String TAG = "---!!!MY_LOG!!!--- ";
 
     public OverallReportTask(String _user, String _month, Context _context){
         super();
@@ -61,14 +65,22 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     @Override
     protected ArrayList<UnitFromDB> doInBackground(String... params) {
         tableFromDB = new ArrayList<UnitFromDB>();
-        db_seller = new DB_seller(context, user);
-        sl_db = db_seller.getReadableDatabase();
+        try {
+            db_seller = new DB_seller(context, user);
+            sl_db = db_seller.getReadableDatabase();
+        }catch (Exception e){
+            forDebug = e.toString();
+            //Log.e(TAG, "ОШИБКА ОТКРЫТИЯ БАЗЫ: " + e.toString());
+        }
         Cursor mCursor = null;
         try {
-            mCursor = sl_db.rawQuery("select * from " + user + " where " + DB_seller.DB_COLUMN_MONTH + " = "
-                    + "\"" + month + "\"", null);
+            String query = "select * from " + user + " where " + DB_seller.DB_COLUMN_MONTH + " = "
+                    + "\"" + month + "\"";
+            mCursor = sl_db.rawQuery(query, null);
+            //Log.w(TAG, "query = " + query);
         }catch (SQLiteException e){
             flagForExeptionInSql = true;
+            Log.e(TAG, "Некорретный ответ из БД");
             return tableFromDB;
         }
         mCursor.moveToFirst();
@@ -110,6 +122,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
             unitFromDB.setTermZP(mCursor.getDouble(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_SALES_TERM_R)));
             countWorkDay++;
+            //Log.w(TAG, "unitFromDB #" + String.valueOf(countWorkDay));
 
             tableFromDB.add(unitFromDB);
             mCursor.moveToNext();
@@ -142,6 +155,10 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         pDialog.dismiss();
         if (flagForExeptionInSql){
             ReportActivity.mTV_Report.setText(R.string.mEmptySellerReport);
+            return;
+        }
+        if (!forDebug.equals("")){
+            ReportActivity.mTV_Report.setText(forDebug);
             return;
         }
         listener.onTaskComplite(dbTable, termSum, termCash, countWorkDay);
