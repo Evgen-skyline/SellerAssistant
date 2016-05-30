@@ -162,4 +162,10 @@ public class SellerMenu extends AppCompatActivity {
             mTV_dialogDate.setText("\n" + dateStr + "\n");//при вводе даты, сразу записываем это в TextView
         }
     };
+
+    public void clickForShedule(View view) {
+        Intent intent = new Intent(SellerMenu.this, SheduleActivity.class);
+        startActivity(intent);
+
+    }
 }

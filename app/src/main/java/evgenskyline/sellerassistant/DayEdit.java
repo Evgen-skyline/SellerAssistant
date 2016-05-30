@@ -431,13 +431,13 @@ public class DayEdit extends AppCompatActivity {
         try {
             returnedResult = sl_db.insert(userName, null, values);
             values.clear();
-            sl_db.close();
-            db_seller.close();
         }catch (Exception e){
-            sl_db.close();
-            db_seller.close();
             Toast.makeText(this, "Ошибка добавления в базу" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();
+        }
+        finally {
+            sl_db.close();
+            db_seller.close();
         }
         if(returnedResult > 0){
             Toast.makeText(this, "Сохранено", Toast.LENGTH_LONG).show();

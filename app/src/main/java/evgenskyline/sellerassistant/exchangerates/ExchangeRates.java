@@ -3,6 +3,7 @@ package evgenskyline.sellerassistant.exchangerates;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -127,6 +128,7 @@ public class ExchangeRates extends AppCompatActivity {
     private class DownloadTask extends AsyncTask<String, Integer, ArrayList<String>>{
         private HashMap<String, CurrencyRate> hMap;
         private ProgressDialog pDialog;
+        private HttpURLConnection urlConnection = null;
 
         @Override
         protected void onPreExecute() {
@@ -134,12 +136,18 @@ public class ExchangeRates extends AppCompatActivity {
             mTV_state.setText("Downloading data...");
             hMap = new HashMap<String, CurrencyRate>();
             pDialog = ProgressDialog.show(ExchangeRates.this, "", "Downloading...", true);
+            pDialog.setCancelable(true);
+            pDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    urlConnection.disconnect();
+                }
+            });
             pDialog.show();
         }
 
         @Override
         protected ArrayList<String> doInBackground(String... params) {
-            HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             StringBuilder resultJSONstrBuilder = new StringBuilder();
             ArrayList currencyList = null;
@@ -151,7 +159,7 @@ public class ExchangeRates extends AppCompatActivity {
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
-                //для сохранения строки
+                //для сохранения строки(потом сделаю...)
                 /*reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null){
@@ -173,8 +181,8 @@ public class ExchangeRates extends AppCompatActivity {
                 CurrencyRate cr = new CurrencyRate();
                 cr.setCurrencyCode(e.toString());
                 hMap.put("exeception", cr);
+                urlConnection.disconnect();
             }
-
             return currencyList;
         }
 
@@ -250,6 +258,9 @@ public class ExchangeRates extends AppCompatActivity {
         @Override
         protected void onCancelled() {
             super.onCancelled();
+            urlConnection.disconnect();
+            pDialog.dismiss();
+            Toast.makeText(ExchangeRates.this, "Отменено пользователем", Toast.LENGTH_LONG).show();
         }
     }
 

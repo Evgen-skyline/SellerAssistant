@@ -57,4 +57,18 @@
         android:layout_marginTop="5sp"
         android:layout_marginBottom="5sp"
         android:textStyle="bold"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mSellerMenuScheduleButton"
+        android:textSize="20sp"
+        android:text="@string/mButtonShedule"
+        android:layout_weight="0.2"
+        android:background="@drawable/my_button_style"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:textStyle="bold"
+        android:onClick="clickForShedule"/>
 </LinearLayout>

@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         editorTP.apply();
     }
 
-    /*
+    /**
     кнопка "Курс валют от НБУ"
      */
     public void clickOnExchangeRates(View view) {

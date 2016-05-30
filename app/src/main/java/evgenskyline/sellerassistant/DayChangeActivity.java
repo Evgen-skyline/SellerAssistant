@@ -372,16 +372,14 @@ public class DayChangeActivity extends AppCompatActivity {
         try {
             String where = BaseColumns._ID + " = " + id;
             returnedResult = sl_db.update(userName, values, where, null);
-            values.clear();
-            sl_db.close();
-            db_seller.close();
-
         }catch (Exception e){
-            values.clear();
-            sl_db.close();
-            db_seller.close();
             Toast.makeText(this, "Какая-то ошибка при добавлении в базу" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();
+        }
+        finally {
+            values.clear();
+            sl_db.close();
+            db_seller.close();
         }
         if(returnedResult > 0){
             Toast.makeText(this, "Сохранено", Toast.LENGTH_LONG).show();
