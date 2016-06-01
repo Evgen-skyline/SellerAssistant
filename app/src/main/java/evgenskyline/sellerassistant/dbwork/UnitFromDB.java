@@ -6,6 +6,7 @@ import android.text.format.DateUtils;
 /**
  * Created by evgen on 04.05.2016.
  */
+@Deprecated
 public class UnitFromDB {
     private String nameOfTradePoint;
     private String month;
@@ -48,6 +49,7 @@ public class UnitFromDB {
     public Long getDate() {
         return date;
     }
+
     public void setDate(Long date){this.date = date;}
 
     public double getCardSum() {

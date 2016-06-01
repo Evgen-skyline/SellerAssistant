@@ -33,6 +33,7 @@ import java.util.Random;
 import java.util.Set;
 
 import evgenskyline.sellerassistant.dbwork.DB_seller;
+import evgenskyline.sellerassistant.dbwork.ResultsOfTheDay;
 
 public class DayEdit extends AppCompatActivity {
     //ui
@@ -48,6 +49,8 @@ public class DayEdit extends AppCompatActivity {
     private EditText mET_foto;
     private EditText mET_terminal;
     private TextView mTV_date;
+
+    private ResultsOfTheDay resultsOfTheDay;
 
     //для даты
     Calendar dateCalendar;
@@ -116,6 +119,8 @@ public class DayEdit extends AppCompatActivity {
         monthSpinner = (Spinner)findViewById(R.id.mMonthSpinnerInDayEdit);
         yearSpinner = (Spinner)findViewById(R.id.DayEditYearSpinner);
 
+        resultsOfTheDay = new ResultsOfTheDay(this);
+
         //так надо, чтоб время в Long совпадало
         dateCalendar = Calendar.getInstance();
         dateCalendar.set(Calendar.HOUR, 8);
@@ -166,7 +171,7 @@ public class DayEdit extends AppCompatActivity {
         spinnerInDayEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mInicializationPercents();
+                //mInicializationPercents();
                 mRunTimeCount();
             }
             @Override
@@ -292,7 +297,7 @@ public class DayEdit extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mInicializationPercents();
+        //mInicializationPercents();
         mRunTimeCount();
     }
     //==============================================================================================
@@ -307,7 +312,7 @@ public class DayEdit extends AppCompatActivity {
                 "f","h","tz","ch","sh","sh","'","e","yu","ya"};
         if(srcName != "" || srcName != null){
             srcName = srcName.toLowerCase();
-            StringBuffer nname = new StringBuffer("");
+            StringBuilder nname = new StringBuilder("");
             char[] chs = srcName.toCharArray();
             for (int i = 0; i < chs.length; i++) {
                 int k = alpha.indexOf(chs[i]);
@@ -345,7 +350,7 @@ public class DayEdit extends AppCompatActivity {
     подсчёт суммы за день рантайм
      */
     private void mRunTimeCount(){
-        double resultSum;
+        /*double resultSum = 0;
         TPname = spinnerInDayEdit.getSelectedItem().toString();
         try {
             String cardTMP = mET_card.getText().toString();
@@ -376,7 +381,24 @@ public class DayEdit extends AppCompatActivity {
         }catch (Exception e){
             //просто чтоб не выкидывало
             mTVsum.setText("ERROR in runtime count");
-        }
+        }*/
+        resultsOfTheDay.initializePercentageFromSharedPreference();
+        resultsOfTheDay.setCardSum(
+                mET_card.getText().toString().equals("") ? 0 : Double.parseDouble(mET_card.getText().toString()));
+        resultsOfTheDay.setStpSum(
+                mET_stp.getText().toString().equals("") ? 0 : Double.parseDouble(mET_stp.getText().toString()));
+        resultsOfTheDay.setPhoneSum(
+                mET_phone.getText().toString().equals("")? 0 : Double.parseDouble(mET_phone.getText().toString()));
+        resultsOfTheDay.setFlashSum(
+                mET_flash.getText().toString().equals("")? 0 : Double.parseDouble(mET_flash.getText().toString()));
+        resultsOfTheDay.setAccesSum(
+                mET_accesories.getText().toString().equals("")? 0 : Double.parseDouble(mET_accesories.getText().toString()));
+        resultsOfTheDay.setFotoSum(
+                mET_foto.getText().toString().equals("")? 0 : Double.parseDouble(mET_foto.getText().toString()));
+        resultsOfTheDay.setTermSum(
+                mET_terminal.getText().toString().equals("")? 0 : Double.parseDouble(mET_terminal.getText().toString()));
+
+        mTVsum.setText(String.valueOf(resultsOfTheDay.getSumOfZp()));
     }
     //==============================================================================================
     /*
@@ -387,7 +409,9 @@ public class DayEdit extends AppCompatActivity {
         sl_db = db_seller.getReadableDatabase();
         sl_db.execSQL(DB_seller.CREATE_USER_TABLE);//create table for current user, if not exist
 
-        String cardTMP = mET_card.getText().toString();
+        resultsOfTheDay.setMonth(monthSpinner.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString());
+        mRunTimeCount();
+       /* String cardTMP = mET_card.getText().toString();
         String stpTMP = mET_stp.getText().toString();
         String phoneTMP = mET_phone.getText().toString();
         String flashTMP = mET_flash.getText().toString();
@@ -426,11 +450,10 @@ public class DayEdit extends AppCompatActivity {
         values.put(DB_seller.DB_COLUMN_SALES_FLASH_R, flash_D * (flashPercent/100));
         values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES_R, acces_D * (accesPercent/100));
         values.put(DB_seller.DB_COLUMN_SALES_FOTO_R, foto_D * (fotoPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));
+        values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));*/
         Long returnedResult =0L;
         try {
-            returnedResult = sl_db.insert(userName, null, values);
-            values.clear();
+            returnedResult = sl_db.insert(userName, null, resultsOfTheDay.getContentValuesForDbSeller());
         }catch (Exception e){
             Toast.makeText(this, "Ошибка добавления в базу" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();

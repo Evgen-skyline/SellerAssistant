@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mExRtBut;
     private Button mAboutBut;
     private TextView mTV; //DEBUG
+    public static final String TAG ="---!!!MY_LOG!!!---";
 
     //константы
     private static final int KEY_INTENT_DB_ADD = 1;//код возврата для intent
@@ -298,8 +299,8 @@ public class MainActivity extends AppCompatActivity {
                     editorTP.putString(nameTP + TP_STP, "7");
                     editorTP.putString(nameTP + TP_FLASH, "7");
                     editorTP.putString(nameTP + TP_PHONE, "2");
-                    editorTP.putString(nameTP + TP_ACCESORIES, "25");
-                    editorTP.putString(nameTP + TP_FOTO, "25");
+                    editorTP.putString(nameTP + TP_ACCESORIES, "30");
+                    editorTP.putString(nameTP + TP_FOTO, "30");
                     editorTP.putString(nameTP + TP_TERM, "3");
                     break;
                 default: break;

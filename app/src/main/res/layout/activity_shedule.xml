@@ -7,14 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<CalendarView
-        android:id="@+id/calendarView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="onClick"
-        android:selectedWeekBackgroundColor="#ff0000"
-        android:weekNumberColor="#0000ff"
-        android:weekSeparatorLineColor="#00ff00" />-->
+
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:layout_width="wrap_content"
