@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import evgenskyline.sellerassistant.dbwork.DB_seller;
+import evgenskyline.sellerassistant.dbwork.ResultsOfTheDay;
 import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 public class DayChangeActivity extends AppCompatActivity {
@@ -50,24 +51,7 @@ public class DayChangeActivity extends AppCompatActivity {
     private EditText mET_terminal;
     private TextView mTV_date;
 
-    //% по позициям
-    private String TPname;
-    private double cardPercent;
-    private double stpPercent;
-    private double phonePercent;
-    private double flashPercent;
-    private double accesPercent;
-    private double fotoPercent;
-    private double termPercent;
-
-    //для содержимого EditText
-    private double card_D=0;
-    private double stp_D=0;
-    private double phone_D=0;
-    private double flash_D=0;
-    private double acces_D=0;
-    private double foto_D=0;
-    private double term_D=0;
+    private ResultsOfTheDay resultsOfTheDay;
 
     private SharedPreferences mSPreferences;
     private Set tradePoints = new HashSet<String>();
@@ -113,6 +97,8 @@ public class DayChangeActivity extends AppCompatActivity {
         spinnerMonth = (Spinner)findViewById(R.id.DayChangeMonthSpinner);
         spinnerYear = (Spinner)findViewById(R.id.DayChangeYearSpinner);
 
+        resultsOfTheDay = new ResultsOfTheDay(this);
+
         //так надо, чтоб время в Long совпадало
         dateCalendar = Calendar.getInstance();
         dateCalendar.set(Calendar.HOUR, 8);
@@ -157,7 +143,6 @@ public class DayChangeActivity extends AppCompatActivity {
         spinnerTradePoint.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mInicializationPercents();
                 mRunTimeCount();
             }
             @Override
@@ -166,7 +151,7 @@ public class DayChangeActivity extends AppCompatActivity {
 
         mSetDataFromDbToEditText();
     }
-    //==============================================================================================
+
      /*
      установка значений из базы в эдит-поля
      */
@@ -215,8 +200,9 @@ public class DayChangeActivity extends AppCompatActivity {
         mCursor.close();
         sl_db.close();
         db_seller.close();
+        mRunTimeCount();
     }
-    //==============================================================================================
+
     /*
     обработка клика по дате
      */
@@ -227,7 +213,7 @@ public class DayChangeActivity extends AppCompatActivity {
                 dateCalendar.get(Calendar.DAY_OF_MONTH));
         dpd.show();
     }
-    //==============================================================================================
+
     /*
     Listener для DatePickerDialog
      */
@@ -249,14 +235,14 @@ public class DayChangeActivity extends AppCompatActivity {
             dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
         }
     };
-    //==============================================================================================
+
     @Override
     protected void onResume() {
         super.onResume();
-        mInicializationPercents();
+        //mInicializationPercents();
         mRunTimeCount();
     }
-    //==============================================================================================
+
     /*
     прикручиваем меню
      */
@@ -265,7 +251,7 @@ public class DayChangeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    //==============================================================================================
+
     /*
     обработка выбора в меню
      */
@@ -284,7 +270,7 @@ public class DayChangeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    //==============================================================================================
+
     /*
     кнопка "Сохранить"
      */
@@ -321,7 +307,7 @@ public class DayChangeActivity extends AppCompatActivity {
         });
         alertDialogBuilder.show();
     }
-    //==============================================================================================
+
     /*
     непосредственное сохранение в базу
      */
@@ -330,54 +316,17 @@ public class DayChangeActivity extends AppCompatActivity {
         sl_db = db_seller.getReadableDatabase();
         sl_db.execSQL(DB_seller.CREATE_USER_TABLE);//create table for current user, if not exist
 
-        String cardTMP = mET_card.getText().toString();
-        String stpTMP = mET_stp.getText().toString();
-        String phoneTMP = mET_phone.getText().toString();
-        String flashTMP = mET_flash.getText().toString();
-        String accesTMP = mET_accesories.getText().toString();
-        String fotoTMP = mET_foto.getText().toString();
-        String termTMP = mET_terminal.getText().toString();
+        mRunTimeCount();
 
-        card_D = cardTMP.equals("") ? 0 : Double.parseDouble(cardTMP);
-        stp_D = stpTMP.equals("") ? 0 : Double.parseDouble(stpTMP);
-        phone_D = phoneTMP.equals("") ? 0 : Double.parseDouble(phoneTMP);
-        flash_D = flashTMP.equals("") ? 0 : Double.parseDouble(flashTMP);
-        acces_D = accesTMP.equals("") ? 0 : Double.parseDouble(accesTMP);
-        foto_D = fotoTMP.equals("") ? 0 : Double.parseDouble(fotoTMP);
-        term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
-
-        ContentValues values = new ContentValues();
-        //суём в базу суммы продаж
-        String monthForDB = spinnerMonth.getSelectedItem().toString() + spinnerYear.getSelectedItem().toString();
-        values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
-        values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
-        values.put(DB_seller.DB_COLUMN_DATE, dateCalendar.getTimeInMillis());//дата
-        values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
-        values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
-        values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
-        values.put(DB_seller.DB_COLUMN_SALES_FLASH, flash_D);
-        values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES, acces_D);
-        values.put(DB_seller.DB_COLUMN_SALES_FOTO, foto_D);
-        values.put(DB_seller.DB_COLUMN_SALES_TERM, term_D);
-
-        //кладём в базу з/п от этих сумм
-        values.put(DB_seller.DB_COLUMN_SALES_CARD_R, card_D * (cardPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_STP_R, stp_D * (stpPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_PHONE_R, phone_D * (phonePercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_FLASH_R, flash_D * (flashPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES_R, acces_D * (accesPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_FOTO_R, foto_D * (fotoPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));
         int returnedResult =0;
         try {
             String where = BaseColumns._ID + " = " + id;
-            returnedResult = sl_db.update(userName, values, where, null);
+            returnedResult = sl_db.update(userName, resultsOfTheDay.getContentValuesForDbSeller(), where, null);
         }catch (Exception e){
             Toast.makeText(this, "Какая-то ошибка при добавлении в базу" + "\n"
                     + e.toString(), Toast.LENGTH_LONG).show();
         }
         finally {
-            values.clear();
             sl_db.close();
             db_seller.close();
         }
@@ -388,7 +337,7 @@ public class DayChangeActivity extends AppCompatActivity {
                     + "Попробуйте другую дату", Toast.LENGTH_LONG).show();
         }
     }
-    //==============================================================================================
+
     /*
     для подсчёта з/п за день рантайм,
     срабатывает после каждого изменения в любом EditText
@@ -405,62 +354,32 @@ public class DayChangeActivity extends AppCompatActivity {
             mRunTimeCount();
         }
     };
-    //==============================================================================================
+
     /*
     подсчёт суммы за день рантайм
      */
     private void mRunTimeCount(){
-        double resultSum;
-        TPname = spinnerTradePoint.getSelectedItem().toString();
-        try {
-            String cardTMP = mET_card.getText().toString();
-            String stpTMP = mET_stp.getText().toString();
-            String phoneTMP = mET_phone.getText().toString();
-            String flashTMP = mET_flash.getText().toString();
-            String accesTMP = mET_accesories.getText().toString();
-            String fotoTMP = mET_foto.getText().toString();
-            String termTMP = mET_terminal.getText().toString();
 
-            card_D = cardTMP.equals("") ? 0 : Double.parseDouble(cardTMP);
-            stp_D = stpTMP.equals("") ? 0 : Double.parseDouble(stpTMP);
-            phone_D = phoneTMP.equals("") ? 0 : Double.parseDouble(phoneTMP);
-            flash_D = flashTMP.equals("") ? 0 : Double.parseDouble(flashTMP);
-            acces_D = accesTMP.equals("") ? 0 : Double.parseDouble(accesTMP);
-            foto_D = fotoTMP.equals("") ? 0 : Double.parseDouble(fotoTMP);
-            term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
+        resultsOfTheDay.setNameOfTradePoint(spinnerTradePoint.getSelectedItem().toString());
+        resultsOfTheDay.setDate(dateCalendar.getTimeInMillis());
+        resultsOfTheDay.setMonth(spinnerMonth.getSelectedItem().toString() + spinnerYear.getSelectedItem().toString());
+        resultsOfTheDay.initializePercentageFromSharedPreference();
+        resultsOfTheDay.setCardSum(
+                mET_card.getText().toString().equals("") ? 0 : Double.parseDouble(mET_card.getText().toString()));
+        resultsOfTheDay.setStpSum(
+                mET_stp.getText().toString().equals("") ? 0 : Double.parseDouble(mET_stp.getText().toString()));
+        resultsOfTheDay.setPhoneSum(
+                mET_phone.getText().toString().equals("")? 0 : Double.parseDouble(mET_phone.getText().toString()));
+        resultsOfTheDay.setFlashSum(
+                mET_flash.getText().toString().equals("")? 0 : Double.parseDouble(mET_flash.getText().toString()));
+        resultsOfTheDay.setAccesSum(
+                mET_accesories.getText().toString().equals("")? 0 : Double.parseDouble(mET_accesories.getText().toString()));
+        resultsOfTheDay.setFotoSum(
+                mET_foto.getText().toString().equals("")? 0 : Double.parseDouble(mET_foto.getText().toString()));
+        resultsOfTheDay.setTermSum(
+                mET_terminal.getText().toString().equals("")? 0 : Double.parseDouble(mET_terminal.getText().toString()));
 
-            resultSum = (card_D * (cardPercent/100))
-                    +(stp_D * (stpPercent/100))
-                    +(phone_D * (phonePercent/100))
-                    +(flash_D * (flashPercent/100))
-                    +(acces_D * (accesPercent/100))
-                    +(foto_D * (fotoPercent/100))
-                    +(term_D * (termPercent/100));
-
-            mTVsum.setText(String.valueOf(resultSum));
-        }catch (Exception e){
-            //просто чтоб не выкидывало
-            mTVsum.setText("ERROR in runtime count");
-        }
-    }
-    //==============================================================================================
-    /*
-    считывание % из настроек
-     */
-    private void mInicializationPercents(){
-        TPname = spinnerTradePoint.getSelectedItem().toString();
-        try {
-            cardPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_CARD, null));
-            stpPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_STP, null));
-            phonePercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_PHONE, null));
-            flashPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_FLASH, null));
-            accesPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_ACCESORIES, null));
-            fotoPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_FOTO, null));
-            termPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_TERM, null));
-        }catch (Exception e){
-            Toast.makeText(this, "Проблеммы с чтением настроек %" + "\n"
-                    + e.toString(), Toast.LENGTH_LONG).show();
-        }
+        mTVsum.setText(String.valueOf(resultsOfTheDay.getSumOfZp()));
     }
 
     /*

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -261,6 +262,7 @@ public class ResultsOfTheDay {
         fotoZP=0;
         termZP=0;
     }
+
     public void clearPercentage(){
         cardP = 0;
         stpP = 0;
@@ -281,5 +283,105 @@ public class ResultsOfTheDay {
         accesSum=0;
         fotoSum=0;
         termSum=0;
+    }
+
+    @Override
+    public String toString() {
+        String dateStr = DateUtils.formatDateTime(this.context, date,
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+
+        StringBuffer result = new StringBuffer();
+        result.append(this.nameOfTradePoint + "\n");
+        result.append("Дата: " + dateStr + "\n");
+        result.append("Карточки: " + String.valueOf(cardSum) + "\n");
+        result.append("Ст.пакеты: " + String.valueOf(stpSum) + "\n");
+        result.append("Телефоны: " + String.valueOf(phoneSum) + "\n");
+        result.append("Флешки: " + String.valueOf(flashSum) + "\n");
+        result.append("Аксессуары: " + String.valueOf(accesSum) + "\n");
+        result.append("Фото: " + String.valueOf(fotoSum) + "\n");
+        result.append("Терминал: " + String.valueOf(termSum) + "\n");
+        result.append("Касса: " + String.valueOf(cashSumWithTerminal()) + "\n");
+        result.append("З/П за день(без терминала): " + String.valueOf(sumZpWithoutTerminal()) + "\n");
+        result.append("З/П за терминал: " + String.valueOf(getTermZP())+"\n");
+        result.append("Всего: " +  String.valueOf(sumZpWithTerminal()) + "\n");
+        return result.toString();
+    }
+
+    public double cashSumWithTerminal(){
+        double result = 0;
+        result = cardSum + stpSum + phoneSum + flashSum + accesSum + fotoSum + termSum;
+        return result;
+    }
+
+    public double sumZpWithoutTerminal(){
+        double result = 0;
+        result = getCardZP()+getStpZP()+getPhoneZP()+getFlashZP()+getAccesZP()+getFotoZP();
+        return result;
+    }
+
+    public double sumZpWithTerminal(){
+        double result = 0;
+        result = getCardZP()+getStpZP()+getPhoneZP()+getFlashZP()+getAccesZP()+getFotoZP()+getTermZP();
+        return result;
+    }
+
+    public void setCardZP(double cardZP) {
+        this.cardZP = cardZP;
+    }
+
+    public void setStpZP(double stpZP) {
+        this.stpZP = stpZP;
+    }
+
+    public void setPhoneZP(double phoneZP) {
+        this.phoneZP = phoneZP;
+    }
+
+    public void setFlashZP(double flashZP) {
+        this.flashZP = flashZP;
+    }
+
+    public void setAccesZP(double accesZP) {
+        this.accesZP = accesZP;
+    }
+
+    public void setFotoZP(double fotoZP) {
+        this.fotoZP = fotoZP;
+    }
+
+    public void setTermZP(double termZP) {
+        this.termZP = termZP;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public double getCardSum() {
+        return cardSum;
+    }
+
+    public double getStpSum() {
+        return stpSum;
+    }
+
+    public double getPhoneSum() {
+        return phoneSum;
+    }
+
+    public double getFlashSum() {
+        return flashSum;
+    }
+
+    public double getAccesSum() {
+        return accesSum;
+    }
+
+    public double getFotoSum() {
+        return fotoSum;
+    }
+
+    public double getTermSum() {
+        return termSum;
     }
 }

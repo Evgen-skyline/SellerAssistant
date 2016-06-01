@@ -1,7 +1,6 @@
 package evgenskyline.sellerassistant;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,9 +25,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import evgenskyline.sellerassistant.dbwork.DB_seller;
@@ -73,24 +69,6 @@ public class DayEdit extends AppCompatActivity {
     public static final String LAST_SELECTED_TP_IN_SPINNER = "lastSelectedItemInSpinner";
     public static final String LAST_SELECTED_MONTH = "lastSelectedMonth";
 
-    //% по позициям
-    private String TPname;
-    private double cardPercent;
-    private double stpPercent;
-    private double phonePercent;
-    private double flashPercent;
-    private double accesPercent;
-    private double fotoPercent;
-    private double termPercent;
-
-    //для содержимого EditText
-    private double card_D=0;
-    private double stp_D=0;
-    private double phone_D=0;
-    private double flash_D=0;
-    private double acces_D=0;
-    private double foto_D=0;
-    private double term_D=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +149,6 @@ public class DayEdit extends AppCompatActivity {
         spinnerInDayEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //mInicializationPercents();
                 mRunTimeCount();
             }
             @Override
@@ -192,7 +169,7 @@ public class DayEdit extends AppCompatActivity {
         });
 
     }
-    //==============================================================================================
+
     //Listener для DatePickerDialog
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -212,13 +189,13 @@ public class DayEdit extends AppCompatActivity {
             dateSQL = String.valueOf(dateCalendar.getTimeInMillis());
         }
     };
-    //==============================================================================================
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    //==============================================================================================
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -235,7 +212,7 @@ public class DayEdit extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    //==============================================================================================
+
     /*
     для подсчёта з/п за день рантайм,
     срабатывает после каждого изменения в любом EditText
@@ -252,7 +229,7 @@ public class DayEdit extends AppCompatActivity {
             mRunTimeCount();
         }
     };
-    //==============================================================================================
+
     /*
     Кнопка "Сохранить"
      */
@@ -293,16 +270,17 @@ public class DayEdit extends AppCompatActivity {
         });
         alertDialogBuilder.show();
     }
-    //==============================================================================================
+
     @Override
     protected void onResume() {
         super.onResume();
-        //mInicializationPercents();
         mRunTimeCount();
     }
-    //==============================================================================================
-    /*
-    перевод кирилицы в латинские
+
+    /**
+     * перевод кирилицы в латинские
+     * @param srcName
+     * @return translit name
      */
     public static String reverseName(String srcName){
         String result = "";
@@ -326,62 +304,14 @@ public class DayEdit extends AppCompatActivity {
         }
         return result;
     }
-    //==============================================================================================
-    /*
-    считывание % из настроек
-     */
-    private void mInicializationPercents(){
-        TPname = spinnerInDayEdit.getSelectedItem().toString();
-        try {
-            cardPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_CARD, null));
-            stpPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_STP, null));
-            phonePercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_PHONE, null));
-            flashPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_FLASH, null));
-            accesPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_ACCESORIES, null));
-            fotoPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_FOTO, null));
-            termPercent = Double.parseDouble(mSPreferences.getString(TPname + MainActivity.TP_TERM, null));
-        }catch (Exception e){
-                Toast.makeText(this, "Проблеммы с чтением настроек %" + "\n"
-                        + e.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
-    //==============================================================================================
-    /*
-    подсчёт суммы за день рантайм
+
+    /**
+     * подсчёт суммы за день рантайм и считывание сумм в ResultsOfTheDay
      */
     private void mRunTimeCount(){
-        /*double resultSum = 0;
-        TPname = spinnerInDayEdit.getSelectedItem().toString();
-        try {
-            String cardTMP = mET_card.getText().toString();
-            String stpTMP = mET_stp.getText().toString();
-            String phoneTMP = mET_phone.getText().toString();
-            String flashTMP = mET_flash.getText().toString();
-            String accesTMP = mET_accesories.getText().toString();
-            String fotoTMP = mET_foto.getText().toString();
-            String termTMP = mET_terminal.getText().toString();
-
-            card_D = cardTMP.equals("") ? 0 : Double.parseDouble(cardTMP);
-            stp_D = stpTMP.equals("") ? 0 : Double.parseDouble(stpTMP);
-            phone_D = phoneTMP.equals("") ? 0 : Double.parseDouble(phoneTMP);
-            flash_D = flashTMP.equals("") ? 0 : Double.parseDouble(flashTMP);
-            acces_D = accesTMP.equals("") ? 0 : Double.parseDouble(accesTMP);
-            foto_D = fotoTMP.equals("") ? 0 : Double.parseDouble(fotoTMP);
-            term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
-
-            resultSum = (card_D * (cardPercent/100))
-                    +(stp_D * (stpPercent/100))
-                    +(phone_D * (phonePercent/100))
-                    +(flash_D * (flashPercent/100))
-                    +(acces_D * (accesPercent/100))
-                    +(foto_D * (fotoPercent/100))
-                    +(term_D * (termPercent/100));
-
-            mTVsum.setText(String.valueOf(resultSum));
-        }catch (Exception e){
-            //просто чтоб не выкидывало
-            mTVsum.setText("ERROR in runtime count");
-        }*/
+        resultsOfTheDay.setNameOfTradePoint(spinnerInDayEdit.getSelectedItem().toString());
+        resultsOfTheDay.setDate(dateCalendar.getTimeInMillis());
+        resultsOfTheDay.setMonth(monthSpinner.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString());
         resultsOfTheDay.initializePercentageFromSharedPreference();
         resultsOfTheDay.setCardSum(
                 mET_card.getText().toString().equals("") ? 0 : Double.parseDouble(mET_card.getText().toString()));
@@ -400,7 +330,7 @@ public class DayEdit extends AppCompatActivity {
 
         mTVsum.setText(String.valueOf(resultsOfTheDay.getSumOfZp()));
     }
-    //==============================================================================================
+
     /*
     отправка данных в БД
      */
@@ -409,48 +339,8 @@ public class DayEdit extends AppCompatActivity {
         sl_db = db_seller.getReadableDatabase();
         sl_db.execSQL(DB_seller.CREATE_USER_TABLE);//create table for current user, if not exist
 
-        resultsOfTheDay.setMonth(monthSpinner.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString());
-        mRunTimeCount();
-       /* String cardTMP = mET_card.getText().toString();
-        String stpTMP = mET_stp.getText().toString();
-        String phoneTMP = mET_phone.getText().toString();
-        String flashTMP = mET_flash.getText().toString();
-        String accesTMP = mET_accesories.getText().toString();
-        String fotoTMP = mET_foto.getText().toString();
-        String termTMP = mET_terminal.getText().toString();
+        mRunTimeCount();//обновляем данные в resultsOfTheDay перед записью в БД
 
-        card_D = cardTMP.equals("") ? 0 : Double.parseDouble(cardTMP);
-        stp_D = stpTMP.equals("") ? 0 : Double.parseDouble(stpTMP);
-        phone_D = phoneTMP.equals("") ? 0 : Double.parseDouble(phoneTMP);
-        flash_D = flashTMP.equals("") ? 0 : Double.parseDouble(flashTMP);
-        acces_D = accesTMP.equals("") ? 0 : Double.parseDouble(accesTMP);
-        foto_D = fotoTMP.equals("") ? 0 : Double.parseDouble(fotoTMP);
-        term_D = termTMP.equals("") ? 0 : Double.parseDouble(termTMP);
-
-        ContentValues values = new ContentValues();
-
-        //суём в базу суммы продаж
-        String monthForDB = monthSpinner.getSelectedItem().toString() + yearSpinner.getSelectedItem().toString();
-        //Toast.makeText(this, monthForDB, Toast.LENGTH_LONG).show();
-        values.put(DB_seller.DB_COLUMN_MONTH, monthForDB);//месяц з/п
-        values.put(DB_seller.DB_COLUMN_TRADE_POINT, TPname);
-        values.put(DB_seller.DB_COLUMN_DATE, dateCalendar.getTimeInMillis());//дата
-        values.put(DB_seller.DB_COLUMN_SALES_CARD, card_D);
-        values.put(DB_seller.DB_COLUMN_SALES_STP, stp_D);
-        values.put(DB_seller.DB_COLUMN_SALES_PHONE, phone_D);
-        values.put(DB_seller.DB_COLUMN_SALES_FLASH, flash_D);
-        values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES, acces_D);
-        values.put(DB_seller.DB_COLUMN_SALES_FOTO, foto_D);
-        values.put(DB_seller.DB_COLUMN_SALES_TERM, term_D);
-
-        //кладём в базу з/п от этих сумм
-        values.put(DB_seller.DB_COLUMN_SALES_CARD_R, card_D * (cardPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_STP_R, stp_D * (stpPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_PHONE_R, phone_D * (phonePercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_FLASH_R, flash_D * (flashPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_ACCESORIES_R, acces_D * (accesPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_FOTO_R, foto_D * (fotoPercent/100));
-        values.put(DB_seller.DB_COLUMN_SALES_TERM_R, term_D * (termPercent/100));*/
         Long returnedResult =0L;
         try {
             returnedResult = sl_db.insert(userName, null, resultsOfTheDay.getContentValuesForDbSeller());

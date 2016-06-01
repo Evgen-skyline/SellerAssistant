@@ -22,18 +22,19 @@ import java.util.concurrent.ExecutionException;
 import evgenskyline.sellerassistant.R;
 import evgenskyline.sellerassistant.ReportActivity;
 import evgenskyline.sellerassistant.dbwork.DB_seller;
+import evgenskyline.sellerassistant.dbwork.ResultsOfTheDay;
 import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 /**
  * Created by evgen on 03.05.2016.
  */
-public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<UnitFromDB>> {
+public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<ResultsOfTheDay>> {
     private Context context;
     private String user;
     private String month;
     private DB_seller db_seller;
     private SQLiteDatabase sl_db;
-    private ArrayList<UnitFromDB> tableFromDB;
+    private ArrayList<ResultsOfTheDay> tableFromDB;
     private long startDate;//начало месяца для посчёта терминала
     private long endDate;//конец месяца для посчёта терминала
     private double termSum = 0.0;
@@ -63,8 +64,8 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     }
 
     @Override
-    protected ArrayList<UnitFromDB> doInBackground(String... params) {
-        tableFromDB = new ArrayList<UnitFromDB>();
+    protected ArrayList<ResultsOfTheDay> doInBackground(String... params) {
+        tableFromDB = new ArrayList<ResultsOfTheDay>();
         try {
             db_seller = new DB_seller(context, user);
             sl_db = db_seller.getReadableDatabase();
@@ -85,7 +86,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
         }
         mCursor.moveToFirst();
         while (mCursor.isAfterLast() == false){
-            UnitFromDB unitFromDB = new UnitFromDB(context);
+            ResultsOfTheDay unitFromDB = new ResultsOfTheDay(context);
             unitFromDB.setNameOfTradePoint(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_TRADE_POINT)));
             unitFromDB.setDate(mCursor.getLong(
@@ -150,7 +151,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Unit
     }
 
     @Override
-    protected void onPostExecute(ArrayList<UnitFromDB> dbTable) {
+    protected void onPostExecute(ArrayList<ResultsOfTheDay> dbTable) {
         super.onPostExecute(dbTable);
         pDialog.dismiss();
         if (flagForExeptionInSql){

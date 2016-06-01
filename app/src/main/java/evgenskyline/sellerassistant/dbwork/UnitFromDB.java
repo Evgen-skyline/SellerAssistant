@@ -4,7 +4,8 @@ import android.content.Context;
 import android.text.format.DateUtils;
 
 /**
- * Created by evgen on 04.05.2016.
+ * this class was deprecated, use ResultsOfTheDay
+ * @deprecated
  */
 @Deprecated
 public class UnitFromDB {

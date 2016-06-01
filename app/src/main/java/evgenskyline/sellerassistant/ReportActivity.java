@@ -34,6 +34,7 @@ import java.util.Comparator;
 import evgenskyline.sellerassistant.asynktasks.OnTaskComplite;
 import evgenskyline.sellerassistant.asynktasks.OverallReportTask;
 import evgenskyline.sellerassistant.dbwork.DB_seller;
+import evgenskyline.sellerassistant.dbwork.ResultsOfTheDay;
 import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 public class ReportActivity extends AppCompatActivity {
@@ -56,7 +57,7 @@ public class ReportActivity extends AppCompatActivity {
     private int flag;
     private static final int OVERALL_REPORT = 1;//общий отчёт
     private static final int EACH_POINT_REPORT = 2;//по каждой точке
-    private ArrayList<UnitFromDB> tableFromDB;
+    private ArrayList<ResultsOfTheDay> tableFromDB;
     private ArrayAdapter<String> arrayAdapter;
     private AdapterView.AdapterContextMenuInfo info;
 
@@ -137,15 +138,15 @@ public class ReportActivity extends AppCompatActivity {
 
     private OnTaskComplite onTaskCompliteListener = new OnTaskComplite() {
         @Override
-        public void onTaskComplite(ArrayList<UnitFromDB> dbTable, double termSum, double termCash, int countWorkDay) {
+        public void onTaskComplite(ArrayList<ResultsOfTheDay> dbTable, double termSum, double termCash, int countWorkDay) {
             //сортируем по дате
-            Collections.sort(dbTable, new Comparator<UnitFromDB>() {
+            Collections.sort(dbTable, new Comparator<ResultsOfTheDay>() {
                 @Override
-                public int compare(UnitFromDB lhs, UnitFromDB rhs) {
+                public int compare(ResultsOfTheDay lhs, ResultsOfTheDay rhs) {
                     return lhs.getDate().compareTo(rhs.getDate());
                 }
             });
-            tableFromDB = new ArrayList<UnitFromDB>(dbTable.size());
+            tableFromDB = new ArrayList<ResultsOfTheDay>(dbTable.size());
             tableFromDB = dbTable;//для обработки в контекстном меню
             switch (flag){ //тип отчёта: общий или подробный
                 case OVERALL_REPORT:
@@ -243,7 +244,7 @@ public class ReportActivity extends AppCompatActivity {
     /*
     подготовка строки для общего отчёта
      */
-    private String stringForOveralReport(ArrayList<UnitFromDB> dbTable, double termSum, double termCash, int countWorkDay){
+    private String stringForOveralReport(ArrayList<ResultsOfTheDay> dbTable, double termSum, double termCash, int countWorkDay){
         double cardResult=0;
         double stpResult=0;
         double phoneResult=0;
