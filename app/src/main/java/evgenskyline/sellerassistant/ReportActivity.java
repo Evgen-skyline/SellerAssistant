@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -31,11 +30,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
-import evgenskyline.sellerassistant.asynktasks.OnTaskComplite;
-import evgenskyline.sellerassistant.asynktasks.OverallReportTask;
+import evgenskyline.sellerassistant.dbwork.OnTaskComplite;
+import evgenskyline.sellerassistant.dbwork.OverallReportTask;
 import evgenskyline.sellerassistant.dbwork.DB_seller;
 import evgenskyline.sellerassistant.dbwork.ResultsOfTheDay;
-import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 public class ReportActivity extends AppCompatActivity {
     public static Spinner mSpinnerMonths;

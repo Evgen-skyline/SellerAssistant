@@ -1,29 +1,18 @@
-package evgenskyline.sellerassistant.asynktasks;
+package evgenskyline.sellerassistant.dbwork;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
-import android.text.format.DateUtils;
 import android.util.Log;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import evgenskyline.sellerassistant.R;
 import evgenskyline.sellerassistant.ReportActivity;
-import evgenskyline.sellerassistant.dbwork.DB_seller;
-import evgenskyline.sellerassistant.dbwork.ResultsOfTheDay;
-import evgenskyline.sellerassistant.dbwork.UnitFromDB;
 
 /**
  * Created by evgen on 03.05.2016.
@@ -71,7 +60,7 @@ public class OverallReportTask extends AsyncTask<String, Integer, ArrayList<Resu
             sl_db = db_seller.getReadableDatabase();
         }catch (Exception e){
             forDebug = e.toString();
-            //Log.e(TAG, "ОШИБКА ОТКРЫТИЯ БАЗЫ: " + e.toString());
+            Log.e(TAG, "ОШИБКА ОТКРЫТИЯ БАЗЫ: " + e.toString());
         }
         Cursor mCursor = null;
         try {

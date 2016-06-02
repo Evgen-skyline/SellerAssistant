@@ -165,6 +165,7 @@ public class SellerMenu extends AppCompatActivity {
 
     public void clickForShedule(View view) {
         Intent intent = new Intent(SellerMenu.this, SheduleActivity.class);
+        intent.putExtra(MainActivity.KEY_USER, seller);
         startActivity(intent);
 
     }

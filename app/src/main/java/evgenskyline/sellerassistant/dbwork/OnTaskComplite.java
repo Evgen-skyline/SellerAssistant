@@ -1,4 +1,4 @@
-package evgenskyline.sellerassistant.asynktasks;
+package evgenskyline.sellerassistant.dbwork;
 
 import java.util.ArrayList;
 
