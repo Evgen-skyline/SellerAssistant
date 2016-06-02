@@ -3,12 +3,17 @@ package evgenskyline.sellerassistant;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,10 +48,15 @@ public class SheduleActivity extends AppCompatActivity {
         getDataFromDB();
     }
 
+    /**
+     * получение данных из БД и запись в календарь отработаных дней
+     */
     private void getDataFromDB(){
+
         mapWithWorkDays = new HashMap<CalendarDay, ResultsOfTheDay>();
         hCalDays = new HashSet<CalendarDay>();
         TaskForWorkDays taskForWorkDays = new TaskForWorkDays(userName, this);
+        //выполниться по завершению asyncTask`a
         taskForWorkDays.setOnTaskCompliteListener(new OnWorkDaysTaskComplite() {
             @Override
             public void onTaskComplite(ArrayList<ResultsOfTheDay> dbTable) {
@@ -60,8 +70,26 @@ public class SheduleActivity extends AppCompatActivity {
                 }
                 materialCalendar.addDecorators(new EventDecorator(/*R.color.colorForCalendar,*/ hCalDays,
                         getApplicationContext().getResources().getDrawable(R.drawable.my_drawable)));
+                materialCalendar.setOnDateChangedListener(new OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                        Log.e(MainActivity.TAG, "LISTENER!!!!!!!!!");
+                        Toast.makeText(SheduleActivity.this, date.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+        materialCalendar.setLongClickable(true);
+        //not work!
+        materialCalendar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.e(MainActivity.TAG, "LONG LISTENER!!!!!!!!!");
+                Toast.makeText(SheduleActivity.this, "hello from long", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
         materialCalendar.setDateTextAppearance(R.style.CustomDayTextAppearance);
         materialCalendar.setTileSizeDp(45);
         taskForWorkDays.execute();
