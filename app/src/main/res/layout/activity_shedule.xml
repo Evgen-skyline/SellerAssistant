@@ -40,7 +40,8 @@
             style="@style/CustomButtonStyle"
             android:layout_marginTop="20sp"
             android:text="@string/mButtonSetWorkDay"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:onClick="clickSetWorkDay"/>
 
     </LinearLayout>
 </LinearLayout>

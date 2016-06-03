@@ -35,6 +35,7 @@
     <string name="mDayChangeTitleForDayDelete">Вы всё правильно ввели?</string>
     <string name="mDayChangeMessageForDayDelete">Сохранить данные?</string>
     <string name="mEmptySellerReport">Этот продавец ещё не работал</string>
+    <string name="mFinish">Готово</string>
     <string name="mYES">Да</string>
     <string name="mNO">Нет</string>
     <string name="mCANCEL">Отмена</string>

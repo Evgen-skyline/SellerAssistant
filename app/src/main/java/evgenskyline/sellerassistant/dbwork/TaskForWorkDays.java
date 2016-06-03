@@ -25,6 +25,7 @@ public class TaskForWorkDays extends AsyncTask<String, Integer, ArrayList<Result
     private String userName;
     private ArrayList<ResultsOfTheDay> dayContainer;
     private OnWorkDaysTaskComplite listener;
+    private ArrayList<FutureWorkDays> futureDays;
 
     public TaskForWorkDays(String userName, Context context){
         this.context = context;
@@ -42,6 +43,7 @@ public class TaskForWorkDays extends AsyncTask<String, Integer, ArrayList<Result
     protected ArrayList<ResultsOfTheDay> doInBackground(String... params) {
         //userName = params[0];
         dayContainer = new ArrayList<ResultsOfTheDay>();
+        futureDays = new ArrayList<FutureWorkDays>();
         try {
             db_seller = new DB_seller(context, userName);
             sl_db = db_seller.getReadableDatabase();
@@ -50,11 +52,21 @@ public class TaskForWorkDays extends AsyncTask<String, Integer, ArrayList<Result
             return null;
         }
         String query = "select * from " + userName;
+        String queryFuture = "SELECT * FROM " + userName + DB_seller.FUTURE_DAYS;
         Cursor mCursor = null;
+        Cursor mCursorFuture = null;
         try {
+            sl_db.execSQL(DB_seller.CREATE_USER_TABLE);
+            sl_db.execSQL(DB_seller.CREATE_USER_FUTURE_DAYS);
             mCursor = sl_db.rawQuery(query, null);
         }catch (SQLiteException e){
-            Log.e(MainActivity.TAG, "Из базы получена фигня: " + e.toString());
+            Log.e(MainActivity.TAG, "Запрос на отработаные дни не прошёл: " + e.toString());
+            return null;
+        }
+        try {
+            mCursorFuture = sl_db.rawQuery(queryFuture, null);
+        }catch (SQLiteException e){
+            Log.e(MainActivity.TAG, "Запрос на отработаные дни не прошёл: " + e.toString());
             return null;
         }
         mCursor.moveToFirst();
@@ -101,6 +113,19 @@ public class TaskForWorkDays extends AsyncTask<String, Integer, ArrayList<Result
             dayContainer.add(unitFromDB);
             mCursor.moveToNext();
         }
+        mCursorFuture.moveToFirst();
+        while (mCursorFuture.isAfterLast() == false){
+            FutureWorkDays futureWorkDays = new FutureWorkDays();
+            futureWorkDays.setId(mCursorFuture.getInt(mCursorFuture.getColumnIndex(
+                    BaseColumns._ID)));
+            futureWorkDays.setDate(mCursorFuture.getLong(mCursorFuture.getColumnIndex(
+                    DB_seller.DB_COLUMN_DATE)));
+            futureWorkDays.setTradePointName(mCursorFuture.getString(mCursorFuture.getColumnIndex(
+                    DB_seller.DB_COLUMN_TRADE_POINT)));
+            futureDays.add(futureWorkDays);
+            mCursorFuture.moveToNext();
+        }
+        mCursorFuture.close();
         mCursor.close();
         sl_db.close();
         db_seller.close();
@@ -113,7 +138,7 @@ public class TaskForWorkDays extends AsyncTask<String, Integer, ArrayList<Result
         super.onPostExecute(resultsOfTheDays);
         pDialog.dismiss();
         if (resultsOfTheDays != null) {
-            listener.onTaskComplite(resultsOfTheDays);
+            listener.onTaskComplite(resultsOfTheDays, futureDays);
         }else {
             Log.e(MainActivity.TAG, "ЛИСТЕНЕР ПРОШЁЛ МИМО!!!");
         }

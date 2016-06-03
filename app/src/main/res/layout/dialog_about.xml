@@ -16,6 +16,7 @@
             android:id="@+id/aboutTextView"
             android:text="@string/mManualForAboutActivity"
             android:background="@drawable/listview_style"
+            android:padding="10dip"
             />
     </ScrollView>
     <Button

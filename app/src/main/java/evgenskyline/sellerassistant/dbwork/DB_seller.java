@@ -42,6 +42,7 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     public static String CREATE_USER_TABLE;
     //таблица для запланированых рабочих дней
     public static String CREATE_USER_FUTURE_DAYS;
+    public static final String FUTURE_DAYS = "FutureDays";
 
     public DB_seller(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -69,11 +70,17 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
                 + DB_COLUMN_SALES_ACCESORIES_R + " real, "
                 + DB_COLUMN_SALES_FOTO_R + " real, "
                 + DB_COLUMN_SALES_TERM_R + " real);";
+
+        CREATE_USER_FUTURE_DAYS = "create table if not exists " + DB_TABLE_NAME + FUTURE_DAYS + " ("
+                +BaseColumns._ID + " integer primary key autoincrement, "
+                +DB_COLUMN_DATE + " integer not null UNIQUE, "
+                +DB_COLUMN_TRADE_POINT + " text);";
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_USER_FUTURE_DAYS);
     }
 
     @Override

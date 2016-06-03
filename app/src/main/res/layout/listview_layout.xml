@@ -5,6 +5,6 @@
     android:layout_height="wrap_content"
     android:textSize="20sp"
     android:gravity="left"
-    android:padding="5dip"
+    android:padding="10dip"
     android:background="@drawable/listview_style"
     android:textStyle="bold" />
