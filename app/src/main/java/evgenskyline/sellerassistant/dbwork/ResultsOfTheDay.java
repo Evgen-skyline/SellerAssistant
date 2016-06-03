@@ -16,6 +16,16 @@ import evgenskyline.sellerassistant.MainActivity;
 public class ResultsOfTheDay {
     private static final String TAG ="---!!!MY_LOG!!!---";
     private Context context;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String nameOfTradePoint;
     private String month;
     private Long date=0L;
@@ -383,5 +393,9 @@ public class ResultsOfTheDay {
 
     public double getTermSum() {
         return termSum;
+    }
+
+    public String getNameOfTradePoint() {
+        return nameOfTradePoint;
     }
 }

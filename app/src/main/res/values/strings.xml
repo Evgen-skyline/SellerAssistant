@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Seller Assistant</string>
+    <string name="mButtonDetails">Подробности</string>
+    <string name="mButtonSetWorkDay">Установить рабочим днём</string>
+    <string name="mButtonSetWorkDayDelete">Очистить день</string>
     <string name="mButtonAddSeller">Добавить нового продавца</string>
     <string name="mButtonNext">Дальше -></string>
     <string name="mButtonExchangeRates">Курс валют от НБУ</string>

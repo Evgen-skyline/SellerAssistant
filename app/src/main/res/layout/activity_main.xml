@@ -22,14 +22,8 @@
         android:id="@+id/buttonAddSeller"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.16"
-        android:textSize="20sp"
         android:onClick="clickForAddSeller"
-        android:background="@drawable/my_button_style"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginBottom="5sp"
-        android:textStyle="bold" />
+        style="@style/CustomButtonStyle"/>
 
     <Button
         android:layout_width="match_parent"
@@ -40,40 +34,24 @@
         android:layout_gravity="center_horizontal"
         android:textSize="40sp"
         android:onClick="clickOnNextButton"
-        android:background="@drawable/my_button_style"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginBottom="5sp"
-        android:textStyle="bold"/>
+        style="@style/CustomButtonStyle"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.16"
-        android:textSize="20sp"
         android:id="@+id/buttonExchangeRates"
         android:text="@string/mButtonExchangeRates"
         android:onClick="clickOnExchangeRates"
-        android:background="@drawable/my_button_style"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginBottom="5sp"
-        android:textStyle="bold"/>
+        style="@style/CustomButtonStyle"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/buttonAbout"
-        android:textSize="20sp"
         android:layout_weight="0.16"
         android:text="@string/mButtonAbout"
         android:onClick="clickAboutProg"
-        android:background="@drawable/my_button_style"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginBottom="5sp"
-        android:textStyle="bold"/>
+        style="@style/CustomButtonStyle"/>
 
     <TextView
         android:layout_width="match_parent"

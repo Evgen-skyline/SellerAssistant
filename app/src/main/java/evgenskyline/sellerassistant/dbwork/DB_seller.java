@@ -40,6 +40,8 @@ public class DB_seller extends SQLiteOpenHelper implements BaseColumns {
     public static final String DB_COLUMN_SALES_TERM_R = "terminalR";
     //строка на создание таблицы пользователя
     public static String CREATE_USER_TABLE;
+    //таблица для запланированых рабочих дней
+    public static String CREATE_USER_FUTURE_DAYS;
 
     public DB_seller(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

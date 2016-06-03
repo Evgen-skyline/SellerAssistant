@@ -23,4 +23,19 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="CustomButtonStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/my_button_style</item>
+        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:layout_marginRight">10sp</item>
+        <item name="android:layout_marginTop">5sp</item>
+        <item name="android:layout_marginBottom">5sp</item>
+        <!--android:background="@drawable/my_button_style"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:textStyle="bold"-->
+    </style>
 </resources>

@@ -1,5 +1,6 @@
 package evgenskyline.sellerassistant;
 
+import android.app.Dialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.CalendarContract;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -28,11 +31,14 @@ import evgenskyline.sellerassistant.dbwork.TaskForWorkDays;
 
 public class SheduleActivity extends AppCompatActivity {
     private MaterialCalendarView materialCalendar;
+    private Button mB_details;
+    private Button mB_setWorkDay;
     private DB_seller db_seller;    //БД с таблицей юзера(userName)
     private SQLiteDatabase sl_db;
     private String userName;
     private ArrayList<ResultsOfTheDay> dayContainer;
     private HashMap<CalendarDay, ResultsOfTheDay> mapWithWorkDays;
+    private HashMap<CalendarDay, String> mapWithFutureDays;
     private HashSet<CalendarDay> hCalDays;
 
     @Override
@@ -40,6 +46,10 @@ public class SheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shedule);
         materialCalendar = (MaterialCalendarView)findViewById(R.id.mMaterialCalendar);
+        mB_details = (Button)findViewById(R.id.mSheduleActivityDetails);
+        mB_setWorkDay = (Button)findViewById(R.id.mSheduleActivitySetWorkDay);
+        mB_setWorkDay.setEnabled(false);
+        mB_details.setEnabled(false);
 
         userName = DayEdit.reverseName(getIntent().getStringExtra(MainActivity.KEY_USER));
         db_seller = new DB_seller(this, userName);
@@ -73,25 +83,39 @@ public class SheduleActivity extends AppCompatActivity {
                 materialCalendar.setOnDateChangedListener(new OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                        Log.e(MainActivity.TAG, "LISTENER!!!!!!!!!");
-                        Toast.makeText(SheduleActivity.this, date.toString(), Toast.LENGTH_SHORT).show();
+                        if (mapWithWorkDays.containsKey(date)){
+                            mB_setWorkDay.setEnabled(false);
+                            mB_details.setEnabled(true);
+                            Toast.makeText(SheduleActivity.this, mapWithWorkDays.get(date).getNameOfTradePoint(),
+                                    Toast.LENGTH_SHORT).show();
+                            Log.e(MainActivity.TAG, String.valueOf(date.getCalendar().getTimeInMillis()));
+                        }else {
+                            mB_details.setEnabled(false);
+                        }
                     }
                 });
             }
         });
-        materialCalendar.setLongClickable(true);
-        //not work!
-        materialCalendar.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.e(MainActivity.TAG, "LONG LISTENER!!!!!!!!!");
-                Toast.makeText(SheduleActivity.this, "hello from long", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
         materialCalendar.setDateTextAppearance(R.style.CustomDayTextAppearance);
         materialCalendar.setTileSizeDp(45);
         taskForWorkDays.execute();
+    }
+
+    public void clickForDetails(View view) {
+        CalendarDay calDay = materialCalendar.getSelectedDate();
+
+        final Dialog dialog = new Dialog(SheduleActivity.this);
+        dialog.setTitle(R.string.mButtonDetails);
+        dialog.setContentView(R.layout.dialog_about);
+        TextView tv = (TextView)dialog.findViewById(R.id.aboutTextView);
+        tv.setText(mapWithWorkDays.get(calDay).toString());
+        dialog.show();
+        Button mButOk = (Button)dialog.findViewById(R.id.mDialogAboutButtonOk);
+        mButOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }

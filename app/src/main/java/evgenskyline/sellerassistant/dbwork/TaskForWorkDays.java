@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class TaskForWorkDays extends AsyncTask<String, Integer, ArrayList<Result
         mCursor.moveToFirst();
         while (mCursor.isAfterLast() == false) {
             ResultsOfTheDay unitFromDB = new ResultsOfTheDay(context);
+            unitFromDB.setId(mCursor.getInt(mCursor.getColumnIndex(
+                    BaseColumns._ID)));
             unitFromDB.setNameOfTradePoint(mCursor.getString(mCursor.getColumnIndex(
                     DB_seller.DB_COLUMN_TRADE_POINT)));
             unitFromDB.setDate(mCursor.getLong(
